@@ -1,6 +1,6 @@
 var a_idx = 0;
-jQuery(document).ready(function($) {
-    $("body").click(function(e) {
+$(document).ready(function() {
+    $("body").one("click", function(e) {
         var a = new Array("好好吃饭", "好好喝水", "好好睡觉", "好好生活", "好好要好好");
         var $i = $("<span/>").text(a[a_idx]);
         var x = e.pageX,
