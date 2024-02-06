@@ -1,0 +1,25 @@
+/* 全局默认鼠标指针 */
+body,
+html {
+    cursor: url('/mouse/cur1.cur'),auto !important;
+}
+p{
+    cursor: url('/mouse/cur2.cur'), auto !important;
+}
+a{
+    cursor: url('/mouse/cur2.cur'), auto !important;
+}
+h1{
+    cursor: url('/mouse/cur2.cur'), auto !important;
+}
+.aplayer-body{
+    cursor: url('/mouse/cur3.cur'), auto !important;
+}
+/* 悬停图片时的鼠标指针 */
+.home-article-title {
+    cursor: url('/mouse/cur3.cur'), auto !important;
+}
+/* 悬停图片弹出窗口时的鼠标指针 */
+.home-article-meta-info{
+    cursor: url('/mouse/cur2.cur'), auto !important;
+}
