@@ -1,6 +1,9 @@
 /* noto-sans-sc-regular - chinese-simplified */
 @font-face {
   font-family: 'genshinFont';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
   src: url('./genshin.ttf') format('truetype');
 }
 @font-face {
