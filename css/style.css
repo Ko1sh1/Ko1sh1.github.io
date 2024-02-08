@@ -3114,6 +3114,54 @@ html.is-animating .transition-fade {
   opacity: 1;
   transition: all 0.1s linear;
 }
+.twikoo-container #twikoo .tk-meta-input .el-input .el-input-group__prepend {
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .tk-meta-input .el-input input {
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .tk-input textarea {
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .actions .tk-row-actions-start .tk-action-icon svg {
+  fill: var(--default-text-color);
+}
+.twikoo-container #twikoo .actions .tk-row-actions-start .tk-action-icon.OwO .OwO-body {
+  color: var(--default-text-color);
+  background-color: var(--background-color);
+}
+.twikoo-container #twikoo .actions .tk-preview span {
+  background: var(--third-background-color);
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .tk-preview-container {
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .tk-comments-container .tk-comments-count span {
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .tk-main {
+  margin-bottom: 20px;
+}
+.twikoo-container #twikoo .tk-main .tk-meta .tk-nick {
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .tk-main .tk-meta .tk-tag.tk-tag-green {
+  background: -webkit-linear-gradient(45deg, #e3565e, #ee854b, #f6c258, #90c68a, #5fb3b3, #69c, #c594c5);
+  background: linear-gradient(45deg, #e3565e, #ee854b, #f6c258, #90c68a, #5fb3b3, #69c, #c594c5);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+.twikoo-container #twikoo .tk-main .tk-meta .tk-time time {
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .tk-main .tk-content {
+  color: var(--default-text-color);
+}
+.twikoo-container #twikoo .tk-main .tk-expand {
+  color: var(--third-text-color);
+}
 .progress-bar-container {
   position: fixed;
   top: 0;
@@ -3428,6 +3476,7 @@ html.is-animating .scroll-progress-bar {
   line-height: 1;
   color: var(--first-text-color);
   transform: translateY(1px);
+  font-family: 'genshinFont', sans-serif !important;
 }
 .navbar-container .navbar-content .left .logo-title h1 {
   margin: 0;
@@ -8358,11 +8407,12 @@ html.is-animating .scroll-progress-bar {
   height: 20px;
 }
 .aplayer .aplayer-info .aplayer-music .aplayer-title {
+  color: #e2fff6;
   font-size: 14px;
 }
 .aplayer .aplayer-info .aplayer-music .aplayer-author {
   font-size: 12px;
-  color: #666;
+  color: #ff675d;
 }
 .aplayer .aplayer-info .aplayer-controller {
   position: relative;
@@ -8424,6 +8474,12 @@ html.is-animating .scroll-progress-bar {
 }
 .aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-time-inner {
   vertical-align: middle;
+}
+.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-time-inner .aplayer-ptime {
+  color: #e2fff6;
+}
+.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-time-inner .aplayer-dtime {
+  color: #e2fff6;
 }
 .aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-icon {
   cursor: pointer;
@@ -8613,12 +8669,15 @@ html.is-animating .scroll-progress-bar {
   border-radius: 2px;
 }
 .aplayer .aplayer-list li .aplayer-list-index {
-  color: #666;
+  color: #ff675d;
   margin-right: 12px;
   cursor: pointer;
 }
+.aplayer .aplayer-list li .aplayer-list-title {
+  color: #e2fff6;
+}
 .aplayer .aplayer-list li .aplayer-list-author {
-  color: #666;
+  color: #ff675d;
   float: right;
   cursor: pointer;
 }
