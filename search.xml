@@ -3,7 +3,13 @@
   <entry>
     <title>吉林省高校网络安全联赛第三轮 Web 官方题解</title>
     <url>/2024/02/08/%E5%90%89%E6%9E%97%E7%9C%81%E7%AC%AC%E4%B8%89%E8%BD%AE%E8%81%94%E8%B5%9B-Web/</url>
-    <content><![CDATA[<h2 id="华容道"><a href="#华容道" class="headerlink" title="华容道"></a>华容道</h2><blockquote>
+    <content><![CDATA[
+  <div class="note p-4 mb-4 rounded-small primary">
+    <p>负责了Web和Misc方向的题目设计，这里记录一下本次Web方向的题解。</p>
+
+  </div>
+
+<h2 id="华容道"><a href="#华容道" class="headerlink" title="华容道"></a>华容道</h2><blockquote>
 <p>难度：签到</p>
 <p>考点：js 前端代码基础</p>
 </blockquote>
