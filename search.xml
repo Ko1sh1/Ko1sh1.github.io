@@ -16,7 +16,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240207232013352.png"
+                     data-src="/images/blog/image-20240207232013352.png"
                       alt="image-20240207232013352"
                 ></p>
 <h2 id="warmup"><a href="#warmup" class="headerlink" title="warmup"></a>warmup</h2><blockquote>
@@ -33,14 +33,14 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240207233651306.png"
+                     data-src="/images/blog/image-20240207233651306.png"
                       alt="image-20240207233651306"
                 ></p>
 <p>之后刷新一下首页，再去访问 &#x2F;1.txt 即可获得flag内容</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240207233825782.png"
+                     data-src="/images/blog/image-20240207233825782.png"
                       alt="image-20240207233825782"
                 ></p>
 <h2 id="My-Profile"><a href="#My-Profile" class="headerlink" title="My Profile"></a>My Profile</h2><blockquote>
@@ -59,7 +59,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240207232751157.png"
+                     data-src="/images/blog/image-20240207232751157.png"
                       alt="image-20240207232751157"
                 ></p>
 <p>拿到密钥后即可伪造任意用户，再传入原型链内容即可。</p>
@@ -75,21 +75,21 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240207234133284.png"
+                     data-src="/images/blog/image-20240207234133284.png"
                       alt="image-20240207234133284"
                 ></p>
 <p>除此以外，还存在一个拦截器，每次访问 &#x2F;auth&#x2F;** 路由时，会读取 &#x2F;app&#x2F;security.txt 文件进行校验。</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240207234456175.png"
+                     data-src="/images/blog/image-20240207234456175.png"
                       alt="image-20240207234456175"
                 ></p>
 <p>因此我们要反序列化，首先要去通过解压处使用软链接读密钥文件内容：</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240207234854801.png"
+                     data-src="/images/blog/image-20240207234854801.png"
                       alt="image-20240207234854801"
                 ></p>
 <div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">HaHaHaThisisMySecretFile</span><br></pre></td></tr></table></figure></div>
@@ -99,7 +99,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240207235011414.png"
+                     data-src="/images/blog/image-20240207235011414.png"
                       alt="image-20240207235011414"
                 ></p>
 <p>查看依赖中有 freemaker 和 aspectjweaver，所以我们可以修改首页内容进行模板注入。</p>
@@ -109,7 +109,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240208000350430.png"
+                     data-src="/images/blog/image-20240208000350430.png"
                       alt="image-20240208000350430"
                 ></p>
 <h2 id="FileCheck"><a href="#FileCheck" class="headerlink" title="FileCheck"></a>FileCheck</h2><blockquote>
@@ -121,7 +121,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240208001024984.png"
+                     data-src="/images/blog/image-20240208001024984.png"
                       alt="image-20240208001024984"
                 ></p>
 <p>发现其中包含了 class.php</p>
@@ -145,7 +145,7 @@
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="C:\Users\koishi\Desktop\第三轮_wp\pic\image-20240208002213628.png"
+                     data-src="/images/blog/image-20240208002213628.png"
                       alt="image-20240208002213628"
                 ></p>
 ]]></content>
