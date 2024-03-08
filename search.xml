@@ -165,9 +165,15 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2024/03/08/javassist%20%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<h2 id="javassist-简介"><a href="#javassist-简介" class="headerlink" title="javassist 简介"></a>javassist 简介</h2><p>Javassist (JAVA programming ASSISTant) 是在 Java 中编辑字节码的类库;它使 Java 程序能够在运行时定义一个新类, 并在 JVM 加载时修改类文件。</p>
+    <title>javassist 学习记录</title>
+    <url>/2024/02/08/javassist%20%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[
+  <div class="note p-4 mb-4 rounded-small primary">
+    <p>之前看到过一些相关内容，最近稍微学了点基础记录了一下。</p>
+
+  </div>
+
+<h2 id="javassist-简介"><a href="#javassist-简介" class="headerlink" title="javassist 简介"></a>javassist 简介</h2><p>Javassist (JAVA programming ASSISTant) 是在 Java 中编辑字节码的类库;它使 Java 程序能够在运行时定义一个新类, 并在 JVM 加载时修改类文件。</p>
 <p>我们常用到的动态特性主要是反射，在运行时查找对象属性、方法，修改作用域，通过方法名称调用方法等。在线的应用不会频繁使用反射，因为反射的性能开销较大。其实还有一种和反射一样强大的特性，但是开销却很低，它就是Javassit。</p>
 <p>与其他类似的字节码编辑器不同, Javassist 提供了两个级别的 API: 源级别和字节码级别。 如果用户使用源级 API, 他们可以编辑类文件, 而不知道 Java 字节码的规格。 整个 API 只用 Java 语言的词汇来设计。 您甚至可以以源文本的形式指定插入的字节码; Javassist 在运行中编译它。 另一方面, 字节码级 API 允许用户直接编辑类文件作为其他编辑器。</p>
 <h2 id="CtClass"><a href="#CtClass" class="headerlink" title="CtClass"></a>CtClass</h2><p>可以把它理解成加强版的<code>Class</code>对象，需要从<code>ClassPool</code>中获得。</p>
@@ -699,5 +705,11 @@
 <p>第二行导入了 java.awt 包。 因此，第三行不会抛出异常。 编译器可以将 Point 识别为java.awt.Point。</p>
 <p>注意 importPackage() 不会影响 ClassPool 中的 get() 方法。只有编译器才考虑导入包。 get()  的参数必须是完整类名。</p>
 ]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>技巧</tag>
+      </tags>
   </entry>
 </search>
