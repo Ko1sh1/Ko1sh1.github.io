@@ -715,7 +715,14 @@
   <entry>
     <title>java 内存马学习</title>
     <url>/2022/03/08/Memshell%E5%86%85%E5%AD%98%E9%A9%AC/</url>
-    <content><![CDATA[<h1 id="内存马"><a href="#内存马" class="headerlink" title="&#96;&#96;内存马"></a>&#96;&#96;内存马</h1><blockquote>
+    <content><![CDATA[
+  <div class="note p-4 mb-4 rounded-small primary">
+    <p>大一的时候不懂事写着玩的，如果有问题欢迎师傅们指出</p>
+<p><a class="link"   href="https://github.com/Ko1sh1/StudyMem" >https://github.com/Ko1sh1/StudyMem <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>  这里是当时学习的时候写的练习项目</p>
+
+  </div>
+
+<blockquote>
 <p>参考:</p>
 <ul>
 <li><p><a class="link"   href="https://su18.org/post/memory-shell/" >https://su18.org/post/memory-shell/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
